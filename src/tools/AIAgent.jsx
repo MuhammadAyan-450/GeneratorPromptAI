@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Send, RefreshCw, Copy, Star, Brain } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Helmet } from "react-helmet";
 
 const AIAgent = () => {
   const [messages, setMessages] = useState(() => {
