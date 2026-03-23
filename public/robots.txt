@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /tools/
+Allow: /ai-agent
+Allow: /about
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms-of-service
+
+Disallow: /api/  
+Disallow: /*?*
+
+Sitemap: https://generatorpromptai.com/sitemap.xml
