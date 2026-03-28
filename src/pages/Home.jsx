@@ -5,6 +5,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import tools, { toolCategories } from "../data/tools";
 import { Search, Sparkles, ArrowRight, Zap } from "lucide-react";
+import { Helmet } from "react-helmet";
+
 
 const popularTools = tools.slice(0, 8); // increased a bit
 const latestTools = tools.slice(0, 6);
