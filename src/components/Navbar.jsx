@@ -11,15 +11,15 @@ const Navbar = () => {
 
   return (
     <>
-      <Helmet> <title>Generator PromptAI – AI Prompt Generator Free for ChatGPT, Midjourney & more</title>
-        <meta name="description" content="generator PromptAI is a free AI prompt generator that creates powerful prompts for ChatGPT, Claude, Gemini and Midjourney. Instantly generate optimized prompts for writing, coding, art and more." />
+      <Helmet> <title>Free AI Prompt Generator – AI Prompt Generator Free for ChatGPT, Midjourney & more</title>
+        <meta name="description" content="free AI prompt generator that creates powerful prompts for ChatGPT, Claude, Gemini and Midjourney. Instantly generate optimized prompts for writing, coding, art and more." />
         <meta name="keywords" content="ai prompt generator, chatgpt prompt generator, midjourney prompt generator, Youtube prompt generator, claude prompt generator, generate promptai, ai prompt tool,Image Cropper , Image Resizer , Image Compressor, QrCode Genreator" />
         <meta name="author" content="generatorpromptaI" />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://generatorpromptaI.com/" />
         {/* Open Graph */}
         <meta property="og:title" content="GeneratorPromptAI - AI Prompt Generator Free & Online Tools" />
-        <meta property="og:description" content="Generate powerful prompts for ChatGPT, Claude, Youtube and Midjourney. Plus access 30+ powerful free online tools." />
+        <meta property="og:description" content="Free AI Prompt Generator – for ChatGPT, Claude, Youtube and Midjourney. Plus access 30+ powerful free online tools." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://generatorpromptaI.com/" />
         <meta property="og:image" content="https://generatorpromptaI.com/og-image.png" />

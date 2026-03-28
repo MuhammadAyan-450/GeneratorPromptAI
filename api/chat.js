@@ -1,3 +1,4 @@
+// /api/chat.js
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -6,7 +7,7 @@ export default async function handler(req, res) {
   const { messages } = req.body;
 
   if (!process.env.GROQ_API_KEY) {
-    return res.status(500).json({ error: "Server misconfigured: API key missing" });
+    return res.status(500).json({ error: "API key missing" });
   }
 
   try {
@@ -14,25 +15,25 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "llama-3.1-70b-versatile",
+        model: "llama-3.3-70b-versatile",
         messages,
         temperature: 0.7,
-        max_tokens: 2048,
-      }),
+        max_tokens: 2048
+      })
     });
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      return res.status(response.status).json({ error: err.error?.message || "Groq API error" });
+    const data = await response.json();
+
+    if (!data?.choices?.length || !data.choices[0].message) {
+      return res.status(500).json({ error: "Invalid response from Groq API" });
     }
 
-    const data = await response.json();
     res.status(200).json(data.choices[0].message);
   } catch (error) {
-    console.error("Server error:", error);
+    console.error("Groq API Error:", error);
     res.status(500).json({ error: "Server error connecting to Groq API" });
   }
 }
