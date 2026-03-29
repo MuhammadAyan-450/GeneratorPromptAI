@@ -1,13 +1,8 @@
+# Simple robots.txt for GeneratorPromptAI
+# Allows all pages to be crawled
+
 User-agent: *
 Allow: /
-Allow: /tools/
-Allow: /ai-agent
-Allow: /about
-Allow: /contact
-Allow: /privacy-policy
-Allow: /terms-of-service
 
-Disallow: /api/  
-Disallow: /*?*
-
+# Sitemap location
 Sitemap: https://generatorpromptai.com/sitemap.xml
