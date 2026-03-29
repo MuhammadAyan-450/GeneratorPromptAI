@@ -25,15 +25,15 @@ const Home = () => {
       <Helmet> <title>Free AI Prompt Generator – AI Prompt Generator Free for ChatGPT, Midjourney & more</title>
         <meta name="description" content="free AI prompt generator that creates powerful prompts for ChatGPT, Claude, Gemini and Midjourney. Instantly generate optimized prompts for writing, coding, art and more." />
         <meta name="keywords" content="ai prompt generator, chatgpt prompt generator, midjourney prompt generator, Youtube prompt generator, claude prompt generator, generate promptai, ai prompt tool,Image Cropper , Image Resizer , Image Compressor, QrCode Genreator" />
-        <meta name="author" content="generatorpromptaI" />
+        <meta name="author" content="generatorpromptai" />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://generatorpromptai.com/" />
         {/* Open Graph */}
         <meta property="og:title" content="GeneratorPromptAI - AI Prompt Generator Free & Online Tools" />
         <meta property="og:description" content="Free AI Prompt Generator – for ChatGPT, Claude, Youtube and Midjourney. Plus access 30+ powerful free online tools." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://generatorpromptaI.com/" />
-        <meta property="og:image" content="https://generatorpromptaI.com/og-image.png" />
+        <meta property="og:url" content="https://generatorpromptai.com/" />
+        <meta property="og:image" content="https://generatorpromptai.com/og-image.png" />
       </Helmet>
       <div className="bg-gray-50/40 min-h-screen flex flex-col">
         <Navbar />
