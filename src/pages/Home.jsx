@@ -23,18 +23,18 @@ const Home = () => {
       
       {/* SEO with React Helmet */}
       <Helmet>
-        <title>GeneratorPromptAI - Free AI Tools & 24/7 AI Agent</title>
+        <title>Free AI Prompt Generator – AI Prompt Generator Free for ChatGPT, Midjourney & more</title>
         <meta 
           name="description" 
-          content="Free AI tools platform with 24/7 AI Agent, prompt generators for ChatGPT, Claude, Midjourney, image compressor, QR code generator, JSON formatter and 30+ more utilities. No signup, 100% private." 
+          content="free AI prompt generator that creates powerful prompts for ChatGPT, Claude, Gemini and Midjourney. Instantly generate optimized prompts for writing, coding, art and more." 
         />
         <meta 
           name="keywords" 
           content="free ai tools, ai prompt generator, ai agent, chatgpt prompts, claude prompts, midjourney prompts, image compressor, qr code generator, json formatter, free online tools" 
         />
         
-        <meta property="og:title" content="GeneratorPromptAI - Free AI Tools & 24/7 AI Agent" />
-        <meta property="og:description" content="Powerful free AI tools including 24/7 AI Agent, prompt generators, image tools, and more. No signup required." />
+        <meta property="og:title" content="GeneratorPromptAI - AI Prompt Generator Free & Online Tools" />
+        <meta property="og:description" content="Free AI Prompt Generator – for ChatGPT, Claude, Youtube and Midjourney. Plus access 30+ powerful free online tools." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://generatorpromptai.com" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
@@ -62,15 +62,15 @@ const Home = () => {
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
-            Generate Powerful AI Prompts
+             Free AI Prompt{" "}
             <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              in Seconds
+              Generator
             </span>
           </h1>
 
           <p className="text-lg sm:text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Create perfect, ready-to-use prompts for ChatGPT, Claude, Gemini, Midjourney and more — no guesswork, better results, instantly.
+            Free AI Prompt Generator – for ChatGPT, Claude, Youtube and Midjourney. Plus access 30+ powerful free online tools.
           </p>
 
           <div className="flex flex-wrap justify-center gap-5">
