@@ -27,7 +27,7 @@ const Home = () => {
         <meta name="keywords" content="ai prompt generator, chatgpt prompt generator, midjourney prompt generator, Youtube prompt generator, claude prompt generator, generate promptai, ai prompt tool,Image Cropper , Image Resizer , Image Compressor, QrCode Genreator" />
         <meta name="author" content="generatorpromptaI" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://generatorpromptaI.com/" />
+        <link rel="canonical" href="https://generatorpromptai.com/" />
         {/* Open Graph */}
         <meta property="og:title" content="GeneratorPromptAI - AI Prompt Generator Free & Online Tools" />
         <meta property="og:description" content="Free AI Prompt Generator – for ChatGPT, Claude, Youtube and Midjourney. Plus access 30+ powerful free online tools." />
