@@ -13,48 +13,37 @@ const AIAgent = () => {
       ? JSON.parse(saved)
       : [{
           role: "assistant",
-          content: "Hello! I'm your AI Agent, powered by Groq and Llama 3.1.\n\nI can assist with creative writing, coding, prompt engineering, research, problem-solving, and much more.\n\nHow can I help you today?"
+          content: "Hello! I'm your AI Agent powered by Claude Sonnet 4.6.\n\nI'm here to help with creative writing, coding, prompt engineering, explanations, brainstorming, and much more.\n\nHow can I assist you today?"
         }];
   });
 
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [thinkingSteps, setThinkingSteps] = useState([]);
-  const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem("aiAgentFavorites");
-    return saved ? JSON.parse(saved) : [];
-  });
 
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, thinkingSteps]);
 
-  // Persist chat history
   useEffect(() => {
     localStorage.setItem("aiAgentChatHistory", JSON.stringify(messages));
   }, [messages]);
-
-  // Persist favorites
-  useEffect(() => {
-    localStorage.setItem("aiAgentFavorites", JSON.stringify(favorites));
-  }, [favorites]);
 
   const simulateThinking = async () => {
     setIsThinking(true);
     setThinkingSteps([]);
 
     const steps = [
-      "Analyzing your request...",
+      "Understanding your request...",
       "Recalling conversation context...",
-      "Formulating structured response...",
-      "Refining for clarity and accuracy..."
+      "Reasoning through the best approach...",
+      "Crafting a detailed and helpful response..."
     ];
 
     for (const step of steps) {
-      await new Promise(r => setTimeout(r, 650));
+      await new Promise(r => setTimeout(r, 700));
       setThinkingSteps(prev => [...prev, step]);
     }
     setIsThinking(false);
@@ -64,28 +53,29 @@ const AIAgent = () => {
     if (!input.trim() || isThinking) return;
 
     const userMessage = { role: "user", content: input.trim() };
-    const updatedMessages = [...messages, userMessage];
-
-    setMessages(updatedMessages);
+    setMessages(prev => [...prev, userMessage]);
     setInput("");
     await simulateThinking();
 
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: updatedMessages }),
+      // Claude via Puter.ai (works best on Vercel live domain)
+      const response = await puter.ai.chat(input.trim(), {
+        model: "claude-sonnet-4-6",
+        stream: false
       });
 
-      if (!res.ok) throw new Error("Request failed");
+      const aiReply = {
+        role: "assistant",
+        content: response?.text || "I received a response but it was empty. Please try again."
+      };
 
-      const data = await res.json();
-      setMessages(prev => [...prev, data]);
+      setMessages(prev => [...prev, aiReply]);
     } catch (error) {
-      console.error(error);
+      console.error("Claude API Error:", error);
+
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "I'm sorry, I couldn't connect to Groq right now. Please try again in a moment."
+        content: "Sorry, I couldn't connect to Claude right now.\n\nThis can happen due to network issues or rate limits. Please try again in a moment."
       }]);
     }
   };
@@ -94,19 +84,11 @@ const AIAgent = () => {
     navigator.clipboard.writeText(content);
   };
 
-  const toggleFavorite = (msg) => {
-    if (favorites.some(f => f.content === msg.content)) {
-      setFavorites(favorites.filter(f => f.content !== msg.content));
-    } else {
-      setFavorites([...favorites, msg]);
-    }
-  };
-
   const clearChat = () => {
     if (window.confirm("Start a new chat? Current conversation will be cleared.")) {
       setMessages([{
         role: "assistant",
-        content: "New conversation started. How can I assist you today?"
+        content: "New chat started. How can I help you today?"
       }]);
       localStorage.removeItem("aiAgentChatHistory");
     }
@@ -115,9 +97,8 @@ const AIAgent = () => {
   return (
     <>
       <Helmet>
-        <title>AI Agent • Groq + Llama 3.1 — GeneratorPromptAI</title>
-        <meta name="description" content="Chat with a fast and intelligent AI Agent powered by Groq and Llama 3.1. Get helpful, accurate, and detailed responses instantly." />
-        <meta name="keywords" content="ai agent, groq ai, llama 3.1, ai chatbot, free ai chat, intelligent assistant" />
+        <title>AI Agent • Claude Sonnet 4.6 — GeneratorPromptAI</title>
+        <meta name="description" content="Chat with a powerful AI Agent powered by Claude Sonnet 4.6. Get thoughtful, detailed, and creative responses instantly." />
         <link rel="canonical" href="https://generatorpromptai.com/ai-agent" />
       </Helmet>
 
@@ -126,7 +107,7 @@ const AIAgent = () => {
       <div className="min-h-screen bg-zinc-50">
         <div className="max-w-5xl mx-auto px-4 py-6">
           <div className="flex justify-between items-center mb-8">
-            <Link to="/" className="flex items-center gap-3 text-gray-600 hover:text-indigo-600 transition">
+            <Link to="/" className="flex items-center gap-3 text-gray-600 hover:text-indigo-600">
               <ArrowLeft size={24} /> Back to Home
             </Link>
 
@@ -138,10 +119,9 @@ const AIAgent = () => {
             </button>
           </div>
 
-          {/* Chat Window */}
           <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden h-[78vh] flex flex-col">
-            {/* Messages */}
-            <div className="flex-1 p-8 overflow-y-auto space-y-9 bg-zinc-50">
+            {/* Messages Area */}
+            <div className="flex-1 p-8 overflow-y-auto space-y-8 bg-zinc-50">
               {messages.map((msg, index) => (
                 <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[82%] px-7 py-5 rounded-3xl text-[17px] leading-relaxed shadow-sm ${msg.role === "user"
@@ -150,14 +130,12 @@ const AIAgent = () => {
                     {msg.content}
 
                     {msg.role === "assistant" && (
-                      <div className="flex gap-4 mt-5 text-gray-400">
-                        <button onClick={() => copyMessage(msg.content)} className="hover:text-gray-600 transition">
-                          <Copy size={19} />
-                        </button>
-                        <button onClick={() => toggleFavorite(msg)} className="hover:text-amber-500 transition">
-                          <Star size={19} className={favorites.some(f => f.content === msg.content) ? "fill-amber-500 text-amber-500" : ""} />
-                        </button>
-                      </div>
+                      <button 
+                        onClick={() => copyMessage(msg.content)}
+                        className="mt-4 text-gray-400 hover:text-gray-600 transition"
+                      >
+                        <Copy size={19} />
+                      </button>
                     )}
                   </div>
                 </div>
@@ -168,7 +146,7 @@ const AIAgent = () => {
                   <div className="bg-white border border-gray-200 px-7 py-5 rounded-3xl max-w-[75%] shadow">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                      <span className="font-medium text-gray-700">Thinking...</span>
+                      <span className="font-medium text-gray-700">Claude is thinking...</span>
                     </div>
                     <div className="pl-8 space-y-2 text-sm text-gray-600">
                       {thinkingSteps.map((step, i) => (
@@ -189,7 +167,7 @@ const AIAgent = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
-                  placeholder="Ask me anything... I can help with prompts, coding, ideas, explanations & more"
+                  placeholder="Ask me anything..."
                   className="flex-1 px-6 py-5 bg-zinc-100 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg placeholder-gray-500"
                 />
                 <button
