@@ -1,43 +1,60 @@
 // src/pages/AIAgent.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Send, RefreshCw, Copy, Star, Brain } from "lucide-react";
+import { Helmet } from "react-helmet-async";
+import { ArrowLeft, Send, RefreshCw, Copy, Star, Trash2 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Helmet } from "react-helmet";
 
 const AIAgent = () => {
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem("aiAgentChatHistory");
     return saved
       ? JSON.parse(saved)
-      : [{ role: "assistant", content: "Hello! 👋 I'm your AI Agent powered by Groq + Llama 3.3. Ask me anything!" }];
+      : [{
+          role: "assistant",
+          content: "Hello! I'm your AI Agent, powered by Groq and Llama 3.1.\n\nI can assist with creative writing, coding, prompt engineering, research, problem-solving, and much more.\n\nHow can I help you today?"
+        }];
   });
 
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [thinkingSteps, setThinkingSteps] = useState([]);
   const [favorites, setFavorites] = useState(() => {
-    const savedFav = localStorage.getItem("aiAgentFavorites");
-    return savedFav ? JSON.parse(savedFav) : [];
+    const saved = localStorage.getItem("aiAgentFavorites");
+    return saved ? JSON.parse(saved) : [];
   });
-  const [copiedIndex, setCopiedIndex] = useState(-1);
 
   const messagesEndRef = useRef(null);
 
+  // Auto-scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, thinkingSteps]);
 
-  useEffect(() => localStorage.setItem("aiAgentChatHistory", JSON.stringify(messages)), [messages]);
-  useEffect(() => localStorage.setItem("aiAgentFavorites", JSON.stringify(favorites)), [favorites]);
+  // Persist chat history
+  useEffect(() => {
+    localStorage.setItem("aiAgentChatHistory", JSON.stringify(messages));
+  }, [messages]);
+
+  // Persist favorites
+  useEffect(() => {
+    localStorage.setItem("aiAgentFavorites", JSON.stringify(favorites));
+  }, [favorites]);
 
   const simulateThinking = async () => {
     setIsThinking(true);
     setThinkingSteps([]);
-    const steps = ["Reading your message...", "Understanding context...", "Planning best response...", "Generating detailed answer..."];
+
+    const steps = [
+      "Analyzing your request...",
+      "Recalling conversation context...",
+      "Formulating structured response...",
+      "Refining for clarity and accuracy..."
+    ];
+
     for (const step of steps) {
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 650));
       setThinkingSteps(prev => [...prev, step]);
     }
     setIsThinking(false);
@@ -45,8 +62,10 @@ const AIAgent = () => {
 
   const sendMessage = async () => {
     if (!input.trim() || isThinking) return;
-    const userMsg = { role: "user", content: input.trim() };
-    const updatedMessages = [...messages, userMsg];
+
+    const userMessage = { role: "user", content: input.trim() };
+    const updatedMessages = [...messages, userMessage];
+
     setMessages(updatedMessages);
     setInput("");
     await simulateThinking();
@@ -58,93 +77,85 @@ const AIAgent = () => {
         body: JSON.stringify({ messages: updatedMessages }),
       });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || "Server error");
-      }
+      if (!res.ok) throw new Error("Request failed");
 
       const data = await res.json();
-      if (!data?.role || !data?.content) throw new Error("Invalid response from Groq API");
       setMessages(prev => [...prev, data]);
-    } catch (err) {
-      console.error("Chat error:", err);
-      setMessages(prev => [...prev, { role: "assistant", content: "⚠️ Couldn't connect right now. Possible reasons: Internet, rate limit, or API key issue." }]);
+    } catch (error) {
+      console.error(error);
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        content: "I'm sorry, I couldn't connect to Groq right now. Please try again in a moment."
+      }]);
     }
   };
 
-  const copyMsg = (content, index) => {
+  const copyMessage = (content) => {
     navigator.clipboard.writeText(content);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(-1), 2000);
   };
 
-  const favoriteMsg = (msg) => {
-    if (favorites.some(f => f.content === msg.content)) return;
-    setFavorites([...favorites, msg]);
+  const toggleFavorite = (msg) => {
+    if (favorites.some(f => f.content === msg.content)) {
+      setFavorites(favorites.filter(f => f.content !== msg.content));
+    } else {
+      setFavorites([...favorites, msg]);
+    }
   };
 
-  const newChat = () => {
-    setMessages([{ role: "assistant", content: "New chat started! 👋 Ask me anything." }]);
-    localStorage.removeItem("aiAgentChatHistory");
+  const clearChat = () => {
+    if (window.confirm("Start a new chat? Current conversation will be cleared.")) {
+      setMessages([{
+        role: "assistant",
+        content: "New conversation started. How can I assist you today?"
+      }]);
+      localStorage.removeItem("aiAgentChatHistory");
+    }
   };
 
   return (
     <>
       <Helmet>
-        <title>AI Chatbot – GeneratorPromptAI | Groq + Llama 3.3</title>
-        <meta
-          name="description"
-          content="Chat with the AI Agent at GeneratorPromptAI, powered by Groq and Llama 3.3. Get instant answers, creative prompts, and content ideas for ChatGPT, MidJourney, and more."
-        />
-        <meta name="robots" content="index, follow" />
-
-        {/* Open Graph / Social Sharing */}
-        <meta property="og:title" content="AI Chatbot – GeneratorPromptAI | Groq + Llama 3.3" />
-        <meta
-          property="og:description"
-          content="Chat with the AI Agent at GeneratorPromptAI, powered by Groq and Llama 3.3. Get instant answers, creative prompts, and content ideas for ChatGPT, MidJourney, and more."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://generatorpromptai.com/ai-agent" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AI Chatbot – GeneratorPromptAI | Groq + Llama 3.3" />
-        <meta
-          name="twitter:description"
-          content="Chat with the AI Agent at GeneratorPromptAI, powered by Groq and Llama 3.3. Get instant answers, creative prompts, and content ideas for ChatGPT, MidJourney, and more."
-        />
-
-        {/* Canonical URL */}
+        <title>AI Agent • Groq + Llama 3.1 — GeneratorPromptAI</title>
+        <meta name="description" content="Chat with a fast and intelligent AI Agent powered by Groq and Llama 3.1. Get helpful, accurate, and detailed responses instantly." />
+        <meta name="keywords" content="ai agent, groq ai, llama 3.1, ai chatbot, free ai chat, intelligent assistant" />
         <link rel="canonical" href="https://generatorpromptai.com/ai-agent" />
       </Helmet>
-      <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 text-gray-700 hover:text-indigo-600 transition-colors duration-200">
-            <ArrowLeft size={24} /> Back to Home
-          </Link>
-          <button onClick={newChat} className="px-5 py-2.5 bg-white shadow-md hover:shadow-lg rounded-xl flex items-center gap-2 transition-all duration-200">
-            <RefreshCw size={18} /> New Chat
-          </button>
-        </div>
 
-        <div className="max-w-5xl mx-auto px-4 pb-16">
-          <div className="bg-white/95 rounded-3xl shadow-2xl border overflow-hidden h-[80vh] flex flex-col">
-            <div className="flex-1 p-6 overflow-y-auto space-y-6">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div
-                    className={`max-w-[80%] px-6 py-4 rounded-3xl relative break-words shadow ${msg.role === "user" ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:scale-105 transform transition" : "bg-white text-gray-900 border border-gray-200 hover:scale-105 transform transition"}`}
-                  >
+      <Navbar />
+
+      <div className="min-h-screen bg-zinc-50">
+        <div className="max-w-5xl mx-auto px-4 py-6">
+          <div className="flex justify-between items-center mb-8">
+            <Link to="/" className="flex items-center gap-3 text-gray-600 hover:text-indigo-600 transition">
+              <ArrowLeft size={24} /> Back to Home
+            </Link>
+
+            <button
+              onClick={clearChat}
+              className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-2xl transition"
+            >
+              <Trash2 size={20} /> New Chat
+            </button>
+          </div>
+
+          {/* Chat Window */}
+          <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden h-[78vh] flex flex-col">
+            {/* Messages */}
+            <div className="flex-1 p-8 overflow-y-auto space-y-9 bg-zinc-50">
+              {messages.map((msg, index) => (
+                <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div className={`max-w-[82%] px-7 py-5 rounded-3xl text-[17px] leading-relaxed shadow-sm ${msg.role === "user"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-white border border-gray-200 text-gray-800"}`}>
                     {msg.content}
+
                     {msg.role === "assistant" && (
-                      <div className="absolute -bottom-8 right-2 flex gap-2">
-                        <button onClick={() => copyMsg(msg.content, i)} title="Copy">
-                          <Copy size={16} className="text-gray-500 hover:text-gray-700 transition-colors" />
+                      <div className="flex gap-4 mt-5 text-gray-400">
+                        <button onClick={() => copyMessage(msg.content)} className="hover:text-gray-600 transition">
+                          <Copy size={19} />
                         </button>
-                        <button onClick={() => favoriteMsg(msg)} title="Add to Favorites">
-                          <Star size={16} className="text-yellow-400 hover:text-yellow-500 transition-colors" />
+                        <button onClick={() => toggleFavorite(msg)} className="hover:text-amber-500 transition">
+                          <Star size={19} className={favorites.some(f => f.content === msg.content) ? "fill-amber-500 text-amber-500" : ""} />
                         </button>
                       </div>
                     )}
@@ -154,15 +165,14 @@ const AIAgent = () => {
 
               {isThinking && (
                 <div className="flex justify-start">
-                  <div className="bg-indigo-50 px-7 py-5 rounded-3xl max-w-[80%] shadow-md animate-pulse">
-                    <div className="flex items-center gap-4 mb-2">
-                      <Brain size={28} className="text-indigo-600 animate-pulse" /> Thinking...
+                  <div className="bg-white border border-gray-200 px-7 py-5 rounded-3xl max-w-[75%] shadow">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                      <span className="font-medium text-gray-700">Thinking...</span>
                     </div>
-                    <div className="space-y-2 pl-4">
+                    <div className="pl-8 space-y-2 text-sm text-gray-600">
                       {thinkingSteps.map((step, i) => (
-                        <div key={i} className="flex items-center gap-2 text-gray-700">
-                          <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" /> {step}
-                        </div>
+                        <div key={i}>• {step}</div>
                       ))}
                     </div>
                   </div>
@@ -172,25 +182,31 @@ const AIAgent = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-6 border-t border-gray-200 bg-white/80 flex gap-4">
-              <input
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
-                placeholder="Type your message..."
-                className="flex-1 px-6 py-5 bg-gray-100/80 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
-              />
-              <button
-                onClick={sendMessage}
-                disabled={isThinking || !input.trim()}
-                className={`px-8 py-5 rounded-3xl flex items-center justify-center ${isThinking || !input.trim() ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:scale-105 transform transition"}`}
-              >
-                {isThinking ? <RefreshCw size={22} className="animate-spin" /> : <Send size={22} />}
-              </button>
+            {/* Input Area */}
+            <div className="p-6 border-t bg-white">
+              <div className="flex gap-4">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
+                  placeholder="Ask me anything... I can help with prompts, coding, ideas, explanations & more"
+                  className="flex-1 px-6 py-5 bg-zinc-100 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg placeholder-gray-500"
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={isThinking || !input.trim()}
+                  className={`px-8 py-5 rounded-3xl flex items-center justify-center transition-all ${isThinking || !input.trim()
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg"}`}
+                >
+                  {isThinking ? <RefreshCw size={26} className="animate-spin" /> : <Send size={26} />}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </>
   );
