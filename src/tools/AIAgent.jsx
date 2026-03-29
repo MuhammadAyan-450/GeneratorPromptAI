@@ -12,9 +12,9 @@ const AIAgent = () => {
     return saved
       ? JSON.parse(saved)
       : [{
-          role: "assistant",
-          content: "Hello! I'm your AI Agent powered by Claude Sonnet 4.6.\n\nI'm here to help with creative writing, coding, prompt engineering, explanations, brainstorming, and much more.\n\nHow can I assist you today?"
-        }];
+        role: "assistant",
+        content: "Hello! I'm your AI Agent powered by Claude Sonnet 4.6.\n\nI'm here to help with creative writing, coding, prompt engineering, explanations, brainstorming, and much more.\n\nHow can I assist you today?"
+      }];
   });
 
   const [input, setInput] = useState("");
@@ -58,24 +58,37 @@ const AIAgent = () => {
     await simulateThinking();
 
     try {
-      // Claude via Puter.ai (works best on Vercel live domain)
       const response = await puter.ai.chat(input.trim(), {
         model: "claude-sonnet-4-6",
         stream: false
       });
 
-      const aiReply = {
-        role: "assistant",
-        content: response?.text || "I received a response but it was empty. Please try again."
-      };
+      console.log("Full Puter Response:", response); // For debugging
 
-      setMessages(prev => [...prev, aiReply]);
-    } catch (error) {
-      console.error("Claude API Error:", error);
+      // Improved response extraction
+      let replyText = "";
+
+      if (response && typeof response === "object") {
+        replyText = response.text || response.content || response.message || JSON.stringify(response);
+      } else if (typeof response === "string") {
+        replyText = response;
+      }
+
+      if (!replyText || replyText.trim() === "") {
+        replyText = "Claude returned an empty response. This sometimes happens. Please try again with a different question.";
+      }
 
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "Sorry, I couldn't connect to Claude right now.\n\nThis can happen due to network issues or rate limits. Please try again in a moment."
+        content: replyText
+      }]);
+
+    } catch (error) {
+      console.error("Claude Error:", error);
+
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        content: "Sorry, I couldn't get a response from Claude right now. Please try again in a moment."
       }]);
     }
   };
@@ -130,7 +143,7 @@ const AIAgent = () => {
                     {msg.content}
 
                     {msg.role === "assistant" && (
-                      <button 
+                      <button
                         onClick={() => copyMessage(msg.content)}
                         className="mt-4 text-gray-400 hover:text-gray-600 transition"
                       >
