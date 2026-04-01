@@ -1,5 +1,15 @@
 {
+  "redirects": [
+    {
+      "source": "/tools/:path*/",
+      "destination": "/tools/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }
