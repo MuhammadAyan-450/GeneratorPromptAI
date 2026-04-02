@@ -4,6 +4,11 @@
       "source": "/tools/:path*/",
       "destination": "/tools/:path*",
       "permanent": true
+    },
+    {
+      "source": "/:path*/",
+      "destination": "/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
