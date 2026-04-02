@@ -1,15 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/tools/:path*",
-      "destination": "/tools/:path*",
+      "source": "https://www.generatorpromptai.com/:path*",
+      "destination": "https://generatorpromptai.com/:path*",
       "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
     }
   ]
 }
