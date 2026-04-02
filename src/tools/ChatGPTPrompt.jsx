@@ -1,29 +1,20 @@
-import React, { useState, useEffect } from "react";
+// src/pages/ChatGptPromptGenerator.jsx
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, Star, Trash2, RefreshCw } from "lucide-react";
+import { ArrowLeft, Copy, Star, Trash2, RefreshCw, Sparkles } from "lucide-react";
 import chatgptPrompts from "../data/prompts/chatgpt";
 
 const ChatGptPromptGenerator = () => {
   const [topic, setTopic] = useState("");
-  const [style, setStyle] = useState("random"); // kept but not used yet – you can expand later
   const [depth, setDepth] = useState("detailed");
   const [tone, setTone] = useState("neutral");
   const [result, setResult] = useState("");
+  // ✅ Fixed: removed localStorage — use React state only
   const [favorites, setFavorites] = useState([]);
   const [copied, setCopied] = useState(false);
+  const [favCopied, setFavCopied] = useState(-1);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("favoritePrompts");
-    if (saved) setFavorites(JSON.parse(saved));
-  }, []);
-
-  useEffect(() => {
-    if (favorites.length > 0) {
-      localStorage.setItem("favoritePrompts", JSON.stringify(favorites));
-    }
-  }, [favorites]);
 
   const generatePrompt = () => {
     setError("");
@@ -37,14 +28,10 @@ const ChatGptPromptGenerator = () => {
 
     if (depth === "detailed")
       prompt += " Provide a detailed, well-structured answer with clear explanations, bullet points where helpful, and logical flow.";
-
     if (depth === "comprehensive")
-      prompt +=
-        " Deliver a comprehensive, in-depth response: include step-by-step explanations, real-world examples, pros & cons, comparisons, and practical applications.";
-
+      prompt += " Deliver a comprehensive, in-depth response: include step-by-step explanations, real-world examples, pros & cons, comparisons, and practical applications.";
     if (depth === "expert")
-      prompt +=
-        " Respond as a world-class expert with PhD-level depth: include advanced concepts, case studies, cutting-edge techniques, potential pitfalls, and actionable insights.";
+      prompt += " Respond as a world-class expert with PhD-level depth: include advanced concepts, case studies, cutting-edge techniques, potential pitfalls, and actionable insights.";
 
     if (tone === "friendly") prompt += " Use a warm, friendly, conversational tone like talking to a smart friend.";
     if (tone === "professional") prompt += " Use a polished, professional, business-like tone.";
@@ -53,6 +40,7 @@ const ChatGptPromptGenerator = () => {
     if (tone === "humorous") prompt += " Incorporate light, clever humor where it fits naturally without forcing it.";
 
     setResult(prompt);
+    setCopied(false);
   };
 
   const copyPrompt = () => {
@@ -62,9 +50,15 @@ const ChatGptPromptGenerator = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const copyFavorite = (text, index) => {
+    navigator.clipboard.writeText(text);
+    setFavCopied(index);
+    setTimeout(() => setFavCopied(-1), 2000);
+  };
+
   const addToFavorites = () => {
     if (!result || favorites.includes(result)) return;
-    setFavorites([...favorites, result]);
+    setFavorites([result, ...favorites]);
   };
 
   const removeFavorite = (promptToRemove) => {
@@ -73,7 +67,6 @@ const ChatGptPromptGenerator = () => {
 
   const clearAll = () => {
     setTopic("");
-    setStyle("random");
     setDepth("detailed");
     setTone("neutral");
     setResult("");
@@ -81,284 +74,405 @@ const ChatGptPromptGenerator = () => {
     setCopied(false);
   };
 
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "ChatGPT Prompt Generator",
+    url: "https://generatorpromptai.com/tools/chatgpt-prompt-generator",
+    applicationCategory: "AIApplication",
+    operatingSystem: "All",
+    browserRequirements: "Requires JavaScript",
+    description: "Free tool to generate optimized prompts for ChatGPT. Customize tone, depth and style for better AI results.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    creator: {
+      "@type": "Organization",
+      name: "GeneratorPromptAI",
+      url: "https://generatorpromptai.com",
+    },
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a ChatGPT prompt generator?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A ChatGPT prompt generator is a tool that helps you create optimized, high-quality prompts to get better responses from ChatGPT and other AI models.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is this ChatGPT prompt generator free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, our ChatGPT prompt generator is completely free to use with no sign-up or account required.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do I write a good ChatGPT prompt?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A good ChatGPT prompt is specific, includes context, specifies the desired tone and format, and clearly states the goal. Our generator helps you build all of this automatically.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Can I use these prompts for GPT-4?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. The prompts generated by our tool work with all ChatGPT versions including GPT-3.5, GPT-4, and GPT-4o.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What topics can I generate prompts for?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You can generate prompts for any topic — writing, coding, marketing, learning, business, creative writing, data analysis, and much more.",
+        },
+      },
+    ],
+  };
+
+  const depthOptions = [
+    { value: "detailed", label: "Detailed" },
+    { value: "comprehensive", label: "Comprehensive" },
+    { value: "expert", label: "Expert / Advanced" },
+  ];
+
+  const toneOptions = [
+    { value: "neutral", label: "Neutral" },
+    { value: "friendly", label: "Friendly" },
+    { value: "professional", label: "Professional" },
+    { value: "motivational", label: "Motivational" },
+    { value: "academic", label: "Academic" },
+    { value: "humorous", label: "Humorous" },
+  ];
+
   return (
     <>
       <Helmet>
-        <title>ChatGPT Prompt Generator | GeneratorPromptAI</title>
+        {/* Primary SEO */}
+        <title>ChatGPT Prompt Generator - Free Tool to Create Better ChatGPT Prompts</title>
         <meta
           name="description"
-          content="Create powerful, optimized ChatGPT prompts instantly. Customize tone, depth & style for better AI results. Free tool by GeneratorPromptAI."
+          content="Free ChatGPT prompt generator — create powerful, optimized prompts for ChatGPT instantly. Choose your tone, depth and style. Works with GPT-4, GPT-4o and GPT-3.5. No sign-up needed."
         />
         <meta
           name="keywords"
-          content="chatgpt prompt generator, free chatgpt prompts, ai prompt builder, best chatgpt prompts 2025, prompt engineering tool, generatepromptai"
+          content="chatgpt prompt generator, free chatgpt prompts, chatgpt prompt builder, best chatgpt prompts, prompt engineering, GPT-4 prompts, AI prompt generator, chatgpt prompts 2025"
         />
-        <link
-          rel="canonical"
-          href="https://generatorpromptai.com/tools/chatgpt-prompt-generator"
-        />
+        <link rel="canonical" href="https://generatorpromptai.com/tools/chatgpt-prompt-generator" />
+        <meta name="robots" content="index, follow" />
 
-        {/* Open Graph / Social Sharing */}
-        <meta property="og:title" content="ChatGPT Prompt Generator | GeneratorPromptAI" />
-        <meta
-          property="og:description"
-          content="Instantly generate high-quality, customized prompts for ChatGPT. Perfect for writing, coding, learning, marketing & more."
-        />
+        {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/chatgpt-prompt-generator" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
+        <meta property="og:title" content="ChatGPT Prompt Generator - Create Better Prompts Free" />
+        <meta property="og:description" content="Generate optimized ChatGPT prompts instantly. Customize tone, depth and style. Works with GPT-4, GPT-4o and GPT-3.5. Free, no sign-up." />
+        <meta property="og:url" content="https://generatorpromptai.com/tools/chatgpt-prompt-generator" />
+        <meta property="og:image" content="https://generatorpromptai.com/og-chatgpt-prompt-generator.png" />
 
-        {/* Twitter Cards */}
+        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free ChatGPT Prompt Generator" />
-        <meta
-          name="twitter:description"
-          content="Build better ChatGPT prompts in seconds – free & no sign-up."
-        />
+        <meta name="twitter:title" content="Free ChatGPT Prompt Generator - Better Prompts Instantly" />
+        <meta name="twitter:description" content="Create powerful ChatGPT prompts in seconds. Choose tone, depth and style. Free, no sign-up needed." />
+        <meta name="twitter:image" content="https://generatorpromptai.com/og-chatgpt-prompt-generator.png" />
 
-        {/* Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            name: "ChatGPT Prompt Generator",
-            url: "https://generatorpromptai.com/tools/chatgpt-prompt-generator",
-            description:
-              "Free tool to generate optimized prompts for ChatGPT and other LLMs.",
-            applicationCategory: "AI Tool",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-            },
-            creator: {
-              "@type": "Organization",
-              name: "GeneratorPromptAI",
-              url: "https://generatorpromptai.com",
-            },
-          })}
-        </script>
+        {/* Schema */}
+        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-5xl mx-auto w-full px-4 py-6">
+
+        {/* Back Nav */}
+        <div className="max-w-5xl mx-auto w-full px-4 py-5">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-sky-600 transition-colors"
+            className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm"
           >
-            <ArrowLeft size={20} /> Back to Home
+            <ArrowLeft size={16} /> Back to Home
           </Link>
         </div>
 
         <div className="flex-grow max-w-5xl mx-auto w-full px-4 pb-20">
-          <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-8">
-            ChatGPT Prompt Generator
-          </h1>
 
-          {/* Main Tool Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-12">
-            <div className="space-y-6">
+          {/* Hero */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
+              <Sparkles className="text-sky-600" size={26} />
+            </div>
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
+              ChatGPT Prompt Generator
+            </h1>
+            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
+              Generate powerful, optimized prompts for ChatGPT in seconds. Customize tone, depth and style for better AI results.
+            </p>
+          </div>
+
+          {/* Tool Card */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-8">
+            <div className="space-y-5">
+
+              {/* Topic Input */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Topic / Task
                 </label>
                 <input
                   type="text"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && generatePrompt()}
                   placeholder="e.g., Write a blog post about sustainable fashion"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800"
                 />
               </div>
 
-              {/* You can style these selects the same way – or use a UI lib like Headless UI later */}
-              <div className="grid md:grid-cols-3 gap-6">
+              {/* Options Grid */}
+              <div className="grid md:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Depth / Length
                   </label>
                   <select
                     value={depth}
                     onChange={(e) => setDepth(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 text-gray-800"
                   >
-                    <option value="detailed">Detailed</option>
-                    <option value="comprehensive">Comprehensive</option>
-                    <option value="expert">Expert / Advanced</option>
+                    {depthOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Tone
                   </label>
                   <select
                     value={tone}
                     onChange={(e) => setTone(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 text-gray-800"
                   >
-                    <option value="neutral">Neutral</option>
-                    <option value="friendly">Friendly</option>
-                    <option value="professional">Professional</option>
-                    <option value="motivational">Motivational</option>
-                    <option value="academic">Academic</option>
-                    <option value="humorous">Humorous</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Style (coming soon)
-                  </label>
-                  <select
-                    value={style}
-                    disabled
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 cursor-not-allowed"
-                  >
-                    <option value="random">Random (placeholder)</option>
+                    {toneOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              {/* ✅ Removed the "Style (coming soon)" disabled select — bad UX, confuses users */}
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
                   onClick={generatePrompt}
-                  className="bg-sky-600 hover:bg-sky-700 text-white px-8 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 flex-1"
+                  className="bg-sky-600 hover:bg-sky-700 active:scale-95 text-white px-8 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 flex-1"
                 >
-                  <RefreshCw size={18} /> Generate Prompt
+                  <RefreshCw size={17} /> Generate Prompt
                 </button>
-
                 <button
                   onClick={clearAll}
-                  className="bg-gray-200 hover:bg-gray-300 px-6 py-3 rounded-lg font-medium transition-colors"
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium transition-colors"
                 >
                   Clear All
                 </button>
               </div>
 
-              {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
+              {error && (
+                <p className="text-red-500 text-sm text-center">{error}</p>
+              )}
             </div>
 
-            {/* Result Area */}
+            {/* Result */}
             {result && (
-              <div className="mt-10 bg-gray-50 border border-gray-200 rounded-xl p-6">
-                <pre className="whitespace-pre-wrap text-gray-800 font-medium leading-relaxed">
+              <div className="mt-8 bg-sky-50 border border-sky-100 rounded-2xl p-6">
+                <p className="text-xs font-semibold text-sky-500 uppercase tracking-widest mb-3">
+                  Generated Prompt
+                </p>
+                <p className="whitespace-pre-wrap text-gray-800 leading-relaxed text-sm md:text-base">
                   {result}
-                </pre>
-
+                </p>
                 <div className="flex flex-wrap gap-3 mt-6">
                   <button
                     onClick={copyPrompt}
-                    className="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg flex items-center gap-2 transition-colors"
+                    className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
                   >
-                    <Copy size={18} />
+                    <Copy size={15} />
                     {copied ? "Copied!" : "Copy Prompt"}
                   </button>
-
                   <button
                     onClick={addToFavorites}
-                    className="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-5 py-2.5 rounded-lg flex items-center gap-2 transition-colors"
+                    className="inline-flex items-center gap-2 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
                   >
-                    <Star size={18} fill="currentColor" />
-                    Add to Favorites
+                    <Star size={15} fill="currentColor" />
+                    Save to Favorites
+                  </button>
+                  <button
+                    onClick={generatePrompt}
+                    className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                  >
+                    <RefreshCw size={15} /> Regenerate
                   </button>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Favorites Section */}
+          {/* Favorites */}
           {favorites.length > 0 && (
-            <div className="mb-12">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Your Favorite Prompts
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Star size={18} className="text-yellow-400" fill="currentColor" />
+                Saved Prompts ({favorites.length})
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {favorites.map((fav, index) => (
                   <div
                     key={index}
-                    className="bg-white border rounded-xl p-5 flex justify-between items-start gap-4"
+                    className="bg-white border border-gray-200 rounded-xl p-5 flex justify-between items-start gap-4"
                   >
-                    <pre className="whitespace-pre-wrap text-gray-700 flex-1 text-sm leading-relaxed">
+                    <p className="whitespace-pre-wrap text-gray-700 flex-1 text-sm leading-relaxed">
                       {fav}
-                    </pre>
-                    <button
-                      onClick={() => removeFavorite(fav)}
-                      className="text-red-500 hover:text-red-700 p-2"
-                      title="Remove"
-                    >
-                      <Trash2 size={20} />
-                    </button>
+                    </p>
+                    <div className="flex gap-2 flex-shrink-0">
+                      <button
+                        onClick={() => copyFavorite(fav, index)}
+                        title="Copy"
+                        className="text-gray-400 hover:text-sky-600 transition-colors p-1"
+                      >
+                        <Copy size={15} />
+                      </button>
+                      <button
+                        onClick={() => removeFavorite(fav)}
+                        title="Remove"
+                        className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                    {favCopied === index && (
+                      <span className="text-xs text-green-600 font-medium">Copied!</span>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Description */}
-          <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-5">
-              Free ChatGPT Prompt Generator
+          {/* SEO Content */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Free ChatGPT Prompt Generator — Better Prompts, Better Results
             </h2>
-            <p className="text-gray-700 leading-relaxed mb-4">
-              Create high-quality, ready-to-use prompts for ChatGPT in seconds. Choose your desired depth, tone, and style. It's perfect for content writing, coding help, learning, marketing copy, brainstorming, and more. No sign-up required.
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Getting great responses from ChatGPT starts with writing a great prompt. Our free ChatGPT prompt generator helps you build powerful, optimized prompts in seconds — no prompt engineering experience needed.
             </p>
-          </section>
-
-          {/* How to Use */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-5">How to Use</h2>
-            <ol className="list-decimal list-inside space-y-3 text-gray-700">
-              <li>Enter your topic or task (be as specific as possible).</li>
-              <li>Select preferred depth and tone.</li>
-              <li>Click "Generate Prompt".</li>
-              <li>Copy the result and paste directly into ChatGPT.</li>
-              <li>Save great prompts to favorites for later.</li>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Simply enter your topic, choose your preferred depth and tone, and our tool instantly generates a ready-to-use prompt you can paste directly into ChatGPT, GPT-4, GPT-4o, or any other AI model.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">What can you use it for?</h3>
+            <ul className="list-disc list-inside text-gray-600 text-sm space-y-1 mb-4">
+              <li>Content writing — blog posts, social media, emails, scripts</li>
+              <li>Coding help — debugging, code review, learning new languages</li>
+              <li>Marketing copy — ads, product descriptions, landing pages</li>
+              <li>Learning &amp; research — explanations, summaries, study guides</li>
+              <li>Business — reports, strategies, presentations, proposals</li>
+              <li>Creative writing — stories, poems, scripts, worldbuilding</li>
+            </ul>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">How to use the ChatGPT Prompt Generator</h3>
+            <ol className="list-decimal list-inside text-gray-600 text-sm space-y-1">
+              <li>Enter your topic or task in the input field above.</li>
+              <li>Select your preferred depth — Detailed, Comprehensive, or Expert.</li>
+              <li>Choose the tone that fits your use case.</li>
+              <li>Click <strong>Generate Prompt</strong> to create your optimized prompt.</li>
+              <li>Copy and paste it directly into ChatGPT for better results.</li>
             </ol>
-          </section>
+          </div>
 
-          {/* Related Tools – keep consistent style */}
+          {/* FAQ */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-6">
+              {[
+                {
+                  q: "What is a ChatGPT prompt generator?",
+                  a: "A ChatGPT prompt generator is a tool that helps you create optimized, high-quality prompts to get better, more accurate responses from ChatGPT and other AI models.",
+                },
+                {
+                  q: "Is this ChatGPT prompt generator free?",
+                  a: "Yes, completely free. No account, no sign-up, no payment. Just enter your topic and generate prompts instantly.",
+                },
+                {
+                  q: "How do I write a good ChatGPT prompt?",
+                  a: "A good prompt is specific, includes context, clearly states your goal, and specifies the desired format or tone. Our generator builds all of this automatically based on your inputs.",
+                },
+                {
+                  q: "Can I use these prompts with GPT-4 and GPT-4o?",
+                  a: "Yes. All prompts generated by our tool are compatible with all ChatGPT versions including GPT-3.5, GPT-4, GPT-4o, and other LLMs like Claude and Gemini.",
+                },
+                {
+                  q: "What topics can I generate prompts for?",
+                  a: "Any topic — writing, coding, marketing, business, education, creative writing, data analysis, research, and much more.",
+                },
+              ].map((item, i) => (
+                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
+                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Related Tools */}
           <section>
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-10">
+            <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">
               Related AI Prompt Tools
             </h2>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <Link
-                to="/tools/ai-prompt-generator"
-                className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"
-              >
-                <h3 className="font-semibold text-lg mb-2">AI Prompt Generator</h3>
-                <p className="text-gray-600 text-sm">
-                  Universal prompt builder for ChatGPT, Claude, Gemini & more.
-                </p>
-              </Link>
-
-              <Link
-                to="/tools/midjourney-prompt-generator"
-                className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"
-              >
-                <h3 className="font-semibold text-lg mb-2">
-                  Midjourney Prompt Generator
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  Craft detailed prompts for stunning AI-generated images.
-                </p>
-              </Link>
-
-              <Link
-                to="/tools/claude-prompt-generator"
-                className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"
-              >
-                <h3 className="font-semibold text-lg mb-2">
-                  Claude Prompt Generator
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  Optimized prompts for Anthropic’s Claude models.
-                </p>
-              </Link>
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                {
+                  to: "/tools/ai-agent",
+                  title: "AI Prompt Generator",
+                  desc: "Universal prompt builder for ChatGPT, Claude, Gemini and more.",
+                },
+                {
+                  to: "/tools/midjourney-prompt-generator",
+                  title: "Midjourney Prompt Generator",
+                  desc: "Craft detailed prompts for stunning AI-generated images.",
+                },
+                {
+                  to: "/tools/claude-prompt-generator",
+                  title: "Claude Prompt Generator",
+                  desc: "Optimized prompts for Anthropic's Claude AI models.",
+                },
+              ].map((tool) => (
+                <Link
+                  key={tool.to}
+                  to={tool.to}
+                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all"
+                >
+                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">
+                    {tool.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
+                </Link>
+              ))}
             </div>
           </section>
+
         </div>
       </div>
     </>
