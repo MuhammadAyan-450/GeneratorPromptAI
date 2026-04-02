@@ -1,7 +1,7 @@
 {
   "redirects": [
     {
-      "source": "/tools/:path*/",
+      "source": "/tools/:path*",
       "destination": "/tools/:path*",
       "permanent": true
     }
