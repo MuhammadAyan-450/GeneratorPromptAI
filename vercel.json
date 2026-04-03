@@ -1,13 +1,15 @@
 {
   "redirects": [
     {
-      "source": "https://www.generatorpromptai.com/:path*",
-      "destination": "https://generatorpromptai.com/:path*",
+      "source": "/tools/:path*/",
+      "destination": "/tools/:path*",
       "permanent": true
     }
   ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }

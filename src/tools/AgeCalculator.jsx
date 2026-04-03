@@ -98,7 +98,7 @@ const AgeCalculator = () => {
     "@type": "WebApplication",
     name: "Age Calculator",
     url: "https://generatorpromptai.com/tools/age-calculator",
-    applicationCategory: "UtilitiesApplication",
+    applicationCategory: "AIApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     creator: {

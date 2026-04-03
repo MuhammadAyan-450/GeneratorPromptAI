@@ -6,47 +6,47 @@ import { ArrowLeft, Copy, RefreshCw, Star, Trash2, Sparkles, ExternalLink } from
 import claudePrompts from "../data/prompts/claude";
 
 const USE_CASES = [
-  { value: "general",   label: "🧠 General",        hint: "Any topic or task" },
-  { value: "coding",    label: "💻 Coding",          hint: "Debug, write, explain code" },
-  { value: "writing",   label: "✍️ Writing",         hint: "Blog, email, copy, scripts" },
-  { value: "analysis",  label: "📊 Analysis",        hint: "Research, summarize, evaluate" },
-  { value: "creative",  label: "🎨 Creative",        hint: "Ideas, stories, brainstorming" },
-  { value: "business",  label: "💼 Business",        hint: "Strategy, reports, proposals" },
+  { value: "general", label: "🧠 General", hint: "Any topic or task" },
+  { value: "coding", label: "💻 Coding", hint: "Debug, write, explain code" },
+  { value: "writing", label: "✍️ Writing", hint: "Blog, email, copy, scripts" },
+  { value: "analysis", label: "📊 Analysis", hint: "Research, summarize, evaluate" },
+  { value: "creative", label: "🎨 Creative", hint: "Ideas, stories, brainstorming" },
+  { value: "business", label: "💼 Business", hint: "Strategy, reports, proposals" },
 ];
 
 const DEPTH_OPTIONS = [
-  { value: "detailed",       label: "Detailed",         desc: "Clear & well-structured" },
-  { value: "comprehensive",  label: "Comprehensive",    desc: "In-depth with examples" },
-  { value: "expert",         label: "Expert",           desc: "PhD-level advanced insights" },
+  { value: "detailed", label: "Detailed", desc: "Clear & well-structured" },
+  { value: "comprehensive", label: "Comprehensive", desc: "In-depth with examples" },
+  { value: "expert", label: "Expert", desc: "PhD-level advanced insights" },
 ];
 
 const TONE_OPTIONS = [
-  { value: "neutral",       label: "Neutral" },
-  { value: "friendly",      label: "Friendly" },
-  { value: "professional",  label: "Professional" },
-  { value: "academic",      label: "Academic" },
+  { value: "neutral", label: "Neutral" },
+  { value: "friendly", label: "Friendly" },
+  { value: "professional", label: "Professional" },
+  { value: "academic", label: "Academic" },
 ];
 
 const FORMAT_OPTIONS = [
-  { value: "default",    label: "Default",        desc: "Let Claude decide" },
-  { value: "bullets",    label: "Bullet Points",  desc: "Quick scannable lists" },
-  { value: "steps",      label: "Step-by-Step",   desc: "Numbered instructions" },
-  { value: "table",      label: "Table",          desc: "Structured comparison" },
-  { value: "xml",        label: "XML Tags",        desc: "Claude's native format" },
-  { value: "markdown",   label: "Markdown",       desc: "Headers & formatting" },
+  { value: "default", label: "Default", desc: "Let Claude decide" },
+  { value: "bullets", label: "Bullet Points", desc: "Quick scannable lists" },
+  { value: "steps", label: "Step-by-Step", desc: "Numbered instructions" },
+  { value: "table", label: "Table", desc: "Structured comparison" },
+  { value: "xml", label: "XML Tags", desc: "Claude's native format" },
+  { value: "markdown", label: "Markdown", desc: "Headers & formatting" },
 ];
 
 const ClaudePromptGenerator = () => {
-  const [topic, setTopic]         = useState("");
-  const [useCase, setUseCase]     = useState("general");
-  const [depth, setDepth]         = useState("detailed");
-  const [tone, setTone]           = useState("neutral");
-  const [format, setFormat]       = useState("default");
-  const [result, setResult]       = useState("");
+  const [topic, setTopic] = useState("");
+  const [useCase, setUseCase] = useState("general");
+  const [depth, setDepth] = useState("detailed");
+  const [tone, setTone] = useState("neutral");
+  const [format, setFormat] = useState("default");
+  const [result, setResult] = useState("");
   const [favorites, setFavorites] = useState([]);
-  const [copied, setCopied]       = useState(false);
+  const [copied, setCopied] = useState(false);
   const [favCopied, setFavCopied] = useState(-1);
-  const [error, setError]         = useState("");
+  const [error, setError] = useState("");
 
   const generatePrompt = () => {
     setError("");
@@ -60,8 +60,8 @@ const ClaudePromptGenerator = () => {
 
     // Use case context
     const useCaseMap = {
-      coding:   " You are an expert software engineer. Focus on clean, efficient, well-commented code with error handling and best practices.",
-      writing:  " You are a skilled writer and editor. Focus on clarity, engagement, strong structure, and compelling language.",
+      coding: " You are an expert software engineer. Focus on clean, efficient, well-commented code with error handling and best practices.",
+      writing: " You are a skilled writer and editor. Focus on clarity, engagement, strong structure, and compelling language.",
       analysis: " You are a rigorous analyst. Focus on evidence-based reasoning, key insights, data interpretation, and clear conclusions.",
       creative: " You are a creative director with a bold imagination. Focus on original ideas, unexpected angles, and creative depth.",
       business: " You are a senior business consultant. Focus on strategic thinking, ROI, actionable recommendations, and professional framing.",
@@ -70,27 +70,27 @@ const ClaudePromptGenerator = () => {
 
     // Depth
     const depthMap = {
-      detailed:      " Provide a clear, well-structured, detailed response. Use headings and bullet points where helpful. Be thorough but concise.",
+      detailed: " Provide a clear, well-structured, detailed response. Use headings and bullet points where helpful. Be thorough but concise.",
       comprehensive: " Deliver a comprehensive, in-depth answer with step-by-step reasoning, real-world examples, pros/cons, edge cases, and practical applications.",
-      expert:        " Act as a world-class domain expert. Provide advanced, nuanced insights including relevant frameworks, case studies, potential pitfalls, and actionable strategies. Use precise, professional language.",
+      expert: " Act as a world-class domain expert. Provide advanced, nuanced insights including relevant frameworks, case studies, potential pitfalls, and actionable strategies. Use precise, professional language.",
     };
     prompt += depthMap[depth] || "";
 
     // Tone
     const toneMap = {
-      friendly:     " Use a warm, friendly, conversational tone — like explaining to a trusted colleague.",
+      friendly: " Use a warm, friendly, conversational tone — like explaining to a trusted colleague.",
       professional: " Use a polished, professional, confident tone suitable for business or technical contexts.",
-      academic:     " Use a formal, academic tone with precise terminology and logical structure.",
-      neutral:      " Maintain an objective, neutral, and factual tone throughout.",
+      academic: " Use a formal, academic tone with precise terminology and logical structure.",
+      neutral: " Maintain an objective, neutral, and factual tone throughout.",
     };
     prompt += toneMap[tone] || "";
 
     // Output format
     const formatMap = {
-      bullets:  " Format your entire response using bullet points and concise sub-bullets for clarity.",
-      steps:    " Format your response as clearly numbered steps. Start each step on a new line.",
-      table:    " Where possible, present information in a well-structured markdown table with clear column headers.",
-      xml:      " Structure your response using Claude's native XML tags. Use <thinking> for your reasoning process and <output> for the final answer.",
+      bullets: " Format your entire response using bullet points and concise sub-bullets for clarity.",
+      steps: " Format your response as clearly numbered steps. Start each step on a new line.",
+      table: " Where possible, present information in a well-structured markdown table with clear column headers.",
+      xml: " Structure your response using Claude's native XML tags. Use <thinking> for your reasoning process and <output> for the final answer.",
       markdown: " Format your response using rich markdown: use ## headings, **bold** for key terms, bullet lists, and code blocks where relevant.",
     };
     if (formatMap[format]) prompt += " " + formatMap[format];
@@ -261,11 +261,10 @@ const ClaudePromptGenerator = () => {
                   <button
                     key={uc.value}
                     onClick={() => setUseCase(uc.value)}
-                    className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all ${
-                      useCase === uc.value
+                    className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all ${useCase === uc.value
                         ? "border-orange-400 bg-orange-50 text-orange-700"
                         : "border-gray-200 hover:border-gray-300 text-gray-700"
-                    }`}
+                      }`}
                   >
                     <span className="text-sm font-medium">{uc.label}</span>
                     <span className="text-xs text-gray-400 mt-0.5">{uc.hint}</span>
@@ -283,11 +282,10 @@ const ClaudePromptGenerator = () => {
                     <button
                       key={d.value}
                       onClick={() => setDepth(d.value)}
-                      className={`w-full flex justify-between items-center px-4 py-2.5 rounded-xl border text-sm transition-all ${
-                        depth === d.value
+                      className={`w-full flex justify-between items-center px-4 py-2.5 rounded-xl border text-sm transition-all ${depth === d.value
                           ? "border-orange-400 bg-orange-50 text-orange-700"
                           : "border-gray-200 hover:border-gray-300 text-gray-700"
-                      }`}
+                        }`}
                     >
                       <span className="font-medium">{d.label}</span>
                       <span className="text-xs text-gray-400">{d.desc}</span>
@@ -303,11 +301,10 @@ const ClaudePromptGenerator = () => {
                     <button
                       key={t.value}
                       onClick={() => setTone(t.value)}
-                      className={`w-full text-left px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
-                        tone === t.value
+                      className={`w-full text-left px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${tone === t.value
                           ? "border-orange-400 bg-orange-50 text-orange-700"
                           : "border-gray-200 hover:border-gray-300 text-gray-700"
-                      }`}
+                        }`}
                     >
                       {t.label}
                     </button>
@@ -327,11 +324,10 @@ const ClaudePromptGenerator = () => {
                   <button
                     key={f.value}
                     onClick={() => setFormat(f.value)}
-                    className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all ${
-                      format === f.value
+                    className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all ${format === f.value
                         ? "border-orange-400 bg-orange-50 text-orange-700"
                         : "border-gray-200 hover:border-gray-300 text-gray-700"
-                    }`}
+                      }`}
                   >
                     <span className="text-sm font-medium">{f.label}</span>
                     <span className="text-xs text-gray-400 mt-0.5">{f.desc}</span>
@@ -487,7 +483,7 @@ const ClaudePromptGenerator = () => {
             <div className="grid md:grid-cols-3 gap-4">
               {[
                 { to: "/tools/chatgpt-prompt-generator", title: "ChatGPT Prompt Generator", desc: "Optimized prompts for OpenAI's ChatGPT, GPT-4 and GPT-4o." },
-                { to: "/tools/gemini-prompt-generator",  title: "Gemini Prompt Generator",  desc: "Tailored prompts for Google's Gemini AI models." },
+                { to: "/tools/word-counter", title: "Word Counter", desc: "Count characters for Instagram captions and TikTok bios." },
                 { to: "/tools/midjourney-prompt-generator", title: "Midjourney Prompt Generator", desc: "Create detailed prompts for stunning AI-generated images." },
               ].map((tool) => (
                 <Link

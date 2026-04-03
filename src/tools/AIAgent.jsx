@@ -94,24 +94,24 @@ const AIAgent = () => {
 
   const schemaData = {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
+    "@type": "SoftwareApplication",
     name: "AI Agent Chatbot",
     url: "https://generatorpromptai.com/tools/ai-agent",
     applicationCategory: "AIApplication",
-    operatingSystem: "All",
+    operatingSystem: "Web",
     browserRequirements: "Requires JavaScript",
-    creator: {
+    provider: {
       "@type": "Organization",
-      name: "GeneratorPromptAI",
-      url: "https://generatorpromptai.com",
+      name: "Generator PromptAI",
+      url: "https://generatorpromptai.com"
     },
     description:
-      "Free AI chatbot powered by Groq and Llama 3.3. Ask questions, generate prompts, get content ideas instantly.",
+      "Free AI chatbot powered by Groq and Llama 3.3. Ask questions, generate prompts, write content, and get instant answers with no login required.",
     offers: {
       "@type": "Offer",
       price: "0",
-      priceCurrency: "USD",
-    },
+      priceCurrency: "USD"
+    }
   };
 
   const faqSchema = {
@@ -240,11 +240,10 @@ const AIAgent = () => {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] px-5 py-4 rounded-3xl relative break-words shadow-sm ${
-                      msg.role === "user"
+                    className={`max-w-[80%] px-5 py-4 rounded-3xl relative break-words shadow-sm ${msg.role === "user"
                         ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
                         : "bg-white text-gray-900 border border-gray-200"
-                    }`}
+                      }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
 
@@ -311,11 +310,10 @@ const AIAgent = () => {
               <button
                 onClick={sendMessage}
                 disabled={isThinking || !input.trim()}
-                className={`px-6 py-3.5 rounded-2xl flex items-center justify-center transition-all ${
-                  isThinking || !input.trim()
+                className={`px-6 py-3.5 rounded-2xl flex items-center justify-center transition-all ${isThinking || !input.trim()
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                     : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 active:scale-95"
-                }`}
+                  }`}
               >
                 {isThinking ? (
                   <RefreshCw size={18} className="animate-spin" />

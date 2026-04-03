@@ -157,11 +157,11 @@ const Home = () => {
                 <div className="text-sm text-gray-600 font-medium">Free Tools</div>
               </div>
               <div className="text-center border-x border-gray-200">
-                <div className="text-3xl font-black text-purple-600 mb-1">100K+</div>
+                <div className="text-3xl font-black text-purple-600 mb-1">10+</div>
                 <div className="text-sm text-gray-600 font-medium">Users Served</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-black text-pink-600 mb-1">4.9★</div>
+                <div className="text-3xl font-black text-pink-600 mb-1">0.0★</div>
                 <div className="text-sm text-gray-600 font-medium">User Rating</div>
               </div>
             </div>
