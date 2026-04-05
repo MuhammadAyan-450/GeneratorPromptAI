@@ -41,6 +41,18 @@
 
     <!-- TOOLS (Including Missing Ones) -->
     <url>
+        <loc>https://generatorpromptai.com/tools/tiktok-video-downloader</loc>
+        <lastmod>2026-04-05</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://generatorpromptai.com/tools/instagram-video-downloader</loc>
+        <lastmod>2026-04-05</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://generatorpromptai.com/tools/ai-agent</loc>
         <lastmod>2026-04-05</lastmod>
         <changefreq>weekly</changefreq>
