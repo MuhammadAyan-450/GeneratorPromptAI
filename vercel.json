@@ -1,6 +1,26 @@
 {
   "redirects": [
     {
+      "source": "/pages/about",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/pages/contact",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/pages/privacy-policy",
+      "destination": "/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/pages/terms-of-service",
+      "destination": "/terms-of-service",
+      "permanent": true
+    },
+    {
       "source": "/tools/:path*/",
       "destination": "/tools/:path*",
       "permanent": true

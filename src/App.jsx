@@ -41,6 +41,9 @@ import ChatGPTPrompt from "./tools/ChatGPTPrompt"
 import ClaudePrompt from "./tools/ClaudePrompt"
 import MidjourneyPrompt from "./tools/MidjourneyPrompt"
 import YoutubePrompt from "./tools/YoutubePrompt";
+import TikTokVideoDownloader from "./tools/TikTokVideoDownloader";
+import InstagramVideoDownloader from "./tools/InstagramVideoDownloader";
+
 import 'react-image-crop/dist/ReactCrop.css';
 
 
@@ -56,6 +59,8 @@ const App = () => {
         <Route path="/pages/all-tools" element={<AllTools />} />
 
         {/* Tools */}
+        <Route path="/tools/tiktok-video-downloader" element={<TikTokVideoDownloader />} />
+        <Route path="/tools/instagram-video-downloader" element={<InstagramVideoDownloader />} />
         <Route path="/tools/ai-agent" element={<AIAgent />} />
         <Route path="/tools/image-compressor" element={<ImageCompressor />} />
         <Route path="/tools/chatgpt-prompt-generator" element={<ChatGPTPrompt />} />

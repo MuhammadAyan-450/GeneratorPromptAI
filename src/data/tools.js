@@ -175,6 +175,18 @@ export const tools = [
     path: "/tools/prompt-improver",
     description: "Improve and optimize AI prompts to generate more accurate and creative results.",
     category: "AI Tools"
+  },
+  {
+    name: "TikTok Video Downloader",
+    path: "/tools/tiktok-video-downloader",
+    description: "Download TikTok videos without watermark in HD quality. Save instantly to your device.",
+    category: "Video Tools"
+  },
+  {
+    name: "Instagram Video Downloader",
+    path: "/tools/instagram-video-downloader",
+    description: "Save Instagram Reels, videos, and carousel posts in HD quality instantly.",
+    category: "Video Tools"
   }
   // ← Add new tools here in the same format when you build them
 ];
@@ -196,6 +208,10 @@ export const toolCategories = [
   {
     category: "Social Media Tools",
     tools: tools.filter(t => t.category === "Social Media Tools")
+  },
+  {
+    category: "Video Tools",
+    tools: tools.filter(t => t.category === "Video Tools")
   },
   {
     category: "Developers & Testing",
