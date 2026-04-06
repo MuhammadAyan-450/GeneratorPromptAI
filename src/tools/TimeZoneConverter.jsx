@@ -102,7 +102,7 @@ const TimeZoneConverter = () => {
           name="keywords"
           content="time zone converter online, convert time between cities, world time converter, karachi to new york time, pakistan time converter 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/time-zone-converter" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/time-zone-converter" />
 
         <meta property="og:title" content="Time Zone Converter – Free Online Worldwide 2026" />
         <meta property="og:description" content="Instant time conversion between cities – live current times & DST support." />
@@ -117,7 +117,7 @@ const TimeZoneConverter = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "Time Zone Converter",
-            url: "https://generatorpromptai.com/tools/time-zone-converter",
+            url: "https://www.generatorpromptai.com/tools/time-zone-converter",
             description: "Free online tool to convert time between cities and time zones worldwide.",
             applicationCategory: "UtilityApplication",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

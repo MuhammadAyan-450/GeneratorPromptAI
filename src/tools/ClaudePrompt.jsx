@@ -137,13 +137,13 @@ const ClaudePromptGenerator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Claude Prompt Generator",
-    url: "https://generatorpromptai.com/tools/claude-prompt-generator",
+    url: "https://www.generatorpromptai.com/tools/claude-prompt-generator",
     applicationCategory: "AIApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free tool to generate optimized prompts for Anthropic's Claude AI. Customize use case, depth, tone and output format.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -190,20 +190,20 @@ const ClaudePromptGenerator = () => {
           name="keywords"
           content="claude prompt generator, claude ai prompts, anthropic claude prompts, claude 3 prompt builder, best claude prompts 2026, claude prompt engineering, claude sonnet prompts, claude opus prompts"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/claude-prompt-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/claude-prompt-generator" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Claude Prompt Generator - Better Prompts for Claude AI Free" />
         <meta property="og:description" content="Generate optimized prompts for Anthropic's Claude AI. Choose use case, depth, tone and output format. Free, no sign-up needed." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/claude-prompt-generator" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-claude-prompt-generator.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/claude-prompt-generator" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-claude-prompt-generator.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Claude Prompt Generator - Optimized for Claude AI" />
         <meta name="twitter:description" content="Create powerful Claude AI prompts instantly. Choose use case, tone, depth and output format. Free tool." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-claude-prompt-generator.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-claude-prompt-generator.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

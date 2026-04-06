@@ -158,13 +158,13 @@ const HashtagGenerator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Hashtag Generator",
-    url: "https://generatorpromptai.com/tools/hashtag-generator",
+    url: "https://www.generatorpromptai.com/tools/hashtag-generator",
     applicationCategory: "SocialMediaApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free hashtag generator for Instagram, TikTok, YouTube, Twitter/X and LinkedIn. Generate trending viral hashtags with Pakistani and English modifiers.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -211,20 +211,20 @@ const HashtagGenerator = () => {
           name="keywords"
           content="hashtag generator, instagram hashtag generator, tiktok hashtag generator, trending hashtags 2026, viral hashtags, free hashtag tool, reels hashtags, youtube hashtags, pakistan hashtags"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/hashtag-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/hashtag-generator" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Free Hashtag Generator - Trending Hashtags for Instagram & TikTok" />
         <meta property="og:description" content="Generate trending hashtags for Instagram, TikTok, YouTube and Twitter. Pakistani and English styles. Free, no sign-up." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/hashtag-generator" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-hashtag-generator.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/hashtag-generator" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-hashtag-generator.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Hashtag Generator - Instagram, TikTok, YouTube 2026" />
         <meta name="twitter:description" content="Generate trending viral hashtags for any platform. Pakistani and English styles. Free online tool." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-hashtag-generator.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-hashtag-generator.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

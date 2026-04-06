@@ -88,7 +88,7 @@ const QRCodeGenerator = () => {
   };
 
   const reset = () => {
-    setText("https://generatepromptai.com");
+    setText("https://www.generatepromptai.com");
     setSize(256);
     setFgColor("#000000");
     setBgColor("#ffffff");
@@ -111,7 +111,7 @@ const QRCodeGenerator = () => {
           name="keywords"
           content="qr code generator online, custom qr code free, qr code for wifi, qr code for url, qr code maker 2026, free qr code tool"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/qr-code-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/qr-code-generator" />
 
         <meta property="og:title" content="QR Code Generator – Free & Custom Online 2026" />
         <meta property="og:description" content="Instant QR codes for links, WiFi, contacts & more – download PNG/SVG." />
@@ -126,7 +126,7 @@ const QRCodeGenerator = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "QR Code Generator",
-            url: "https://generatorpromptai.com/tools/qr-code-generator",
+            url: "https://www.generatorpromptai.com/tools/qr-code-generator",
             description: "Free online tool to generate customizable QR codes for URLs, text, WiFi, contacts and more.",
             applicationCategory: "UtilityApplication",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

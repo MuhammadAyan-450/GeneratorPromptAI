@@ -108,7 +108,7 @@ const RandomNumberGenerator = () => {
           name="keywords"
           content="random number generator online, random dice roll, lottery number generator, secure random numbers, otp generator free, random number picker 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/random-number-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/random-number-generator" />
 
         <meta property="og:title" content="Random Number Generator – Free & Secure Online 2026" />
         <meta property="og:description" content="Generate random numbers, dice, lottery picks instantly – cryptographically secure." />
@@ -123,7 +123,7 @@ const RandomNumberGenerator = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "Random Number Generator",
-            url: "https://generatorpromptai.com/tools/random-number-generator",
+            url: "https://www.generatorpromptai.com/tools/random-number-generator",
             description: "Free secure random number generator for dice, lottery, OTP, ranges & more.",
             applicationCategory: "UtilityApplication",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

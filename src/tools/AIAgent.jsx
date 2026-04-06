@@ -166,7 +166,7 @@ const AIAgent = () => {
           name="keywords"
           content="AI chatbot, free AI chat, Llama 3.3 chatbot, Groq AI, AI agent online, free AI assistant, ChatGPT alternative, AI prompt generator, free chat AI"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/ai-agent" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/ai-agent" />
         <meta name="robots" content="index, follow" />
 
         {/* Open Graph */}
@@ -177,8 +177,8 @@ const AIAgent = () => {
           property="og:description"
           content="Free AI chatbot powered by Groq and Llama 3.3. Ask anything, generate prompts, get content ideas instantly. No sign-up needed."
         />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/ai-agent" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-ai-agent.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/ai-agent" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-ai-agent.png" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -187,7 +187,7 @@ const AIAgent = () => {
           name="twitter:description"
           content="Chat with our free AI Agent powered by Groq and Llama 3.3. No sign-up needed."
         />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-ai-agent.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-ai-agent.png" />
 
         {/* Schema */}
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>

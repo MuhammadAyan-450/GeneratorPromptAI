@@ -355,13 +355,13 @@ const EmojiPicker = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Emoji Picker",
-    url: "https://generatorpromptai.com/tools/emoji-picker",
+    url: "https://www.generatorpromptai.com/tools/emoji-picker",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free online emoji picker with search, categories, recent history, and one-click copy. 500+ emojis.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -403,20 +403,20 @@ const EmojiPicker = () => {
           name="keywords"
           content="emoji picker, copy paste emoji, emoji keyboard online, free emoji selector, emoji search, whatsapp emoji, instagram emoji, emoji copy paste 2026, pakistan emoji flag"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/emoji-picker" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/emoji-picker" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Emoji Picker - Copy & Paste 500+ Emojis Free" />
         <meta property="og:description" content="Search and copy emojis instantly. 500+ emojis in 8 categories. Works on WhatsApp, Instagram, Discord. Free, no sign-up." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/emoji-picker" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-emoji-picker.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/emoji-picker" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-emoji-picker.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Emoji Picker - Copy & Paste 500+ Emojis" />
         <meta name="twitter:description" content="Search and copy emojis for WhatsApp, Instagram, Discord and more. Free online emoji picker." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-emoji-picker.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-emoji-picker.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

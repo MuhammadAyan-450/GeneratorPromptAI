@@ -197,13 +197,13 @@ const ImageCompressor = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Image Compressor",
-    url: "https://generatorpromptai.com/tools/image-compressor",
+    url: "https://www.generatorpromptai.com/tools/image-compressor",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free browser-based image compressor. Compress JPG, PNG and WebP images online without uploading to any server. 100% private.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -250,20 +250,20 @@ const ImageCompressor = () => {
           name="keywords"
           content="image compressor, compress image online, compress jpg, compress png, compress webp, reduce image size, photo compressor, image optimizer, batch image compressor, free image compression 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/image-compressor" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-compressor" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Image Compressor - Compress JPG PNG WebP Free Online" />
         <meta property="og:description" content="Compress images online for free. Reduce size by up to 90%. Batch compress up to 10 images. 100% private — no upload to server." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/image-compressor" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-image-compressor.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-compressor" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-compressor.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Image Compressor - Compress JPG PNG WebP Online" />
         <meta name="twitter:description" content="Compress images online. Reduce size up to 90%. Batch up to 10 images. 100% private, no server upload." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-image-compressor.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-compressor.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

@@ -134,13 +134,13 @@ const CurrencyConverter = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Currency Converter",
-    url: "https://generatorpromptai.com/tools/currency-converter",
+    url: "https://www.generatorpromptai.com/tools/currency-converter",
     applicationCategory: "FinanceApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free real-time currency converter supporting 170+ currencies with live exchange rates. Convert USD to PKR, AED to PKR, SAR to PKR and more.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
     featureList: "Real-time exchange rates, 170+ currencies, currency swap, auto-refresh, multi-currency comparison",
   };
 
@@ -190,20 +190,20 @@ const CurrencyConverter = () => {
           name="keywords"
           content="currency converter, usd to pkr, aed to pkr, sar to pkr, live exchange rates, free currency converter, pkr converter, gbp to pkr, eur to pkr, real time currency converter 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/currency-converter" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/currency-converter" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Currency Converter - Live USD to PKR, AED to PKR Rates" />
         <meta property="og:description" content="Convert USD, AED, SAR, GBP to PKR and 170+ currencies with real-time rates. Free, no sign-up." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/currency-converter" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-currency-converter.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/currency-converter" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-currency-converter.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Currency Converter - Live Exchange Rates 2026" />
         <meta name="twitter:description" content="Convert USD to PKR, AED to PKR, SAR to PKR and 170+ currencies in real time. Free online tool." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-currency-converter.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-currency-converter.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

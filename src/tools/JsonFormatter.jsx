@@ -104,7 +104,7 @@ const JsonFormatter = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "JSON Formatter & Validator",
-    url: "https://generatorpromptai.com/tools/json-formatter",
+    url: "https://www.generatorpromptai.com/tools/json-formatter",
     description: "Free online tool to format, minify, beautify and validate JSON with detailed error messages.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "All",
@@ -116,9 +116,9 @@ const JsonFormatter = () => {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://generatorpromptai.com/" },
-      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://generatorpromptai.com/pages/all-tools" },
-      { "@type": "ListItem", position: 3, name: "JSON Formatter", item: "https://generatorpromptai.com/tools/json-formatter" }
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", position: 3, name: "JSON Formatter", item: "https://www.generatorpromptai.com/tools/json-formatter" }
     ]
   };
 
@@ -163,12 +163,12 @@ const JsonFormatter = () => {
         <title>JSON Formatter & Validator Online - Beautify & Minify Free</title>
         <meta name="description" content="Format, beautify, minify and validate JSON instantly online. Real-time error detection with exact line/column info. 100% browser-based, free & private." />
         <meta name="keywords" content="json formatter online, json beautifier, json minifier, json validator, pretty print json, json error checker, free developer tools" />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/json-formatter" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/json-formatter" />
 
         <meta property="og:title" content="JSON Formatter & Validator – Free Online Tool" />
         <meta property="og:description" content="Beautify, minify, validate JSON with real-time errors – fast & private." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/json-formatter" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/json-formatter" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free JSON Formatter & Validator" />

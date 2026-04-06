@@ -154,13 +154,13 @@ const ImageCropper = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Image Cropper",
-    url: "https://generatorpromptai.com/tools/image-cropper",
+    url: "https://www.generatorpromptai.com/tools/image-cropper",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free online image cropper with social media presets for Instagram, TikTok, YouTube, Twitter and more. Crop JPG, PNG and WebP images with custom aspect ratios.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -207,20 +207,20 @@ const ImageCropper = () => {
           name="keywords"
           content="image cropper, crop image online, instagram image cropper, tiktok crop tool, youtube thumbnail crop, custom aspect ratio crop, free image cropper, profile picture cropper, crop photo free 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/image-cropper" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-cropper" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Image Cropper - Crop Photos for Instagram, TikTok & YouTube Free" />
         <meta property="og:description" content="Crop images online with social media presets. Instagram, TikTok, YouTube, Twitter, WhatsApp. Download as JPG, PNG or WebP. 100% private." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/image-cropper" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-image-cropper.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-cropper" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-cropper.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Image Cropper - Instagram, TikTok, YouTube Presets" />
         <meta name="twitter:description" content="Crop photos online with social media aspect ratio presets. Free, private, no sign-up." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-image-cropper.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-cropper.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

@@ -148,13 +148,13 @@ const PasswordGenerator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Password Generator",
-    url: "https://generatorpromptai.com/tools/password-generator",
+    url: "https://www.generatorpromptai.com/tools/password-generator",
     applicationCategory: "SecurityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free online password generator. Create strong random passwords or memorable passphrases. Real-time strength meter, time-to-crack estimate, bulk generation. Uses secure crypto API.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -201,20 +201,20 @@ const PasswordGenerator = () => {
           name="keywords"
           content="password generator, strong password generator, random password, secure password maker, passphrase generator, free password generator 2026, password strength checker, bulk password generator"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/password-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/password-generator" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Password Generator - Strong Random Passwords Free" />
         <meta property="og:description" content="Generate strong random passwords or memorable passphrases. Real-time strength meter and time-to-crack estimate. Free, secure, no sign-up." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/password-generator" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-password-generator.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/password-generator" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-password-generator.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Password Generator - Strong & Random" />
         <meta name="twitter:description" content="Generate strong random passwords with strength meter and time-to-crack estimate. Free online tool." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-password-generator.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-password-generator.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

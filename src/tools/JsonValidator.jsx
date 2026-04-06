@@ -89,7 +89,7 @@ const JsonValidator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "JSON Validator",
-    url: "https://generatorpromptai.com/tools/json-validator",
+    url: "https://www.generatorpromptai.com/tools/json-validator",
     description: "Free browser-based JSON validation tool with real-time error reporting and line/column details.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "All",
@@ -101,9 +101,9 @@ const JsonValidator = () => {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://generatorpromptai.com/" },
-      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://generatorpromptai.com/pages/all-tools" },
-      { "@type": "ListItem", position: 3, name: "JSON Validator", item: "https://generatorpromptai.com/tools/json-validator" }
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", position: 3, name: "JSON Validator", item: "https://www.generatorpromptai.com/tools/json-validator" }
     ]
   };
 
@@ -147,12 +147,12 @@ const JsonValidator = () => {
         <title>JSON Validator Online - Instant Syntax Error Checker</title>
         <meta name="description" content="Validate JSON instantly online – check syntax, get detailed line/column errors. 100% browser-based, free & private." />
         <meta name="keywords" content="json validator online, validate json free, json syntax checker, json error finder, json lint tool, check json validity, debug json" />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/json-validator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/json-validator" />
 
         <meta property="og:title" content="JSON Validator – Free Online Syntax Checker" />
         <meta property="og:description" content="Instantly validate JSON with precise error locations – no upload, fully private." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/json-validator" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/json-validator" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free JSON Validator – Instant Error Detection" />

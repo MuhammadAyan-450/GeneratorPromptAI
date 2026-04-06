@@ -78,14 +78,14 @@ const InstagramVideoDownloader = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Instagram Video Downloader",
-    url: "https://generatorpromptai.com/tools/instagram-video-downloader",
+    url: "https://www.generatorpromptai.com/tools/instagram-video-downloader",
     applicationCategory: "MultimediaApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     creator: {
       "@type": "Organization",
       name: "GeneratorPromptAI",
-      url: "https://generatorpromptai.com",
+      url: "https://www.generatorpromptai.com",
     },
     description: "Free online Instagram video and reel downloader. Save Instagram videos in HD quality without login. No software install required.",
     offers: {
@@ -146,20 +146,20 @@ const InstagramVideoDownloader = () => {
           name="keywords"
           content="Instagram video downloader, download Instagram reels, save Instagram video, Instagram reel saver, IG video download, Instagram to mp4"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/instagram-video-downloader" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/instagram-video-downloader" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Instagram Video & Reel Downloader - HD Free" />
         <meta property="og:description" content="Download Instagram Reels and videos in HD quality. 100% free online tool, no login needed." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/instagram-video-downloader" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-insta-downloader.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/instagram-video-downloader" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-insta-downloader.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Instagram Video & Reel Downloader" />
         <meta name="twitter:description" content="Save Instagram videos and reels without watermarks in HD. Free and instant." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-insta-downloader.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-insta-downloader.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

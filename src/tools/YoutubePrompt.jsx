@@ -133,7 +133,7 @@ const YoutubePromptGenerator = () => {
           name="keywords"
           content="youtube script generator, youtube video prompt, viral youtube ideas, youtube titles generator, youtube shorts script, free youtube tool 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/youtube-prompt-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/youtube-prompt-generator" />
 
         <meta property="og:title" content="YouTube Script & Prompt Generator – Viral Content 2026" />
         <meta property="og:description" content="Create high-retention scripts, titles & ideas for YouTube long-form & Shorts." />
@@ -148,7 +148,7 @@ const YoutubePromptGenerator = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "YouTube Prompt Generator",
-            url: "https://generatorpromptai.com/tools/youtube-prompt-generator",
+            url: "https://www.generatorpromptai.com/tools/youtube-prompt-generator",
             description: "Free tool to generate YouTube video scripts, titles, hooks and ideas for viral content.",
             applicationCategory: "ContentCreation",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

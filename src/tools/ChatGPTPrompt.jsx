@@ -78,7 +78,7 @@ const ChatGptPromptGenerator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "ChatGPT Prompt Generator",
-    url: "https://generatorpromptai.com/tools/chatgpt-prompt-generator",
+    url: "https://www.generatorpromptai.com/tools/chatgpt-prompt-generator",
     applicationCategory: "AIApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
@@ -91,7 +91,7 @@ const ChatGptPromptGenerator = () => {
     creator: {
       "@type": "Organization",
       name: "GeneratorPromptAI",
-      url: "https://generatorpromptai.com",
+      url: "https://www.generatorpromptai.com",
     },
   };
 
@@ -170,7 +170,7 @@ const ChatGptPromptGenerator = () => {
           name="keywords"
           content="chatgpt prompt generator, free chatgpt prompts, chatgpt prompt builder, best chatgpt prompts, prompt engineering, GPT-4 prompts, AI prompt generator, chatgpt prompts 2025"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/chatgpt-prompt-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/chatgpt-prompt-generator" />
         <meta name="robots" content="index, follow" />
 
         {/* Open Graph */}
@@ -178,14 +178,14 @@ const ChatGptPromptGenerator = () => {
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="ChatGPT Prompt Generator - Create Better Prompts Free" />
         <meta property="og:description" content="Generate optimized ChatGPT prompts instantly. Customize tone, depth and style. Works with GPT-4, GPT-4o and GPT-3.5. Free, no sign-up." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/chatgpt-prompt-generator" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-chatgpt-prompt-generator.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/chatgpt-prompt-generator" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-chatgpt-prompt-generator.png" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free ChatGPT Prompt Generator - Better Prompts Instantly" />
         <meta name="twitter:description" content="Create powerful ChatGPT prompts in seconds. Choose tone, depth and style. Free, no sign-up needed." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-chatgpt-prompt-generator.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-chatgpt-prompt-generator.png" />
 
         {/* Schema */}
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>

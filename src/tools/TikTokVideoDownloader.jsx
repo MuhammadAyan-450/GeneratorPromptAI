@@ -148,20 +148,20 @@ const TikTokVideoDownloader = () => {
           name="keywords"
           content="TikTok video downloader, download TikTok without watermark, save TikTok HD, TikTok saver, TikTok to mp4"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/tiktok-video-downloader" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/tiktok-video-downloader" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="TikTok Video Downloader - No Watermark HD" />
         <meta property="og:description" content="Download TikTok videos without watermark in HD quality. 100% free online tool." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/tiktok-video-downloader" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-tiktok-downloader.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/tiktok-video-downloader" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-tiktok-downloader.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="TikTok Video Downloader - No Watermark" />
         <meta name="twitter:description" content="Save TikTok videos without watermark in HD. Free and instant." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-tiktok-downloader.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-tiktok-downloader.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

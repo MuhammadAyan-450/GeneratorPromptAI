@@ -98,7 +98,7 @@ const PercentageCalculator = () => {
           name="keywords"
           content="percentage calculator online, percent of number, percentage increase decrease, reverse percentage calculator, add subtract percent, free percentage tool 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/percentage-calculator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/percentage-calculator" />
 
         <meta property="og:title" content="Percentage Calculator – Free Online Tool 2026" />
         <meta property="og:description" content="Instant percentage calculations: increase, decrease, reverse & more – real-time results." />
@@ -113,7 +113,7 @@ const PercentageCalculator = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "Percentage Calculator",
-            url: "https://generatorpromptai.com/tools/percentage-calculator",
+            url: "https://www.generatorpromptai.com/tools/percentage-calculator",
             description: "Free online tool for all percentage calculations – real-time results, multiple types.",
             applicationCategory: "UtilityApplication",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

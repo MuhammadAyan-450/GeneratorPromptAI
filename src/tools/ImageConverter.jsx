@@ -213,13 +213,13 @@ const ImageConverter = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Image Converter",
-    url: "https://generatorpromptai.com/tools/image-converter",
+    url: "https://www.generatorpromptai.com/tools/image-converter",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free browser-based image converter. Convert JPG to PNG, PNG to WebP, WebP to JPG instantly. No upload, 100% private.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -266,20 +266,20 @@ const ImageConverter = () => {
           name="keywords"
           content="image converter, jpg to png, png to jpg, jpg to webp, png to webp, webp to jpg, webp to png, convert image format online free, image format converter 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/image-converter" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-converter" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Image Converter - JPG to PNG, PNG to WebP Free Online" />
         <meta property="og:description" content="Convert JPG, PNG and WebP images online for free. Batch convert up to 10 images. 100% private — no server upload." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/image-converter" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-image-converter.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-converter" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-converter.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Image Converter - JPG PNG WebP Online" />
         <meta name="twitter:description" content="Convert image formats online free. JPG to PNG, PNG to WebP, WebP to JPG. Batch up to 10. No server upload." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-image-converter.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-converter.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

@@ -98,7 +98,7 @@ const YoutubeThumbnailDownloader = () => {
           name="keywords"
           content="youtube thumbnail downloader, download youtube thumbnails hd, get youtube video thumbnail free, youtube thumbnail extractor, maxresdefault downloader 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/youtube-thumbnail-downloader" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/youtube-thumbnail-downloader" />
 
         <meta property="og:title" content="YouTube Thumbnail Downloader – Free HD Download 2026" />
         <meta property="og:description" content="Instantly download YouTube thumbnails in multiple qualities – no signup needed." />
@@ -113,7 +113,7 @@ const YoutubeThumbnailDownloader = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "YouTube Thumbnail Downloader",
-            url: "https://generatorpromptai.com/tools/youtube-thumbnail-downloader",
+            url: "https://www.generatorpromptai.com/tools/youtube-thumbnail-downloader",
             description: "Free online tool to download YouTube video thumbnails in all available resolutions.",
             applicationCategory: "UtilityApplication",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

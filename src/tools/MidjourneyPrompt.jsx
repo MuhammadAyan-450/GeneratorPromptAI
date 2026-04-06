@@ -216,7 +216,7 @@ const MidjourneyPromptGenerator = () => {
           name="keywords"
           content="midjourney prompt generator, midjourney prompts free, ai art prompt builder, midjourney realistic prompts, cinematic midjourney prompts, best midjourney prompts 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/midjourney-prompt-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/midjourney-prompt-generator" />
 
         {/* Open Graph / Social */}
         <meta property="og:title" content="Midjourney Prompt Generator – Free AI Art Prompts 2026" />
@@ -233,7 +233,7 @@ const MidjourneyPromptGenerator = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "Midjourney Prompt Generator",
-            url: "https://generatorpromptai.com/tools/midjourney-prompt-generator",
+            url: "https://www.generatorpromptai.com/tools/midjourney-prompt-generator",
             description: "Free tool to generate high-quality, optimized prompts for Midjourney AI image generation.",
             applicationCategory: "AI Tool",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

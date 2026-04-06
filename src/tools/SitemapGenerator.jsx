@@ -125,7 +125,7 @@ const SitemapGenerator = () => {
           name="keywords"
           content="xml sitemap generator, sitemap.xml creator, free sitemap generator, generate sitemap online, seo sitemap tool 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/sitemap-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/sitemap-generator" />
 
         <meta property="og:title" content="XML Sitemap Generator – Free Online Tool 2026" />
         <meta property="og:description" content="Create & download sitemap.xml instantly for better SEO & indexing." />
@@ -140,7 +140,7 @@ const SitemapGenerator = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "XML Sitemap Generator",
-            url: "https://generatorpromptai.com/tools/sitemap-generator",
+            url: "https://www.generatorpromptai.com/tools/sitemap-generator",
             description: "Free online tool to generate XML sitemaps for websites and SEO.",
             applicationCategory: "SEOApplication",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

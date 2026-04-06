@@ -97,14 +97,14 @@ const AgeCalculator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Age Calculator",
-    url: "https://generatorpromptai.com/tools/age-calculator",
+    url: "https://www.generatorpromptai.com/tools/age-calculator",
     applicationCategory: "AIApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     creator: {
       "@type": "Organization",
       name: "GeneratorPromptAI",
-      url: "https://generatorpromptai.com"
+      url: "https://www.generatorpromptai.com"
     },
     description: "Free online age calculator. Calculate your exact age in years, months, days, weeks, hours and minutes from your date of birth.",
     offers: {
@@ -166,7 +166,7 @@ const AgeCalculator = () => {
           name="keywords"
           content="age calculator, calculate age, age calculator online, date of birth calculator, how old am I, age in days, age in weeks, birthday calculator, exact age calculator"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/age-calculator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/age-calculator" />
         <meta name="robots" content="index, follow" />
 
         {/* Open Graph */}
@@ -174,14 +174,14 @@ const AgeCalculator = () => {
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Age Calculator - Calculate Your Exact Age Online Free" />
         <meta property="og:description" content="Find your exact age in years, months, days, weeks and hours instantly. Free online age calculator with birthday countdown." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/age-calculator" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-age-calculator.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/age-calculator" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-age-calculator.png" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Age Calculator - Find Your Exact Age Free" />
         <meta name="twitter:description" content="Calculate your exact age in years, months, days, weeks and hours. Free online tool, no sign-up needed." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-age-calculator.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-age-calculator.png" />
 
         {/* Schema: WebApplication */}
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>

@@ -207,13 +207,13 @@ const ImageResizer = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Image Resizer",
-    url: "https://generatorpromptai.com/tools/image-resizer",
+    url: "https://www.generatorpromptai.com/tools/image-resizer",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free online image resizer. Resize JPG, PNG and WebP images to any pixel dimension or percentage. Aspect ratio lock, platform presets, quality control. 100% private.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -260,20 +260,20 @@ const ImageResizer = () => {
           name="keywords"
           content="image resizer, resize image online, resize photo free, resize image pixels, percentage image resize, instagram image resize, youtube thumbnail resize, free image resizer 2026, aspect ratio lock"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/image-resizer" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-resizer" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Image Resizer - Resize Images Free Online | Platform Presets" />
         <meta property="og:description" content="Resize images to any size online. Platform presets for Instagram, YouTube, Twitter, Facebook. Download as JPG, PNG or WebP. 100% private." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/image-resizer" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-image-resizer.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-resizer" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-resizer.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Image Resizer - Resize Photos Online with Platform Presets" />
         <meta name="twitter:description" content="Resize images for Instagram, YouTube, Facebook and more. Custom pixel dimensions or percentage. Free, private, no upload." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-image-resizer.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-resizer.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

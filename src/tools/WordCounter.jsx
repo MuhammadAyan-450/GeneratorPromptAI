@@ -77,7 +77,7 @@ const WordCounter = () => {
           name="keywords"
           content="word counter online, count words free, character counter, reading time calculator, keyword density checker, free word count tool 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/word-counter" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/word-counter" />
 
         <meta property="og:title" content="Word Counter – Free Online Tool 2026" />
         <meta property="og:description" content="Count words, characters, sentences, reading time & keyword density instantly." />
@@ -92,7 +92,7 @@ const WordCounter = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "Word Counter",
-            url: "https://generatorpromptai.com/tools/word-counter",
+            url: "https://www.generatorpromptai.com/tools/word-counter",
             description: "Free online tool to count words, characters, sentences, paragraphs, reading time and keyword density.",
             applicationCategory: "UtilityApplication",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

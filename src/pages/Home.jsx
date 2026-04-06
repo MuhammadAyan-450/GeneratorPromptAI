@@ -24,11 +24,11 @@ const Home = () => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "AI Tools Hub - Free AI Prompt Generator & Online Tools",
-    "url": "https://generatorpromptai.com/",
+    "url": "https://www.generatorpromptai.com/",
     "description": "Free AI Prompt Generator for ChatGPT, Claude, YouTube and Midjourney. Access 30+ powerful free online tools including image converters, calculators, and generators.",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://generatorpromptai.com/search?q={search_term_string}",
+      "target": "https://www.generatorpromptai.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -46,21 +46,21 @@ const Home = () => {
           name="keywords" 
           content="AI prompt generator, ChatGPT prompts, Claude AI, Midjourney prompts, free online tools, image converter, PDF tools, QR code generator, free tools" 
         />
-        <link rel="canonical" href="https://generatorpromptai.com/" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://generatorpromptai.com/" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/" />
         <meta property="og:title" content="Free AI Prompt Generator & 30+ Online Tools" />
         <meta property="og:description" content="Generate perfect AI prompts for ChatGPT, Claude & Midjourney. Plus 30+ free tools - no login required." />
-        <meta property="og:image" content="https://generatorpromptai.com/og-image.jpg" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-image.jpg" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://generatorpromptai.com/" />
+        <meta property="twitter:url" content="https://www.generatorpromptai.com/" />
         <meta property="twitter:title" content="Free AI Prompt Generator & 30+ Online Tools" />
         <meta property="twitter:description" content="Generate perfect AI prompts for ChatGPT, Claude & Midjourney. Plus 30+ free tools - no login required." />
-        <meta property="twitter:image" content="https://generatorpromptai.com/twitter-image.jpg" />
+        <meta property="twitter:image" content="https://www.generatorpromptai.com/twitter-image.jpg" />
 
         {/* Additional SEO tags */}
         <meta name="robots" content="index, follow" />

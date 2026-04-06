@@ -93,7 +93,7 @@ const LoremIpsumGenerator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Lorem Ipsum Generator",
-    url: "https://generatorpromptai.com/tools/lorem-ipsum-generator",
+    url: "https://www.generatorpromptai.com/tools/lorem-ipsum-generator",
     description: "Free online tool to generate customizable placeholder (Lorem Ipsum) text for design & development.",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
@@ -105,9 +105,9 @@ const LoremIpsumGenerator = () => {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://generatorpromptai.com/" },
-      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://generatorpromptai.com/pages/all-tools" },
-      { "@type": "ListItem", position: 3, name: "Lorem Ipsum Generator", item: "https://generatorpromptai.com/tools/lorem-ipsum-generator" }
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", position: 3, name: "Lorem Ipsum Generator", item: "https://www.generatorpromptai.com/tools/lorem-ipsum-generator" }
     ]
   };
 
@@ -151,12 +151,12 @@ const LoremIpsumGenerator = () => {
         <title>Lorem Ipsum Generator - Free Placeholder Text Online</title>
         <meta name="description" content="Generate unlimited Lorem Ipsum placeholder text instantly. Customize paragraphs, word count, and HTML tags. Perfect for UI/UX mockups and web design." />
         <meta name="keywords" content="lorem ipsum generator, placeholder text generator, dummy text online, free lorem ipsum, html placeholder text, design mockup text" />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/lorem-ipsum-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/lorem-ipsum-generator" />
 
         <meta property="og:title" content="Lorem Ipsum Generator – Free Placeholder Text" />
         <meta property="og:description" content="Create custom dummy text for websites, designs & mockups – HTML support included." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/lorem-ipsum-generator" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/lorem-ipsum-generator" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Lorem Ipsum Generator" />

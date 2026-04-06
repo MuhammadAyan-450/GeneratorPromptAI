@@ -169,13 +169,13 @@ const PdfCompressor = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "PDF Compressor",
-    url: "https://generatorpromptai.com/tools/pdf-compressor",
+    url: "https://www.generatorpromptai.com/tools/pdf-compressor",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free browser-based PDF compressor. Reduce PDF file size online without uploading to a server. Strips metadata and optimizes object streams. 100% private.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -222,20 +222,20 @@ const PdfCompressor = () => {
           name="keywords"
           content="pdf compressor, compress pdf online, reduce pdf size, pdf compressor no upload, free pdf compression 2026, shrink pdf file, pdf optimizer, compress pdf free"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/pdf-compressor" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/pdf-compressor" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="PDF Compressor - Reduce PDF Size Free Online | No Upload" />
         <meta property="og:description" content="Compress PDF files online without uploading to any server. 100% private, browser-based PDF compression. No sign-up." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/pdf-compressor" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-pdf-compressor.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/pdf-compressor" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-pdf-compressor.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free PDF Compressor - Reduce PDF Size Online | No Upload" />
         <meta name="twitter:description" content="Compress PDF files online. 100% private, no upload to server. Free, no sign-up." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-pdf-compressor.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-pdf-compressor.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

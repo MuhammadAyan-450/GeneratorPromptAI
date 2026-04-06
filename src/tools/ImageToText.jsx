@@ -141,13 +141,13 @@ const ImageToText = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Image to Text (OCR)",
-    url: "https://generatorpromptai.com/tools/image-to-text",
+    url: "https://www.generatorpromptai.com/tools/image-to-text",
     applicationCategory: "UtilityApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free online OCR tool to extract text from images, scanned documents and screenshots. Supports English, Urdu, Arabic, Hindi and 10+ languages. 100% browser-based, private.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -194,20 +194,20 @@ const ImageToText = () => {
           name="keywords"
           content="image to text, ocr online free, extract text from image, urdu ocr, arabic ocr, hindi ocr, photo to text, scanned document to text, screenshot to text, free ocr tool 2026"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/image-to-text" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-to-text" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Image to Text OCR - Extract Text Free | English, Urdu & More" />
         <meta property="og:description" content="Extract text from images and scanned documents. Supports English, Urdu, Arabic, Hindi and 10+ languages. Edit, copy or download. 100% private." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/image-to-text" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-image-to-text.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-to-text" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-to-text.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free OCR - Image to Text | English, Urdu, Arabic, Hindi" />
         <meta name="twitter:description" content="Extract text from images and documents. 10+ languages including Urdu and Arabic. Free, private, no upload." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-image-to-text.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-to-text.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

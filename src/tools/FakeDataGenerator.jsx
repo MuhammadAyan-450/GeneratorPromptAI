@@ -161,13 +161,13 @@ const FakeDataGenerator = () => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Fake Data Generator",
-    url: "https://generatorpromptai.com/tools/fake-data-generator",
+    url: "https://www.generatorpromptai.com/tools/fake-data-generator",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
     description: "Free tool to generate realistic fake data for testing — names, emails, phones, addresses, companies. CSV & JSON download. Pakistani and international data.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://generatorpromptai.com" },
+    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
   };
 
   const faqSchema = {
@@ -214,20 +214,20 @@ const FakeDataGenerator = () => {
           name="keywords"
           content="fake data generator, dummy data generator, test data generator, mock data, random data generator, fake names generator, fake email generator, csv data generator, json data generator, pakistani dummy data"
         />
-        <link rel="canonical" href="https://generatorpromptai.com/tools/fake-data-generator" />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/fake-data-generator" />
         <meta name="robots" content="index, follow" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="Fake Data Generator - Free Dummy Data CSV & JSON" />
         <meta property="og:description" content="Generate realistic fake data for testing — names, emails, phones, addresses. Download as CSV or JSON. Free, no sign-up." />
-        <meta property="og:url" content="https://generatorpromptai.com/tools/fake-data-generator" />
-        <meta property="og:image" content="https://generatorpromptai.com/og-fake-data-generator.png" />
+        <meta property="og:url" content="https://www.generatorpromptai.com/tools/fake-data-generator" />
+        <meta property="og:image" content="https://www.generatorpromptai.com/og-fake-data-generator.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Fake Data Generator - CSV & JSON Download" />
         <meta name="twitter:description" content="Generate realistic dummy data for testing. Pakistani & international names, emails, phones, addresses. Download as CSV or JSON." />
-        <meta name="twitter:image" content="https://generatorpromptai.com/og-fake-data-generator.png" />
+        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-fake-data-generator.png" />
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
