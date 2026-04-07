@@ -171,12 +171,6 @@ export const tools = [
     category: "AI Tools"
   },
   {
-    name: "AI Prompt Improver",
-    path: "/tools/prompt-improver",
-    description: "Improve and optimize AI prompts to generate more accurate and creative results.",
-    category: "AI Tools"
-  },
-  {
     name: "TikTok Video Downloader",
     path: "/tools/tiktok-video-downloader",
     description: "Download TikTok videos without watermark in HD quality. Save instantly to your device.",
