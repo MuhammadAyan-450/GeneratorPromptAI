@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "https://generatorpromptai.com/:path*",
+      "destination": "https://www.generatorpromptai.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/pages/about",
       "destination": "/about",
       "permanent": true

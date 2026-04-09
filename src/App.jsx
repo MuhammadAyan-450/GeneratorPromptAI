@@ -57,6 +57,7 @@ const App = () => {
         {/* Main pages */}
         <Route path="/" element={<Home />} />
         <Route path="/pages/all-tools" element={<AllTools />} />
+        
 
         {/* Tools */}
         <Route path="/tools/tiktok-video-downloader" element={<TikTokVideoDownloader />} />
