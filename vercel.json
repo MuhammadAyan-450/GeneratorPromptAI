@@ -4,7 +4,6 @@
       "source": "https://generatorpromptai.com/:path*",
       "destination": "https://www.generatorpromptai.com/:path*",
       "permanent": true
-      "statusCode": 301
     },
     {
       "source": "/pages/about",
