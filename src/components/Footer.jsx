@@ -147,7 +147,7 @@ const Footer = () => {
               Terms of Service
             </Link>
 
-            <Link to="/sitemap.xml" className="hover:text-indigo-600">
+            <Link to="https://www.generatorpromptai.com/sitemap.xml" className="hover:text-indigo-600">
               Sitemap
             </Link>
 

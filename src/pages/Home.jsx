@@ -135,7 +135,7 @@ const Home = () => {
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-600 mb-8">
+            <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-600 mt-2">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="font-semibold">100% Free Forever</span>
@@ -147,22 +147,6 @@ const Home = () => {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
                 <span className="font-semibold">All Major AI Models</span>
-              </div>
-            </div>
-
-            {/* Stats section */}
-            <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-12 bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-white/40 shadow-xl">
-              <div className="text-center">
-                <div className="text-3xl font-black text-indigo-600 mb-1">30+</div>
-                <div className="text-sm text-gray-600 font-medium">Free Tools</div>
-              </div>
-              <div className="text-center border-x border-gray-200">
-                <div className="text-3xl font-black text-purple-600 mb-1">10+</div>
-                <div className="text-sm text-gray-600 font-medium">Users Served</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-pink-600 mb-1">0.0★</div>
-                <div className="text-sm text-gray-600 font-medium">User Rating</div>
               </div>
             </div>
           </div>

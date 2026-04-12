@@ -58,7 +58,7 @@ const TermsOfService = () => {
           </p>
 
           <p className="mt-12 text-center text-gray-600">
-            Questions? Just email <a href="mailto:ayan@gettolfiya.com" className="text-sky-600 hover:underline">ayan@gettolfiya.com</a><br/>
+            Questions? Just email <a href="mailto:ayan@gettolfiya.com" className="text-sky-600 hover:underline">generatorpromptai@gmail.com</a><br/>
             Made with honesty in Karachi, Pakistan.
           </p>
         </div>
