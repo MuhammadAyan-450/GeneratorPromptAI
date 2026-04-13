@@ -44,7 +44,7 @@ import YoutubePrompt from "./tools/YoutubePrompt";
 import TikTokVideoDownloader from "./tools/TikTokVideoDownloader";
 import InstagramVideoDownloader from "./tools/InstagramVideoDownloader";
 import CaseConverter from "./tools/CaseConverter";
-import HTMLEntityEncoder from "./tools/HtmlEntityEncoder";
+import HtmlEntityEncoder from "./tools/HtmlEntityEncoder";
 import RemoveDuplicateLines from "./tools/RemoveDuplicateLines";
 import EmailValidator from "./tools/EmailValidator";
 import UppercaseToLowercase from "./tools/UppercaseToLowercase"
