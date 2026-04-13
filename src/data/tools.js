@@ -181,6 +181,60 @@ export const tools = [
     path: "/tools/instagram-video-downloader",
     description: "Save Instagram Reels, videos, and carousel posts in HD quality instantly.",
     category: "Video Tools"
+  },
+  {
+    "name": "Case Converter",
+    "path": "/tools/case-converter",
+    "description": "Convert text to Uppercase, Lowercase, Title Case, Sentence Case and more instantly.",
+    "category": "Text & Code Tools"
+  },
+  {
+    "name": "Remove Duplicate Lines",
+    "path": "/tools/remove-duplicate-lines",
+    "description": "Clean up lists by removing duplicate entries, sorting alphabetically, and deleting blank lines.",
+    "category": "Text & Code Tools"
+  },
+  {
+    "name": "HTML Entity Encoder",
+    "path": "/tools/html-entity-encoder",
+    "description": "Encode special characters into HTML entities and decode them back to text.",
+    "category": "Text & Code Tools"
+  },
+  {
+    "name": "Email Validator",
+    "path": "/tools/email-validator",
+    "description": "Check if an email address is valid and formatted correctly using syntax verification.",
+    "category": "Validator Tools"
+  },
+  {
+    "name": "Uppercase to Lowercase Converter",
+    "path": "/tools/uppercase-to-lowercase",
+    "description": "Convert text from Uppercase to Lowercase and vice versa instantly. Fix caps lock errors easily.",
+    "category": "Text & Code Tools"
+  },
+  {
+    "name": "Unix Timestamp Converter",
+    "path": "/tools/unix-timestamp",
+    "description": "Convert Unix Epoch timestamps to human-readable dates and vice versa. Includes a live clock.",
+    "category": "Developers & Testing"
+  },
+  {
+    "name": "Base64 Encoder",
+    "path": "/tools/base64-encode",
+    "description": "Encode text to Base64 and decode Base64 strings back to text. Supports UTF-8 and emojis.",
+    "category": "Developer Tools"
+  },
+  {
+    "name": "URL Encoder",
+    "path": "/tools/url-encoder",
+    "description": "Encode and Decode URLs into percent-encoded format for safe web transmission.",
+    "category": "Developer Tools"
+  },
+  {
+    "name": "UUID Generator",
+    "path": "/tools/uuid-generator",
+    "description": "Generate Version 4 UUIDs instantly. Supports bulk generation, uppercase, and no-hyphen formats.",
+    "category": "Developer Tools"
   }
   // ← Add new tools here in the same format when you build them
 ];

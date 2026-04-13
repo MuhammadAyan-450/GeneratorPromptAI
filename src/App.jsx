@@ -1,6 +1,7 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'react-image-crop/dist/ReactCrop.css';
 
 // Pages
 import Home from "./pages/Home";
@@ -12,7 +13,6 @@ import TermsOfService from "./pages/TermsOfService";
 
 // Tools
 import AIAgent from "./tools/AIAgent"
-
 import ImageCompressor from "./tools/ImageCompressor";
 import ImageResizer from "./tools/ImageResizer";
 import ImageCropper from "./tools/ImageCropper";
@@ -43,12 +43,15 @@ import MidjourneyPrompt from "./tools/MidjourneyPrompt"
 import YoutubePrompt from "./tools/YoutubePrompt";
 import TikTokVideoDownloader from "./tools/TikTokVideoDownloader";
 import InstagramVideoDownloader from "./tools/InstagramVideoDownloader";
-
-import 'react-image-crop/dist/ReactCrop.css';
-
-
-// blogs
-
+import CaseConverter from "./tools/CaseConverter";
+import HTMLEntityEncoder from "./tools/HtmlEntityEncoder";
+import RemoveDuplicateLines from "./tools/RemoveDuplicateLines";
+import EmailValidator from "./tools/EmailValidator";
+import UppercaseToLowercase from "./tools/UppercaseToLowercase"
+import UnixTimestamp from "./tools/UnixTimestamp";
+import Base64Encoder from "./tools/Base64Encoder";
+import URLEncoder from "./tools/URLEncoder";
+import UUIDGenerator from "./tools/UUIDGenerator";
 
 const App = () => {
   return (
@@ -57,7 +60,11 @@ const App = () => {
         {/* Main pages */}
         <Route path="/" element={<Home />} />
         <Route path="/pages/all-tools" element={<AllTools />} />
-        
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+
 
         {/* Tools */}
         <Route path="/tools/tiktok-video-downloader" element={<TikTokVideoDownloader />} />
@@ -91,12 +98,15 @@ const App = () => {
         <Route path="/tools/image-to-text" element={<ImageToText />} />
         <Route path="/tools/pdf-to-word" element={<PdfToWord />} />
         <Route path="/tools/pdf-compressor" element={<PdfCompressor />} />
-
-        {/* Static pages – clean short paths (this fixes /about error) */}
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/tools/case-converter" element={<CaseConverter />} />
+        <Route path="/tools/remove-duplicate-lines" element={<RemoveDuplicateLines />}></Route>
+        <Route path="/tools/html-entity-encoder" element={<HTMLEntityEncoder />}></Route>
+        <Route path="/tools/email-validator" element={<EmailValidator />}></Route>
+        <Route path="/tools/uppercase-to-lowercase" element={<UppercaseToLowercase />}></Route>
+        <Route path="/tools/unix-timestamp" element={<UnixTimestamp />}></Route>
+        <Route path="/tools/base64-encode" element={<Base64Encoder />}></Route>
+        <Route path="/tools/url-encoder" element={<URLEncoder />}></Route>
+        <Route path="/tools/uuid-generator" element={<UUIDGenerator />}></Route>
 
 
         {/* 404 - Catch all unmatched routes */}
