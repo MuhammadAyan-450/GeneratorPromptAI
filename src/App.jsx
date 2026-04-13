@@ -44,7 +44,6 @@ import YoutubePrompt from "./tools/YoutubePrompt";
 import TikTokVideoDownloader from "./tools/TikTokVideoDownloader";
 import InstagramVideoDownloader from "./tools/InstagramVideoDownloader";
 import CaseConverter from "./tools/CaseConverter";
-import HtmlEntityEncoder from "./tools/HtmlEntityEncoder";
 import RemoveDuplicateLines from "./tools/RemoveDuplicateLines";
 import EmailValidator from "./tools/EmailValidator";
 import UppercaseToLowercase from "./tools/UppercaseToLowercase"
@@ -100,7 +99,6 @@ const App = () => {
         <Route path="/tools/pdf-compressor" element={<PdfCompressor />} />
         <Route path="/tools/case-converter" element={<CaseConverter />} />
         <Route path="/tools/remove-duplicate-lines" element={<RemoveDuplicateLines />}></Route>
-        <Route path="/tools/html-entity-encoder" element={<HtmlEntityEncoder />}></Route>
         <Route path="/tools/email-validator" element={<EmailValidator />}></Route>
         <Route path="/tools/uppercase-to-lowercase" element={<UppercaseToLowercase />}></Route>
         <Route path="/tools/unix-timestamp" element={<UnixTimestamp />}></Route>
