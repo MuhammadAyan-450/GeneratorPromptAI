@@ -195,12 +195,6 @@ export const tools = [
     "category": "Text & Code Tools"
   },
   {
-    "name": "HTML Entity Encoder",
-    "path": "/tools/html-entity-encoder",
-    "description": "Encode special characters into HTML entities and decode them back to text.",
-    "category": "Text & Code Tools"
-  },
-  {
     "name": "Email Validator",
     "path": "/tools/email-validator",
     "description": "Check if an email address is valid and formatted correctly using syntax verification.",
