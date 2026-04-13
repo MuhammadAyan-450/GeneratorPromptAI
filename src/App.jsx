@@ -100,7 +100,7 @@ const App = () => {
         <Route path="/tools/pdf-compressor" element={<PdfCompressor />} />
         <Route path="/tools/case-converter" element={<CaseConverter />} />
         <Route path="/tools/remove-duplicate-lines" element={<RemoveDuplicateLines />}></Route>
-        <Route path="/tools/html-entity-encoder" element={<HTMLEntityEncoder />}></Route>
+        <Route path="/tools/html-entity-encoder" element={<HtmlEntityEncoder />}></Route>
         <Route path="/tools/email-validator" element={<EmailValidator />}></Route>
         <Route path="/tools/uppercase-to-lowercase" element={<UppercaseToLowercase />}></Route>
         <Route path="/tools/unix-timestamp" element={<UnixTimestamp />}></Route>
