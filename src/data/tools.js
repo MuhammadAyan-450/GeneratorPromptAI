@@ -216,19 +216,19 @@ export const tools = [
     "name": "Base64 Encoder",
     "path": "/tools/base64-encode",
     "description": "Encode text to Base64 and decode Base64 strings back to text. Supports UTF-8 and emojis.",
-    "category": "Developer Tools"
+    "category": "Developers & Testing"
   },
   {
     "name": "URL Encoder",
     "path": "/tools/url-encoder",
     "description": "Encode and Decode URLs into percent-encoded format for safe web transmission.",
-    "category": "Developer Tools"
+    "category": "Developers & Testing"
   },
   {
     "name": "UUID Generator",
     "path": "/tools/uuid-generator",
     "description": "Generate Version 4 UUIDs instantly. Supports bulk generation, uppercase, and no-hyphen formats.",
-    "category": "Developer Tools"
+    "category": "Developers & Testing"
   }
   // ← Add new tools here in the same format when you build them
 ];
