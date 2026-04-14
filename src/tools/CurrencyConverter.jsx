@@ -240,8 +240,8 @@ const CurrencyConverter = () => {
                 key={pair.label}
                 onClick={() => setQuickPair(pair.from, pair.to)}
                 className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${fromCurrency === pair.from && toCurrency === pair.to
-                    ? "bg-green-600 text-white border-green-600"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-600"
+                  ? "bg-green-600 text-white border-green-600"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-600"
                   }`}
               >
                 {pair.label}
@@ -321,8 +321,8 @@ const CurrencyConverter = () => {
                   key={a}
                   onClick={() => setAmount(String(a))}
                   className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${amount === String(a)
-                      ? "bg-green-600 text-white border-green-600"
-                      : "bg-gray-50 text-gray-600 border-gray-200 hover:border-green-400"
+                    ? "bg-green-600 text-white border-green-600"
+                    : "bg-gray-50 text-gray-600 border-gray-200 hover:border-green-400"
                     }`}
                 >
                   {a.toLocaleString()}
@@ -466,6 +466,7 @@ const CurrencyConverter = () => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 { to: "/tools/time-zone-converter", title: "Time Zone Converter", desc: "Convert time between any cities or time zones worldwide." },
+                { to: "/tools/random-number-generator", title: "Random Number Generator", desc: "Generate random numbers for games, statistics, or testing." },
                 { to: "/tools/percentage-calculator", title: "Percentage Calculator", desc: "Calculate percentages, discounts, markups and more." },
               ].map((tool) => (
                 <Link

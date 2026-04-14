@@ -1,4 +1,3 @@
-// pages/PdfToWord.jsx
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -196,6 +195,7 @@ const PdfToWord = () => {
   const wordCount = editableText.trim() ? editableText.trim().split(/\s+/).length : 0;
   const charCount = editableText.length;
 
+  // --- Schema Data ---
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -241,6 +241,31 @@ const PdfToWord = () => {
     ],
   };
 
+  // ADDED: Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.generatorpromptai.com/"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "All Tools",
+        item: "https://www.generatorpromptai.com/pages/all-tools"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "PDF to Word Converter"
+      }
+    ]
+  };
+
   return (
     <>
       <Helmet>
@@ -270,6 +295,7 @@ const PdfToWord = () => {
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script> {/* Added Breadcrumb */}
       </Helmet>
 
       {/* Toast */}
@@ -504,14 +530,14 @@ const PdfToWord = () => {
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* Related Tools (FIXED LINKS) */}
           <section>
             <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Related PDF &amp; Document Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 { to: "/tools/pdf-compressor",  title: "PDF Compressor",       desc: "Reduce PDF file size without uploading to server." },
                 { to: "/tools/image-to-text",   title: "Image to Text (OCR)",  desc: "Extract text from scanned and image-based PDFs." },
-                { to: "/tools/image-to-pdf",    title: "Image to PDF",         desc: "Convert JPG and PNG images into a PDF file." },
+                { to: "/tools/word-counter",    title: "Word Counter",         desc: "Count words, characters, and sentences in your text." }, // Replaced ImageToPDF
               ].map((tool) => (
                 <Link
                   key={tool.to}

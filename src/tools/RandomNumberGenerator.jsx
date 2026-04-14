@@ -1,4 +1,3 @@
-// pages/RandomNumberGenerator.jsx
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -16,10 +15,10 @@ const PRESETS = [
   { label: "🪙 Coin Flip",       min: 0,   max: 1,   count: 1,  unique: false, decimal: false },
   { label: "🎰 Lottery (6/49)",  min: 1,   max: 49,  count: 6,  unique: true,  decimal: false },
   { label: "🎱 8-Ball (1–8)",    min: 1,   max: 8,   count: 1,  unique: false, decimal: false },
-  { label: "📱 OTP (100000–999999)", min: 100000, max: 999999, count: 1, unique: false, decimal: false },
+  { label: "📱 OTP (100000–999999)", min: 100000, max: 999999, count: 1,  unique: false, decimal: false },
   { label: "🃏 Card (1–52)",     min: 1,   max: 52,  count: 5,  unique: true,  decimal: false },
   { label: "💯 1–100 (×5)",      min: 1,   max: 100, count: 5,  unique: false, decimal: false },
-  { label: "🔢 1–1000 (×10)",    min: 1,   max: 1000,count: 10, unique: false, decimal: false },
+  { label: "🔢 1–1000 (×10)",    min: 1,   max: 1000,count: 10,  unique: false, decimal: false },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -37,6 +36,7 @@ const RandomNumberGenerator = () => {
   const [error,        setError]        = useState("");
   const [showHistory,  setShowHistory]  = useState(true);
   const [toast,        setToast]        = useState("");
+  const fileInputRef = useRef(null);
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(""), 2000); };
 
@@ -70,11 +70,6 @@ const RandomNumberGenerator = () => {
       }
       generated.push(...pool.slice(0, numCount));
     } else {
-      for (let i = 0; i < numCount; i++) {
-        const raw = minVal + secureRand() * (maxVal - minVal);
-        generated.push(overDecimal ? parseFloat(raw.toFixed(4)) : Math.floor(raw + secureRand() * (maxVal - Math.floor(raw) > 0 ? 0 : 1)));
-      }
-      // simpler: just generate in range properly
       generated.length = 0;
       for (let i = 0; i < numCount; i++) {
         if (overDecimal) {
@@ -121,6 +116,7 @@ const RandomNumberGenerator = () => {
     ? (results[0] === 0 ? "🪙 Tails" : "🪙 Heads")
     : null;
 
+  // --- Schema Data ---
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -166,6 +162,31 @@ const RandomNumberGenerator = () => {
     ],
   };
 
+  // ADDED: Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.generatorpromptai.com/"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "All Tools",
+        item: "https://www.generatorpromptai.com/pages/all-tools"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "Random Number Generator"
+      }
+    ]
+  };
+
   const inputCls = "w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800";
 
   return (
@@ -197,6 +218,7 @@ const RandomNumberGenerator = () => {
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script> {/* Added Breadcrumb */}
       </Helmet>
 
       {/* Toast */}

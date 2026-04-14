@@ -1,4 +1,3 @@
-// pages/TikTokVideoDownloader.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -23,7 +22,7 @@ const TikTokVideoDownloader = () => {
     const trimmed = url.trim();
     if (!trimmed) { setError("Please paste a TikTok video link."); return; }
     if (!isValidTikTokUrl(trimmed)) {
-      setError("Please enter a valid TikTok URL (e.g. https://www.tiktok.com/@user/video/...)");
+      setError("Please enter a valid TikTok URL (e.g., https://www.tiktok.com/@user/video/...)");
       return;
     }
 
@@ -67,6 +66,7 @@ const TikTokVideoDownloader = () => {
     return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
   };
 
+  // --- Schema Data ---
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -118,10 +118,34 @@ const TikTokVideoDownloader = () => {
     ],
   };
 
+  // ADDED: Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.generatorpromptai.com/"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "All Tools",
+        item: "https://www.generatorpromptai.com/pages/all-tools"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "TikTok Video Downloader"
+      }
+    ]
+  };
+
   return (
     <>
       <Helmet>
-        {/* ✅ No www. anywhere */}
         <title>TikTok Video Downloader - Download TikTok Without Watermark HD | Free</title>
         <meta
           name="description"
@@ -134,7 +158,6 @@ const TikTokVideoDownloader = () => {
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/tiktok-video-downloader" />
         <meta name="robots" content="index, follow" />
 
-        {/* Open Graph — no www */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
         <meta property="og:title" content="TikTok Video Downloader - No Watermark HD | Free" />
@@ -142,7 +165,6 @@ const TikTokVideoDownloader = () => {
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/tiktok-video-downloader" />
         <meta property="og:image" content="https://www.generatorpromptai.com/og-tiktok-downloader.png" />
 
-        {/* Twitter — no www */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="TikTok Video Downloader - No Watermark HD" />
         <meta name="twitter:description" content="Save TikTok videos without watermark in HD. Download MP3 audio too. Free online tool." />
@@ -150,6 +172,7 @@ const TikTokVideoDownloader = () => {
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script> {/* Added Breadcrumb */}
       </Helmet>
 
       {/* Toast */}

@@ -1,8 +1,7 @@
-// pages/InstagramVideoDownloader.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Download, RefreshCw, Video, AlertCircle, Loader2, Instagram } from "lucide-react";
+import { ArrowLeft, Download, RefreshCw, Video, AlertCircle, Loader2, Instagram, Home, Layers } from "lucide-react";
 
 const API_URL = "https://api.saveig.app/api/v1/media";
 
@@ -42,7 +41,6 @@ const InstagramVideoDownloader = () => {
 
       const data = await response.json();
 
-      // The API usually returns an object with a 'result' array containing media objects
       if (data.status === 200 && data.result && data.result.length > 0) {
         setMediaData(data.result);
       } else {
@@ -74,6 +72,7 @@ const InstagramVideoDownloader = () => {
     setDownloadLoadingIndex(null);
   };
 
+  // --- Schema Data ---
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -134,6 +133,31 @@ const InstagramVideoDownloader = () => {
     ],
   };
 
+  // ADDED: Breadcrumb Schema for Structure
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.generatorpromptai.com/"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "All Tools",
+        item: "https://www.generatorpromptai.com/pages/all-tools"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "Instagram Video Downloader"
+      }
+    ]
+  };
+
   return (
     <>
       <Helmet>
@@ -163,6 +187,7 @@ const InstagramVideoDownloader = () => {
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script> {/* Added Breadcrumb */}
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -359,7 +384,7 @@ const InstagramVideoDownloader = () => {
             </div>
           </section>
 
-          {/* Related Tools */}
+          {/* Related Tools & Breadcrumbs for Internal Linking */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               Related Free Online Tools
@@ -369,6 +394,7 @@ const InstagramVideoDownloader = () => {
                 { to: "/tools/tiktok-video-downloader", title: "TikTok Video Downloader", desc: "Download TikTok videos without watermark in HD quality." },
                 { to: "/tools/youtube-thumbnail-downloader", title: "YouTube Thumbnail Downloader", desc: "Download HD thumbnails from any YouTube video instantly." },
                 { to: "/tools/image-compressor", title: "Image Compressor", desc: "Reduce image file size without losing visible quality." },
+                { to: "/pages/all-tools", title: "All Tools", desc: "Browse our complete collection of 30+ free AI tools and converters." } // Added Link to All Tools
               ].map((tool) => (
                 <Link
                   key={tool.to}

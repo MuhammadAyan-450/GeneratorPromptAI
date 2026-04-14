@@ -1,4 +1,3 @@
-// pages/PdfCompressor.jsx
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -165,6 +164,7 @@ const PdfCompressor = () => {
   const savedBytes = originalSize - compressedSize;
   const currentLevel = LEVELS.find((l) => l.value === compressionLevel);
 
+  // --- Schema Data ---
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -210,6 +210,31 @@ const PdfCompressor = () => {
     ],
   };
 
+  // ADDED: Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.generatorpromptai.com/"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "All Tools",
+        item: "https://www.generatorpromptai.com/pages/all-tools"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "PDF Compressor"
+      }
+    ]
+  };
+
   return (
     <>
       <Helmet>
@@ -239,6 +264,7 @@ const PdfCompressor = () => {
 
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script> {/* Added Breadcrumb */}
       </Helmet>
 
       {/* Toast */}
@@ -492,14 +518,14 @@ const PdfCompressor = () => {
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* Related Tools (FIXED LINKS) */}
           <section>
             <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Related PDF &amp; Document Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/merge-pdf",     title: "Merge PDF Files",      desc: "Combine multiple PDFs into one document." },
-                { to: "/tools/split-pdf",     title: "Split PDF",            desc: "Split large PDFs into smaller files by page range." },
-                { to: "/tools/image-to-pdf",  title: "Image to PDF",         desc: "Convert JPG and PNG images into a PDF file." },
+                { to: "/tools/pdf-to-word", title: "PDF to Word", desc: "Convert PDF documents into editable Word files instantly." },
+                { to: "/tools/image-compressor", title: "Image Compressor", desc: "Reduce image file size without losing visible quality." },
+                { to: "/tools/image-converter", title: "Image Converter", desc: "Convert image formats (JPG, PNG, WEBP) quickly and easily." },
               ].map((tool) => (
                 <Link
                   key={tool.to}
