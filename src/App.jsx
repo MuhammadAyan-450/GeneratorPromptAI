@@ -1,129 +1,137 @@
-// src/App.jsx
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Loader from "./components/Loader";
 import 'react-image-crop/dist/ReactCrop.css';
 
 // Pages
-import Home from "./pages/Home";
-import AllTools from "./pages/AllTools";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
+const Home = lazy(() => import("./pages/Home"));
+const AllTools = lazy(() => import("./pages/AllTools"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const Blog = lazy(() => import("./pages/blog"));
 
-// Tools
-import AIAgent from "./tools/AIAgent"
-import ImageCompressor from "./tools/ImageCompressor";
-import ImageResizer from "./tools/ImageResizer";
-import ImageCropper from "./tools/ImageCropper";
-import ImageConverter from "./tools/ImageConverter";
-import QRCodeGenerator from "./tools/QRCodeGenerator";
-import PasswordGenerator from "./tools/PasswordGenerator";
-import JsonFormatter from "./tools/JsonFormatter";
-import WordCounter from "./tools/WordCounter";
-import YoutubeThumbnailDownloader from "./tools/YoutubeThumbnailDownloader";
-import AgeCalculator from "./tools/AgeCalculator";
-import CurrencyConverter from "./tools/CurrencyConverter";
-import TimeZoneConverter from "./tools/TimeZoneConverter";
-import PercentageCalculator from "./tools/PercentageCalculator";
-import HashtagGenerator from "./tools/HashtagGenerator";
-import LoremIpsumGenerator from "./tools/LoremIpsumGenerator";
-import FakeDataGenerator from "./tools/FakeDataGenerator";
-import SitemapGenerator from "./tools/SitemapGenerator";
-import EmojiPicker from "./tools/EmojiPicker";
-import RandomNumberGenerator from "./tools/RandomNumberGenerator";
-import WatermarkRemover from "./tools/WatermarkRemover";
-import ImageToText from "./tools/ImageToText";
-import PdfToWord from "./tools/PdfToWord";
-import PdfCompressor from "./tools/PdfCompressor";
-import JsonValidator from "./tools/JsonValidator";
-import ChatGPTPrompt from "./tools/ChatGPTPrompt"
-import ClaudePrompt from "./tools/ClaudePrompt"
-import MidjourneyPrompt from "./tools/MidjourneyPrompt"
-import YoutubePrompt from "./tools/YoutubePrompt";
-import TikTokVideoDownloader from "./tools/TikTokVideoDownloader";
-import InstagramVideoDownloader from "./tools/InstagramVideoDownloader";
-import CaseConverter from "./tools/CaseConverter";
-import RemoveDuplicateLines from "./tools/RemoveDuplicateLines";
-import EmailValidator from "./tools/EmailValidator";
-import UppercaseToLowercase from "./tools/UppercaseToLowercase"
-import UnixTimestamp from "./tools/UnixTimestamp";
-import Base64Encoder from "./tools/Base64Encoder";
-import URLEncoder from "./tools/URLEncoder";
-import UUIDGenerator from "./tools/UUIDGenerator";
+// Blog
+const BlogPostClaudeVsChatGPT = lazy(() =>
+  import("./blogs/BlogPostClaudeVsChatGPT")
+);
 
-const App = () => {
+// Tools (lazy)
+const AIAgent = lazy(() => import("./tools/AIAgent"));
+const ImageCompressor = lazy(() => import("./tools/ImageCompressor"));
+const ImageResizer = lazy(() => import("./tools/ImageResizer"));
+const ImageCropper = lazy(() => import("./tools/ImageCropper"));
+const ImageConverter = lazy(() => import("./tools/ImageConverter"));
+const QRCodeGenerator = lazy(() => import("./tools/QRCodeGenerator"));
+const PasswordGenerator = lazy(() => import("./tools/PasswordGenerator"));
+const JsonFormatter = lazy(() => import("./tools/JsonFormatter"));
+const WordCounter = lazy(() => import("./tools/WordCounter"));
+const YoutubeThumbnailDownloader = lazy(() => import("./tools/YoutubeThumbnailDownloader"));
+const AgeCalculator = lazy(() => import("./tools/AgeCalculator"));
+const CurrencyConverter = lazy(() => import("./tools/CurrencyConverter"));
+const TimeZoneConverter = lazy(() => import("./tools/TimeZoneConverter"));
+const PercentageCalculator = lazy(() => import("./tools/PercentageCalculator"));
+const HashtagGenerator = lazy(() => import("./tools/HashtagGenerator"));
+const LoremIpsumGenerator = lazy(() => import("./tools/LoremIpsumGenerator"));
+const FakeDataGenerator = lazy(() => import("./tools/FakeDataGenerator"));
+const SitemapGenerator = lazy(() => import("./tools/SitemapGenerator"));
+const EmojiPicker = lazy(() => import("./tools/EmojiPicker"));
+const RandomNumberGenerator = lazy(() => import("./tools/RandomNumberGenerator"));
+const WatermarkRemover = lazy(() => import("./tools/WatermarkRemover"));
+const ImageToText = lazy(() => import("./tools/ImageToText"));
+const PdfToWord = lazy(() => import("./tools/PdfToWord"));
+const PdfCompressor = lazy(() => import("./tools/PdfCompressor"));
+const JsonValidator = lazy(() => import("./tools/JsonValidator"));
+const ChatGPTPrompt = lazy(() => import("./tools/ChatGPTPrompt"));
+const ClaudePrompt = lazy(() => import("./tools/ClaudePrompt"));
+const MidjourneyPrompt = lazy(() => import("./tools/MidjourneyPrompt"));
+const YoutubePrompt = lazy(() => import("./tools/YoutubePrompt"));
+const TikTokVideoDownloader = lazy(() => import("./tools/TikTokVideoDownloader"));
+const InstagramVideoDownloader = lazy(() => import("./tools/InstagramVideoDownloader"));
+const CaseConverter = lazy(() => import("./tools/CaseConverter"));
+const RemoveDuplicateLines = lazy(() => import("./tools/RemoveDuplicateLines"));
+const EmailValidator = lazy(() => import("./tools/EmailValidator"));
+const UppercaseToLowercase = lazy(() => import("./tools/UppercaseToLowercase"));
+const UnixTimestamp = lazy(() => import("./tools/UnixTimestamp"));
+const Base64Encoder = lazy(() => import("./tools/Base64Encoder"));
+const URLEncoder = lazy(() => import("./tools/URLEncoder"));
+const UUIDGenerator = lazy(() => import("./tools/UUIDGenerator"));
+
+export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Main pages */}
-        <Route path="/" element={<Home />} />
-        <Route path="/pages/all-tools" element={<AllTools />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-of-service" element={<TermsOfService />} />
+      <Suspense fallback={<Loader />}>
+        <Routes>
 
+          {/* Pages */}
+          <Route path="/" element={<Home />} />
+          <Route path="/pages/all-tools" element={<AllTools />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/blog" element={<Blog />} />
 
-        {/* Tools */}
-        <Route path="/tools/tiktok-video-downloader" element={<TikTokVideoDownloader />} />
-        <Route path="/tools/instagram-video-downloader" element={<InstagramVideoDownloader />} />
-        <Route path="/tools/ai-agent" element={<AIAgent />} />
-        <Route path="/tools/image-compressor" element={<ImageCompressor />} />
-        <Route path="/tools/chatgpt-prompt-generator" element={<ChatGPTPrompt />} />
-        <Route path="/tools/claude-prompt-generator" element={<ClaudePrompt />} />
-        <Route path="/tools/youtube-script-prompt-generator" element={<YoutubePrompt />} />
-        <Route path="/tools/midjourney-prompt-generator" element={<MidjourneyPrompt />} />
-        <Route path="/tools/json-validator" element={<JsonValidator />} />
-        <Route path="/tools/image-resizer" element={<ImageResizer />} />
-        <Route path="/tools/image-cropper" element={<ImageCropper />} />
-        <Route path="/tools/image-converter" element={<ImageConverter />} />
-        <Route path="/tools/qr-code-generator" element={<QRCodeGenerator />} />
-        <Route path="/tools/password-generator" element={<PasswordGenerator />} />
-        <Route path="/tools/json-formatter" element={<JsonFormatter />} />
-        <Route path="/tools/word-counter" element={<WordCounter />} />
-        <Route path="/tools/youtube-thumbnail-downloader" element={<YoutubeThumbnailDownloader />} />
-        <Route path="/tools/age-calculator" element={<AgeCalculator />} />
-        <Route path="/tools/currency-converter" element={<CurrencyConverter />} />
-        <Route path="/tools/time-zone-converter" element={<TimeZoneConverter />} />
-        <Route path="/tools/percentage-calculator" element={<PercentageCalculator />} />
-        <Route path="/tools/hashtag-generator" element={<HashtagGenerator />} />
-        <Route path="/tools/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
-        <Route path="/tools/fake-data-generator" element={<FakeDataGenerator />} />
-        <Route path="/tools/sitemap-generator" element={<SitemapGenerator />} />
-        <Route path="/tools/emoji-picker" element={<EmojiPicker />} />
-        <Route path="/tools/random-number-generator" element={<RandomNumberGenerator />} />
-        <Route path="/tools/watermark-remover" element={<WatermarkRemover />} />
-        <Route path="/tools/image-to-text" element={<ImageToText />} />
-        <Route path="/tools/pdf-to-word" element={<PdfToWord />} />
-        <Route path="/tools/pdf-compressor" element={<PdfCompressor />} />
-        <Route path="/tools/case-converter" element={<CaseConverter />} />
-        <Route path="/tools/remove-duplicate-lines" element={<RemoveDuplicateLines />}></Route>
-        <Route path="/tools/email-validator" element={<EmailValidator />}></Route>
-        <Route path="/tools/uppercase-to-lowercase" element={<UppercaseToLowercase />}></Route>
-        <Route path="/tools/unix-timestamp" element={<UnixTimestamp />}></Route>
-        <Route path="/tools/base64-encode" element={<Base64Encoder />}></Route>
-        <Route path="/tools/url-encoder" element={<URLEncoder />}></Route>
-        <Route path="/tools/uuid-generator" element={<UUIDGenerator />}></Route>
+          {/* Blog */}
+          <Route
+            path="/blog/claude-vs-chatgpt-which-is-better"
+            element={<BlogPostClaudeVsChatGPT />}
+          />
 
+          {/* Tools */}
+          <Route path="/tools/ai-agent" element={<AIAgent />} />
+          <Route path="/tools/image-compressor" element={<ImageCompressor />} />
+          <Route path="/tools/image-resizer" element={<ImageResizer />} />
+          <Route path="/tools/image-cropper" element={<ImageCropper />} />
+          <Route path="/tools/image-converter" element={<ImageConverter />} />
+          <Route path="/tools/qr-code-generator" element={<QRCodeGenerator />} />
+          <Route path="/tools/password-generator" element={<PasswordGenerator />} />
+          <Route path="/tools/json-formatter" element={<JsonFormatter />} />
+          <Route path="/tools/word-counter" element={<WordCounter />} />
+          <Route path="/tools/youtube-thumbnail-downloader" element={<YoutubeThumbnailDownloader />} />
+          <Route path="/tools/age-calculator" element={<AgeCalculator />} />
+          <Route path="/tools/currency-converter" element={<CurrencyConverter />} />
+          <Route path="/tools/time-zone-converter" element={<TimeZoneConverter />} />
+          <Route path="/tools/percentage-calculator" element={<PercentageCalculator />} />
+          <Route path="/tools/hashtag-generator" element={<HashtagGenerator />} />
+          <Route path="/tools/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
+          <Route path="/tools/fake-data-generator" element={<FakeDataGenerator />} />
+          <Route path="/tools/sitemap-generator" element={<SitemapGenerator />} />
+          <Route path="/tools/emoji-picker" element={<EmojiPicker />} />
+          <Route path="/tools/random-number-generator" element={<RandomNumberGenerator />} />
+          <Route path="/tools/watermark-remover" element={<WatermarkRemover />} />
+          <Route path="/tools/image-to-text" element={<ImageToText />} />
+          <Route path="/tools/pdf-to-word" element={<PdfToWord />} />
+          <Route path="/tools/pdf-compressor" element={<PdfCompressor />} />
+          <Route path="/tools/json-validator" element={<JsonValidator />} />
+          <Route path="/tools/chatgpt-prompt-generator" element={<ChatGPTPrompt />} />
+          <Route path="/tools/claude-prompt-generator" element={<ClaudePrompt />} />
+          <Route path="/tools/youtube-script-prompt-generator" element={<YoutubePrompt />} />
+          <Route path="/tools/midjourney-prompt-generator" element={<MidjourneyPrompt />} />
+          <Route path="/tools/tiktok-video-downloader" element={<TikTokVideoDownloader />} />
+          <Route path="/tools/instagram-video-downloader" element={<InstagramVideoDownloader />} />
+          <Route path="/tools/case-converter" element={<CaseConverter />} />
+          <Route path="/tools/remove-duplicate-lines" element={<RemoveDuplicateLines />} />
+          <Route path="/tools/email-validator" element={<EmailValidator />} />
+          <Route path="/tools/uppercase-to-lowercase" element={<UppercaseToLowercase />} />
+          <Route path="/tools/unix-timestamp" element={<UnixTimestamp />} />
+          <Route path="/tools/base64-encode" element={<Base64Encoder />} />
+          <Route path="/tools/url-encoder" element={<URLEncoder />} />
+          <Route path="/tools/uuid-generator" element={<UUIDGenerator />} />
 
-        {/* 404 - Catch all unmatched routes */}
-        <Route
-          path="*"
-          element={
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-              <div className="text-center p-8">
-                <h1 className="text-6xl md:text-8xl font-bold text-gray-900 dark:text-gray-100 mb-4">404</h1>
-                <p className="text-2xl md:text-3xl text-gray-600 dark:text-gray-400 mb-8">
-                  Page not found
-                </p>
+          {/* 404 */}
+          <Route
+            path="*"
+            element={
+              <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
+                <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
               </div>
-            </div>
-          }
-        />
-      </Routes>
+            }
+          />
+
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
-};
-
-export default App;
+}

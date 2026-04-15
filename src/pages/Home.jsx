@@ -4,10 +4,12 @@ import { Helmet } from "react-helmet-async";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import tools, { toolCategories } from "../data/tools";
+import { BLOG_POSTS } from "../data/blogData";
 import { Search, Sparkles, ArrowRight, Zap, TrendingUp, Clock, Star } from "lucide-react";
 
 const popularTools = tools.slice(0, 8);
 const latestTools = tools.slice(0, 6);
+const latestPosts = BLOG_POSTS.slice(0, 6);
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,16 +40,16 @@ const Home = () => {
       {/* SEO Meta Tags */}
       <Helmet>
         <title>Free AI Prompt Generator & 30+ Online Tools | AI Tools Hub</title>
-        <meta 
-          name="description" 
-          content="Free AI Prompt Generator for ChatGPT, Claude, YouTube and Midjourney. Access 30+ powerful free online tools including image converters, PDF tools, QR generators, and calculators. No login required." 
+        <meta
+          name="description"
+          content="Free AI Prompt Generator for ChatGPT, Claude, YouTube and Midjourney. Access 30+ powerful free online tools including image converters, PDF tools, QR generators, and calculators. No login required."
         />
-        <meta 
-          name="keywords" 
-          content="AI prompt generator, ChatGPT prompts, Claude AI, Midjourney prompts, free online tools, image converter, PDF tools, QR code generator, free tools" 
+        <meta
+          name="keywords"
+          content="AI prompt generator, ChatGPT prompts, Claude AI, Midjourney prompts, free online tools, image converter, PDF tools, QR code generator, free tools"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/" />
-        
+
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.generatorpromptai.com/" />
@@ -76,7 +78,7 @@ const Home = () => {
 
       <div className="bg-gray-50/40 min-h-screen flex flex-col">
         <Navbar />
-        
+
         {/* ══════════════════════════════════════════════════════════════════ */}
         {/* HERO SECTION - Enhanced with better visual hierarchy */}
         {/* ══════════════════════════════════════════════════════════════════ */}
@@ -120,7 +122,7 @@ const Home = () => {
                 <Zap size={24} className="animate-pulse" />
                 Generate AI Prompts Now
                 <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform duration-300" />
-                
+
                 {/* Shine effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 rounded-2xl"></div>
               </Link>
@@ -188,7 +190,7 @@ const Home = () => {
               <div className="mt-16 animate-fadeIn">
                 <div className="flex items-center justify-center gap-3 mb-10">
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
-                    {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} 
+                    {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""}
                   </h3>
                   <span className="text-gray-500 text-xl">for</span>
                   <span className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full font-semibold">
@@ -214,7 +216,7 @@ const Home = () => {
                           {tool.description || "Useful free online tool"}
                         </p>
                         <div className="flex items-center gap-2 text-indigo-600 font-semibold group-hover:gap-3 transition-all">
-                          Open Tool 
+                          Open Tool
                           <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                         </div>
                       </Link>
@@ -237,7 +239,7 @@ const Home = () => {
                       to="/pages/all-tools"
                       className="inline-flex items-center gap-3 text-indigo-600 hover:text-indigo-800 font-bold text-lg bg-indigo-50 hover:bg-indigo-100 px-8 py-4 rounded-full transition-all duration-300"
                     >
-                      See all {filteredTools.length} results 
+                      See all {filteredTools.length} results
                       <ArrowRight size={20} />
                     </Link>
                   </div>
@@ -286,7 +288,7 @@ const Home = () => {
                 </p>
                 <div className="mt-auto flex items-center justify-between">
                   <div className="text-indigo-600 font-bold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-                    Launch Tool 
+                    Launch Tool
                     <ArrowRight size={18} />
                   </div>
                 </div>
@@ -302,7 +304,7 @@ const Home = () => {
               to="/pages/all-tools"
               className="group inline-flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-12 py-6 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-indigo-300/50 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
             >
-              View All {tools.length} Tools 
+              View All {tools.length} Tools
               <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform" />
             </Link>
           </div>
@@ -346,7 +348,7 @@ const Home = () => {
                   {tool.description}
                 </p>
                 <div className="text-green-600 font-bold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Try Now 
+                  Try Now
                   <ArrowRight size={18} />
                 </div>
               </Link>
@@ -391,7 +393,7 @@ const Home = () => {
                   description: "No hidden fees, no subscriptions. All tools are completely free forever."
                 }
               ].map((feature, index) => (
-                <div 
+                <div
                   key={index}
                   className="group bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-8 text-center hover:border-indigo-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                 >
@@ -425,27 +427,55 @@ const Home = () => {
               </p>
             </div>
 
-            {/* Coming Soon Card */}
-            <div className="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm border-2 border-indigo-200 rounded-3xl p-12 text-center shadow-xl">
-              <div className="text-6xl mb-6">📚</div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                Coming Very Soon!
-              </h3>
-              <p className="text-lg text-gray-600 mb-8">
-                We're preparing comprehensive guides on AI prompting, tool tutorials, and productivity tips. Stay tuned!
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email for updates"
-                  className="px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all"
-                  aria-label="Email for updates"
-                />
-                <button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5">
-                  Notify Me
-                </button>
-              </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {latestPosts.map((post) => (
+                <Link
+                  key={post.id}
+                  to={`/blog/${post.slug}`}
+                  className="group bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                >
+                  {/* Top Gradient / Emoji */}
+                  <div className={`h-40 flex items-center justify-center bg-gradient-to-br ${post.color}`}>
+                    <span className="text-5xl">{post.emoji}</span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5">
+                    {/* Category */}
+                    <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
+                      {post.category}
+                    </span>
+
+                    {/* Title */}
+                    <h3 className="text-lg font-bold text-gray-900 mt-3 mb-2 group-hover:text-indigo-600 transition">
+                      {post.title}
+                    </h3>
+
+                    {/* Excerpt */}
+                    <p className="text-sm text-gray-500 mb-4 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+
+                    {/* Footer */}
+                    <div className="flex justify-between items-center text-xs text-gray-400">
+                      <span>{post.date}</span>
+                      <span className="text-indigo-600 font-medium group-hover:underline">
+                        Read →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
+            <div className="text-center mt-10">
+              <Link
+                to="/blog"
+                className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition"
+              >
+                View All Articles →
+              </Link>
+            </div>
+
           </div>
         </section>
 
