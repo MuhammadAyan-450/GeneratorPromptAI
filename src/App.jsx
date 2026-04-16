@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loader from "./components/Loader";
 import 'react-image-crop/dist/ReactCrop.css';
 
+
 // Pages
 const Home = lazy(() => import("./pages/Home"));
 const AllTools = lazy(() => import("./pages/AllTools"));
@@ -12,10 +13,19 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const Blog = lazy(() => import("./pages/blog"));
 
+//Components
+import ScrollToTop from "./components/ScrollToTop";
+
+
 // Blog
 const BlogPostClaudeVsChatGPT = lazy(() =>
   import("./blogs/BlogPostClaudeVsChatGPT")
 );
+
+const BlogPostCompressImage = lazy(() =>
+  import("./blogs/BlogPostCompressImage")
+);
+
 
 // Tools (lazy)
 const AIAgent = lazy(() => import("./tools/AIAgent"));
@@ -61,6 +71,7 @@ const UUIDGenerator = lazy(() => import("./tools/UUIDGenerator"));
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Suspense fallback={<Loader />}>
         <Routes>
 
@@ -78,6 +89,7 @@ export default function App() {
             path="/blog/claude-vs-chatgpt-which-is-better"
             element={<BlogPostClaudeVsChatGPT />}
           />
+          <Route path="/blog/compress-image-to-100kb-online-free" element={<BlogPostCompressImage />} />
 
           {/* Tools */}
           <Route path="/tools/ai-agent" element={<AIAgent />} />

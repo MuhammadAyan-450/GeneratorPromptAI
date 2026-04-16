@@ -15,6 +15,22 @@ export const BLOG_POSTS = [
     color: "from-orange-500 to-red-500",
     emoji: "⚔️",
   },
+  {
+    id: 2,
+    slug: "compress-image-to-100kb-online-free",
+    title: "Compress Image to 100KB Online Free (Fast & Easy Guide 2026)",
+    excerpt:
+      "Learn how to compress images to 100KB online for free without losing quality. Step-by-step guide with best tools and tips.",
+    category: "Image Tools",
+    tag: "Image Compression",
+    readTime: 8,
+    date: "April 10, 2026",
+    dateISO: "2026-04-10",
+    featured: false,
+    image: null,
+    color: "from-blue-500 to-indigo-500",
+    emoji: "🖼️",
+  }
 ];
 
 export const CATEGORIES = [

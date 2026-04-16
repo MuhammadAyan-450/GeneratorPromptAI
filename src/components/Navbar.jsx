@@ -157,6 +157,8 @@ const Navbar = () => {
             {/* Primary links */}
             <div className="flex flex-col gap-1 mb-4">
               {[
+                { to: "/", label: "Home" },
+                { to: "/blog", label: "Blog" },
                 { to: "/about", label: "About" },
                 { to: "/privacy-policy", label: "Privacy Policy" },
                 { to: "/contact", label: "Contact" },
