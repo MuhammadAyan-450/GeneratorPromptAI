@@ -131,7 +131,7 @@ const Navbar = () => {
               )}
             </div>
             <Link to="/" className={`${isActive("/")} text-sm`}>Home</Link>
-            <Link to="/pages/blog" className={`${isActive("/pages/blog")} text-sm`}>Blogs</Link>
+            <Link to="/blog" className={`${isActive("/blog")} text-sm`}>Blogs</Link>
             <Link to="/about" className={`${isActive("/about")} text-sm`}>About</Link>
             <Link to="/privacy-policy" className={`${isActive("/privacy-policy")} text-sm`}>Privacy</Link>
             <Link to="/contact" className={`${isActive("/contact")} text-sm`}>Contact</Link>
