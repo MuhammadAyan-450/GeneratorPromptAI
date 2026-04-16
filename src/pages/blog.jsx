@@ -119,20 +119,20 @@ const Blog = () => {
                     name="keywords"
                     content="AI prompt guide, ChatGPT tips, Claude AI blog, prompt engineering tutorial, AI tools for Pakistan, midjourney guide, free tool blog 2026"
                 />
-                <link rel="canonical" href="https://www.generatorpromptai.com/blog" />
+                <link rel="canonical" href="https://www.generatorpromptai.com/pages/blog" />
                 <meta name="robots" content="index, follow" />
 
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="GeneratorPromptAI" />
                 <meta property="og:title" content="Blog - AI Prompts, ChatGPT Tips & Tool Guides" />
                 <meta property="og:description" content="Guides and tutorials on AI prompt engineering, ChatGPT, Claude, Midjourney and free tools." />
-                <meta property="og:url" content="https://www.generatorpromptai.com/blog" />
-                <meta property="og:image" content="https://www.generatorpromptai.com/og-blog.png" />
+                <meta property="og:url" content="https://www.generatorpromptai.com/pages/blog" />
+                <meta property="og:image" content="https://www.generatorpromptai.com/pages/og-blog.png" />
 
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="GeneratorPromptAI Blog - AI Tips & Guides" />
                 <meta name="twitter:description" content="Guides on ChatGPT, Claude, Midjourney, prompt engineering and free AI tools." />
-                <meta name="twitter:image" content="https://www.generatorpromptai.com/og-blog.png" />
+                <meta name="twitter:image" content="https://www.generatorpromptai.com/pages/og-blog.png" />
 
                 <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
             </Helmet>
