@@ -67,7 +67,7 @@ const articleSchema = {
     },
     mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://www.generatorpromptai.com/blog/${post.slug}`,
+        "@id": `https://www.generatorpromptai.com/pages/blog/${post.slug}`,
     },
 };
 
@@ -132,13 +132,13 @@ const breadcrumbSchema = {
             "@type": "ListItem",
             position: 2,
             name: "Blog",
-            item: "https://www.generatorpromptai.com/blog",
+            item: "https://www.generatorpromptai.com/pages/blog",
         },
         {
             "@type": "ListItem",
             position: 3,
             name: post.title,
-            item: `https://www.generatorpromptai.com/blog/${post.slug}`,
+            item: `https://www.generatorpromptai.com/pages/blog/${post.slug}`,
         },
     ],
 };
@@ -383,7 +383,7 @@ const BlogPostClaudeVsChatGPT = () => {
                 />
                 <link
                     rel="canonical"
-                    href={`https://www.generatorpromptai.com/blog/${post.slug}`}
+                    href={`https://www.generatorpromptai.com/pages/blog/${post.slug}`}
                 />
                 <meta name="robots" content="index, follow" />
 
@@ -391,7 +391,7 @@ const BlogPostClaudeVsChatGPT = () => {
                 <meta property="og:site_name" content="GeneratorPromptAI" />
                 <meta property="og:title" content={post.title} />
                 <meta property="og:description" content={post.excerpt} />
-                <meta property="og:url" content={`https://www.generatorpromptai.com/blog/${post.slug}`} />
+                <meta property="og:url" content={`https://www.generatorpromptai.com/pages/blog/${post.slug}`} />
                 <meta property="og:image" content="https://www.generatorpromptai.com/og-claude-vs-chatgpt.png" />
                 <meta property="article:published_time" content={post.dateISO} />
                 <meta property="article:section" content="AI Comparison" />
