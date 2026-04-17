@@ -51,12 +51,6 @@ export const tools = [
     category: "Text & Code Tools"
   },
   {
-    name: "YouTube Thumbnail Downloader",
-    path: "/tools/youtube-thumbnail-downloader",
-    description: "Download thumbnails from any YouTube video in multiple qualities instantly.",
-    category: "Video & Media Tools"  // or "Generators" / new category
-  },
-  {
     name: "Age Calculator",
     path: "/tools/age-calculator",
     description: "Calculate exact age in years, months, days, plus reading time to next birthday.",
@@ -111,12 +105,6 @@ export const tools = [
     category: "Social Media Tools"
   },
   {
-    name: "Random Number Generator",
-    path: "/tools/random-number-generator",
-    description: "Generate random numbers, dice rolls, lottery picks – with custom range and unique option.",
-    category: "Generators"
-  },
-  {
     name: "Watermark Remover",
     path: "/tools/watermark-remover",
     description: "Remove simple watermarks and logos from images using color-based inpainting.",
@@ -127,18 +115,6 @@ export const tools = [
     path: "/tools/image-to-text",
     description: "Extract text from images, screenshots, scanned docs – supports English & Urdu.",
     category: "Image Tools"
-  },
-  {
-    name: "PDF to Word",
-    path: "/tools/pdf-to-word",
-    description: "Extract text from PDF files and convert to editable Word (.docx) document.",
-    category: "File Converters"
-  },
-  {
-    name: "PDF Compressor",
-    path: "/tools/pdf-compressor",
-    description: "Reduce PDF file size by compressing images and streams – all in-browser.",
-    category: "File Converters"
   },
   {
     name: "JSON Validator",
@@ -169,18 +145,6 @@ export const tools = [
     path: "/tools/midjourney-prompt-generator",
     description: "Create detailed prompts for Midjourney AI images including styles and lighting.",
     category: "AI Tools"
-  },
-  {
-    name: "TikTok Video Downloader",
-    path: "/tools/tiktok-video-downloader",
-    description: "Download TikTok videos without watermark in HD quality. Save instantly to your device.",
-    category: "Video Tools"
-  },
-  {
-    name: "Instagram Video Downloader",
-    path: "/tools/instagram-video-downloader",
-    description: "Save Instagram Reels, videos, and carousel posts in HD quality instantly.",
-    category: "Video Tools"
   },
   {
     "name": "Case Converter",

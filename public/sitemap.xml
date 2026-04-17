@@ -62,18 +62,6 @@
     <!-- EXISTING TOOLS                                           -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <url>
-        <loc>https://www.generatorpromptai.com/tools/tiktok-video-downloader</loc>
-        <lastmod>2026-04-08</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://www.generatorpromptai.com/tools/instagram-video-downloader</loc>
-        <lastmod>2026-04-08</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
         <loc>https://www.generatorpromptai.com/tools/ai-agent</loc>
         <lastmod>2026-04-08</lastmod>
         <changefreq>weekly</changefreq>
@@ -182,18 +170,6 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.generatorpromptai.com/tools/pdf-compressor</loc>
-        <lastmod>2026-04-08</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://www.generatorpromptai.com/tools/pdf-to-word</loc>
-        <lastmod>2026-04-08</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
         <loc>https://www.generatorpromptai.com/tools/percentage-calculator</loc>
         <lastmod>2026-04-08</lastmod>
         <changefreq>weekly</changefreq>
@@ -201,12 +177,6 @@
     </url>
     <url>
         <loc>https://www.generatorpromptai.com/tools/qr-code-generator</loc>
-        <lastmod>2026-04-08</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://www.generatorpromptai.com/tools/random-number-generator</loc>
         <lastmod>2026-04-08</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -241,13 +211,6 @@
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
-    <url>
-        <loc>https://www.generatorpromptai.com/tools/youtube-thumbnail-downloader</loc>
-        <lastmod>2026-04-08</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
     <!-- NEW TOOLS ADDED FROM APP.JSX -->
     <url>
         <loc>https://www.generatorpromptai.com/tools/case-converter</loc>
@@ -297,5 +260,4 @@
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
-
 </urlset>

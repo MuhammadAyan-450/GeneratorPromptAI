@@ -11,13 +11,22 @@ const Footer = () => {
 
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2.5 mb-5 group">
+            <Link
+              to="/"
+              className="flex items-center gap-2.5 mb-5 group"
+              aria-label="Go to homepage"
+              title="GeneratorPromptAI Home"
+            >
               <Sparkles
                 size={30}
                 className="text-purple-500 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all"
               />
-            </Link>
 
+              {/* ✅ Visible Brand Name (IMPORTANT for SEO) */}
+              <span className="text-lg font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
+                GeneratorPromptAI
+              </span>
+            </Link>
             <p className="text-gray-600 text-base leading-relaxed mb-6">
               Free AI prompt generator and powerful Free online tools for creators,
               developers and marketers. Generate prompts for ChatGPT, Claude,
@@ -58,13 +67,13 @@ const Footer = () => {
                 </Link>
               </li>
 
-               <li>
+              <li>
                 <Link to="/privacy-policy" className="text-gray-600 hover:text-indigo-600 transition">
                   Privacy Policy
                 </Link>
               </li>
 
-               <li>
+              <li>
                 <Link to="/terms-of-service" className="text-gray-600 hover:text-indigo-600 transition">
                   Terms of Service
                 </Link>

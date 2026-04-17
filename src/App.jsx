@@ -41,7 +41,6 @@ const QRCodeGenerator = lazy(() => import("./tools/QRCodeGenerator"));
 const PasswordGenerator = lazy(() => import("./tools/PasswordGenerator"));
 const JsonFormatter = lazy(() => import("./tools/JsonFormatter"));
 const WordCounter = lazy(() => import("./tools/WordCounter"));
-const YoutubeThumbnailDownloader = lazy(() => import("./tools/YoutubeThumbnailDownloader"));
 const AgeCalculator = lazy(() => import("./tools/AgeCalculator"));
 const CurrencyConverter = lazy(() => import("./tools/CurrencyConverter"));
 const TimeZoneConverter = lazy(() => import("./tools/TimeZoneConverter"));
@@ -51,18 +50,13 @@ const LoremIpsumGenerator = lazy(() => import("./tools/LoremIpsumGenerator"));
 const FakeDataGenerator = lazy(() => import("./tools/FakeDataGenerator"));
 const SitemapGenerator = lazy(() => import("./tools/SitemapGenerator"));
 const EmojiPicker = lazy(() => import("./tools/EmojiPicker"));
-const RandomNumberGenerator = lazy(() => import("./tools/RandomNumberGenerator"));
 const WatermarkRemover = lazy(() => import("./tools/WatermarkRemover"));
 const ImageToText = lazy(() => import("./tools/ImageToText"));
-const PdfToWord = lazy(() => import("./tools/PdfToWord"));
-const PdfCompressor = lazy(() => import("./tools/PdfCompressor"));
 const JsonValidator = lazy(() => import("./tools/JsonValidator"));
 const ChatGPTPrompt = lazy(() => import("./tools/ChatGPTPrompt"));
 const ClaudePrompt = lazy(() => import("./tools/ClaudePrompt"));
 const MidjourneyPrompt = lazy(() => import("./tools/MidjourneyPrompt"));
 const YoutubePrompt = lazy(() => import("./tools/YoutubePrompt"));
-const TikTokVideoDownloader = lazy(() => import("./tools/TikTokVideoDownloader"));
-const InstagramVideoDownloader = lazy(() => import("./tools/InstagramVideoDownloader"));
 const CaseConverter = lazy(() => import("./tools/CaseConverter"));
 const RemoveDuplicateLines = lazy(() => import("./tools/RemoveDuplicateLines"));
 const EmailValidator = lazy(() => import("./tools/EmailValidator"));
@@ -106,7 +100,6 @@ export default function App() {
           <Route path="/tools/password-generator" element={<PasswordGenerator />} />
           <Route path="/tools/json-formatter" element={<JsonFormatter />} />
           <Route path="/tools/word-counter" element={<WordCounter />} />
-          <Route path="/tools/youtube-thumbnail-downloader" element={<YoutubeThumbnailDownloader />} />
           <Route path="/tools/age-calculator" element={<AgeCalculator />} />
           <Route path="/tools/currency-converter" element={<CurrencyConverter />} />
           <Route path="/tools/time-zone-converter" element={<TimeZoneConverter />} />
@@ -116,18 +109,13 @@ export default function App() {
           <Route path="/tools/fake-data-generator" element={<FakeDataGenerator />} />
           <Route path="/tools/sitemap-generator" element={<SitemapGenerator />} />
           <Route path="/tools/emoji-picker" element={<EmojiPicker />} />
-          <Route path="/tools/random-number-generator" element={<RandomNumberGenerator />} />
           <Route path="/tools/watermark-remover" element={<WatermarkRemover />} />
           <Route path="/tools/image-to-text" element={<ImageToText />} />
-          <Route path="/tools/pdf-to-word" element={<PdfToWord />} />
-          <Route path="/tools/pdf-compressor" element={<PdfCompressor />} />
           <Route path="/tools/json-validator" element={<JsonValidator />} />
           <Route path="/tools/chatgpt-prompt-generator" element={<ChatGPTPrompt />} />
           <Route path="/tools/claude-prompt-generator" element={<ClaudePrompt />} />
           <Route path="/tools/youtube-script-prompt-generator" element={<YoutubePrompt />} />
           <Route path="/tools/midjourney-prompt-generator" element={<MidjourneyPrompt />} />
-          <Route path="/tools/tiktok-video-downloader" element={<TikTokVideoDownloader />} />
-          <Route path="/tools/instagram-video-downloader" element={<InstagramVideoDownloader />} />
           <Route path="/tools/case-converter" element={<CaseConverter />} />
           <Route path="/tools/remove-duplicate-lines" element={<RemoveDuplicateLines />} />
           <Route path="/tools/email-validator" element={<EmailValidator />} />
