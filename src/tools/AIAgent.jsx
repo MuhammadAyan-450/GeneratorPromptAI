@@ -157,14 +157,14 @@ const AIAgent = () => {
     <>
       <Helmet>
         {/* Primary SEO */}
-        <title>Free AI Chatbot Online - Chat with Llama 3.3 Powered by Groq | GeneratorPromptAI</title>
+        <title>Free AI Chatbot Online | Talk to AI Bot No Login Required</title>
         <meta
           name="description"
-          content="Chat with our free AI Agent powered by Groq and Llama 3.3. Ask questions, generate prompts for ChatGPT and Midjourney, get content ideas instantly. No sign-up needed."
+          content="Free AI chatbot online! Chat with advanced AI instantly - ask questions, generate content, get answers 24/7. No signup, unlimited messages! 🤖✨"
         />
         <meta
           name="keywords"
-          content="AI chatbot, free AI chat, Llama 3.3 chatbot, Groq AI, AI agent online, free AI assistant, ChatGPT alternative, AI prompt generator, free chat AI"
+          content="free ai chatbot, ai chatbot online, talk to ai, chat with ai free, ai bot online, free ai assistant, chatbot no login, ai chat free online, best free ai chatbot, ai conversation bot, ask ai questions free, chatgpt alternative free"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/ai-agent" />
         <meta name="robots" content="index, follow" />
@@ -172,20 +172,20 @@ const AIAgent = () => {
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Free AI Chatbot - Chat with Llama 3.3 Powered by Groq" />
+        <meta property="og:title" content="Free AI Chatbot 🤖 Chat with AI Online - No Signup!" />
         <meta
           property="og:description"
-          content="Free AI chatbot powered by Groq and Llama 3.3. Ask anything, generate prompts, get content ideas instantly. No sign-up needed."
+          content="Talk to AI for free! Get instant answers, generate content, brainstorm ideas. Powered by Llama 3.3 & Groq. Zero signup, unlimited chats! 💬"
         />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/ai-agent" />
         <meta property="og:image" content="https://www.generatorpromptai.com/og-ai-agent.png" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free AI Chatbot - Groq + Llama 3.3 | GeneratorPromptAI" />
+        <meta name="twitter:title" content="Free AI Chatbot - Chat with AI Instantly 🤖" />
         <meta
           name="twitter:description"
-          content="Chat with our free AI Agent powered by Groq and Llama 3.3. No sign-up needed."
+          content="Free AI chat powered by Llama 3.3. Ask anything, generate content, get smart answers. No login needed! 💬✨"
         />
         <meta name="twitter:image" content="https://www.generatorpromptai.com/og-ai-agent.png" />
 
@@ -222,7 +222,7 @@ const AIAgent = () => {
               <Bot className="text-indigo-600" size={24} />
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-              AI Agent Chatbot
+              Free AI Chatbot Online - Chat with AI Bot Instantly
             </h1>
             <p className="text-gray-500 text-sm">
               Powered by <strong>Groq + Llama 3.3</strong> — Ask anything, get instant answers
@@ -241,8 +241,8 @@ const AIAgent = () => {
                 >
                   <div
                     className={`max-w-[80%] px-5 py-4 rounded-3xl relative break-words shadow-sm ${msg.role === "user"
-                        ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
-                        : "bg-white text-gray-900 border border-gray-200"
+                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
+                      : "bg-white text-gray-900 border border-gray-200"
                       }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
@@ -311,8 +311,8 @@ const AIAgent = () => {
                 onClick={sendMessage}
                 disabled={isThinking || !input.trim()}
                 className={`px-6 py-3.5 rounded-2xl flex items-center justify-center transition-all ${isThinking || !input.trim()
-                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 active:scale-95"
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 active:scale-95"
                   }`}
               >
                 {isThinking ? (

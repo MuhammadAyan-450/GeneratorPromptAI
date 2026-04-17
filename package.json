@@ -6,8 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "react-snap",
     "lint": "eslint .",
     "preview": "vite preview"
+  },
+  "reactSnap": {
+    "inlineCss": true,
+    "puppeteerArgs": [
+      "--no-sandbox"
+    ]
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.19.0",

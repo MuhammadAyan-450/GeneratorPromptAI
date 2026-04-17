@@ -114,14 +114,14 @@ const Base64Encoder = () => {
     <>
       <Helmet>
         {/* Primary SEO */}
-        <title>Base64 Encoder & Decoder - Convert Text Online</title>
+        <title>Base64 Encode Decode Online Free | Text Converter Tool</title>
         <meta
           name="description"
-          content="Free online Base64 Encoder and Decoder. Convert plain text to Base64 and back. Supports UTF-8, emojis, and special characters."
+          content="Free Base64 encoder & decoder online! Convert text, images & files to Base64 instantly. Supports UTF-8, emojis & special characters. No upload needed! 🔐"
         />
         <meta
           name="keywords"
-          content="base64 encode, base64 decode, base64 converter, text to base64, base64 to text, online base64 tool"
+          content="base64 encode online, base64 decode, base64 converter, text to base64, base64 encoder decoder, online base64 tool, base64 decode online, encode to base64, base64 string converter, free base64 encoder, base64 text converter"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/base64-encode" />
         <meta name="robots" content="index, follow" />
@@ -129,8 +129,11 @@ const Base64Encoder = () => {
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Base64 Encoder & Decoder" />
-        <meta property="og:description" content="Encode and decode Base64 strings instantly with our free online developer tool." />
+        <meta name="twitter:title" content="Base64 Encode & Decode Online - Free Developer Tool 🔐" />
+        <meta
+          name="twitter:description"
+          content="Convert text to Base64 and back instantly! Supports UTF-8, emojis & special characters. 100% free for developers! 💻"
+        />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/base64-encode" />
         <meta property="og:image" content="https://www.generatorpromptai.com/og-base64-encode.png" />
 
@@ -168,7 +171,7 @@ const Base64Encoder = () => {
               <FileCode className="text-sky-600" size={28} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Base64 Encoder & Decoder
+              Free Base64 Encoder & Decoder Online - Convert Text Instantly
             </h1>
             <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
               Convert text to Base64 and vice versa. Supports UTF-8, emojis, and special characters instantly.
@@ -202,14 +205,14 @@ const Base64Encoder = () => {
 
             {/* Action Buttons Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <button 
-                onClick={encodeBase64} 
+              <button
+                onClick={encodeBase64}
                 className="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2"
               >
                 <Lock size={18} /> Encode to Base64
               </button>
-              <button 
-                onClick={decodeBase64} 
+              <button
+                onClick={decodeBase64}
                 className="bg-white border-2 border-sky-100 text-sky-700 hover:bg-sky-50 font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <Unlock size={18} /> Decode from Base64

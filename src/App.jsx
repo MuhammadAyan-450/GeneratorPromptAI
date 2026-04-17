@@ -26,6 +26,10 @@ const BlogPostCompressImage = lazy(() =>
   import("./blogs/BlogPostCompressImage")
 );
 
+const BlogPostJpegVsPng = lazy(() =>
+  import("./blogs/BlogPostJpegVsPng")
+);
+
 
 // Tools (lazy)
 const AIAgent = lazy(() => import("./tools/AIAgent"));
@@ -89,6 +93,7 @@ export default function App() {
             path="/blog/claude-vs-chatgpt-which-is-better"
             element={<BlogPostClaudeVsChatGPT />}
           />
+          <Route path="/blog/jpeg-vs-png-complete-comparison-guide" element={<BlogPostJpegVsPng />} />
           <Route path="/blog/compress-image-to-100kb-online-free" element={<BlogPostCompressImage />} />
 
           {/* Tools */}

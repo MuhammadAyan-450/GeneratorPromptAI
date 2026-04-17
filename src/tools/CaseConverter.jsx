@@ -6,7 +6,7 @@ import { ArrowLeft, Copy, RefreshCw, Type, FileText, Hash, AlignLeft } from "luc
 const CaseConverter = () => {
   const [text, setText] = useState("");
   const [copied, setCopied] = useState(false);
-  
+
   // Stats
   const [wordCount, setWordCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
@@ -21,7 +21,7 @@ const CaseConverter = () => {
 
   const toUpperCase = () => setText(text.toUpperCase());
   const toLowerCase = () => setText(text.toLowerCase());
-  
+
   const toTitleCase = () => {
     const titleCase = text
       .toLowerCase()
@@ -141,14 +141,14 @@ const CaseConverter = () => {
     <>
       <Helmet>
         {/* Primary SEO */}
-        <title>Case Converter - Convert to Uppercase, Lowercase & Title Case</title>
+        <title>Case Converter Online Free | Change Text to Upper Lower</title>
         <meta
           name="description"
-          content="Free online case converter tool. Easily change text to Uppercase, Lowercase, Title Case, Sentence Case, and more. Instant conversion, no sign-up needed."
+          content="Free case converter! Instantly change text to UPPERCASE, lowercase, Title Case, Sentence case & more. Copy-paste ready. No signup required! ✍️"
         />
         <meta
           name="keywords"
-          content="case converter, uppercase to lowercase, title case converter, sentence case, text formatter, online text tools, convert text case"
+          content="case converter, uppercase to lowercase converter, text case converter, convert to uppercase, convert to lowercase, title case converter online, sentence case converter, change text case, caps converter, lowercase to uppercase, text transformer tool"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/case-converter" />
         <meta name="robots" content="index, follow" />
@@ -156,15 +156,21 @@ const CaseConverter = () => {
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Case Converter - Free Online Text Transformer" />
-        <meta property="og:description" content="Convert text to Uppercase, Lowercase, Title Case and more instantly with our free online tool." />
+        <meta property="og:title" content="Case Converter Tool ✍️ Change Text Case Instantly - Free" />
+        <meta
+          property="og:description"
+          content="Convert text to UPPERCASE, lowercase, Title Case, or Sentence case in 1 click! Free online tool. Perfect for writers & editors! 📝"
+        />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/case-converter" />
         <meta property="og:image" content="https://www.generatorpromptai.com/og-case-converter.png" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Case Converter - Free Text Tools" />
-        <meta name="twitter:description" content="Change text case instantly. Uppercase, lowercase, title case and more." />
+        <meta name="twitter:title" content="Free Case Converter - Transform Text Case Online ✍️" />
+        <meta
+          name="twitter:description"
+          content="Change text to uppercase, lowercase, title case & more instantly! Free tool for writers, students & professionals. 📝"
+        />
         <meta name="twitter:image" content="https://www.generatorpromptai.com/og-case-converter.png" />
 
         {/* Schema: WebApplication */}
@@ -195,7 +201,7 @@ const CaseConverter = () => {
               <Type className="text-sky-600" size={28} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Case Converter
+              Free Case Converter - Change Text to Uppercase, Lowercase & Title Case
             </h1>
             <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
               Easily convert text to Uppercase, Lowercase, Title Case, and more. Fast, free, and works instantly in your browser.

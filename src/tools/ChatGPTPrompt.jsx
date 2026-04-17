@@ -161,14 +161,14 @@ const ChatGptPromptGenerator = () => {
     <>
       <Helmet>
         {/* Primary SEO */}
-        <title>ChatGPT Prompt Generator - Free Tool to Create Better ChatGPT Prompts</title>
+        <title>ChatGPT Prompt Generator Free | Create AI Prompts Instantly</title>
         <meta
           name="description"
-          content="Free ChatGPT prompt generator — create powerful, optimized prompts for ChatGPT instantly. Choose your tone, depth and style. Works with GPT-4, GPT-4o and GPT-3.5. No sign-up needed."
+          content="Free ChatGPT prompt generator! Create perfect AI prompts in seconds. Works with GPT-4, GPT-4o & Claude. Get better AI responses instantly! 🚀 No signup!"
         />
         <meta
           name="keywords"
-          content="chatgpt prompt generator, free chatgpt prompts, chatgpt prompt builder, best chatgpt prompts, prompt engineering, GPT-4 prompts, AI prompt generator, chatgpt prompts 2025"
+          content="chatgpt prompt generator, free chatgpt prompts, ai prompt generator, prompt generator for chatgpt, chatgpt prompt maker, best chatgpt prompts, gpt prompt generator, prompt engineering tool, chatgpt prompt ideas, ai prompt creator, free prompt generator, chatgpt prompts examples"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/chatgpt-prompt-generator" />
         <meta name="robots" content="index, follow" />
@@ -176,15 +176,21 @@ const ChatGptPromptGenerator = () => {
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="ChatGPT Prompt Generator - Create Better Prompts Free" />
-        <meta property="og:description" content="Generate optimized ChatGPT prompts instantly. Customize tone, depth and style. Works with GPT-4, GPT-4o and GPT-3.5. Free, no sign-up." />
+        <meta property="og:title" content="ChatGPT Prompt Generator 🤖 Create Perfect AI Prompts Free" />
+        <meta
+          property="og:description"
+          content="Generate powerful ChatGPT prompts instantly! Customize tone, style & depth. Works with GPT-4, Claude & all AI models. 100% Free! 🚀✨"
+        />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/chatgpt-prompt-generator" />
         <meta property="og:image" content="https://www.generatorpromptai.com/og-chatgpt-prompt-generator.png" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free ChatGPT Prompt Generator - Better Prompts Instantly" />
-        <meta name="twitter:description" content="Create powerful ChatGPT prompts in seconds. Choose tone, depth and style. Free, no sign-up needed." />
+        <meta name="twitter:title" content="Free ChatGPT Prompt Generator - Better AI Results 🤖" />
+        <meta
+          name="twitter:description"
+          content="Create optimized ChatGPT prompts in seconds! Choose tone, depth & style. Works with all AI models. No signup required! 🚀"
+        />
         <meta name="twitter:image" content="https://www.generatorpromptai.com/og-chatgpt-prompt-generator.png" />
 
         {/* Schema */}
@@ -212,7 +218,7 @@ const ChatGptPromptGenerator = () => {
               <Sparkles className="text-sky-600" size={26} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              ChatGPT Prompt Generator
+              Free ChatGPT Prompt Generator - Create Perfect AI Prompts Instantly
             </h1>
             <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
               Generate powerful, optimized prompts for ChatGPT in seconds. Customize tone, depth and style for better AI results.
