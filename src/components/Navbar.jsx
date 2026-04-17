@@ -135,7 +135,7 @@ const Navbar = () => {
             <Link to="/about" className={`${isActive("/about")} text-sm`}>About</Link>
             <Link to="/privacy-policy" className={`${isActive("/privacy-policy")} text-sm`}>Privacy</Link>
             <Link to="/contact" className={`${isActive("/contact")} text-sm`}>Contact</Link>
-
+            <Link to="/terms-of-service" className={`${isActive("/Terms of Service")} text-sm`}>Terms of Service</Link>
           </div>
 
           {/* ── Mobile Hamburger ── */}
@@ -162,6 +162,7 @@ const Navbar = () => {
                 { to: "/about", label: "About" },
                 { to: "/privacy-policy", label: "Privacy Policy" },
                 { to: "/contact", label: "Contact" },
+                { to: "/terms-of-service", label: "Terms of Service" },
               ].map((link) => (
                 <Link
                   key={link.to}
