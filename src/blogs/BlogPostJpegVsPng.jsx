@@ -23,9 +23,12 @@ import {
   Zap,
 } from "lucide-react";
 
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 // ─── POST DATA ────────────────────────────────────────────────────────────────
 const post = {
-  id: 8,
+  id: 4,
   slug: "jpeg-vs-png-complete-comparison-guide",
   title: "JPEG vs PNG — Complete Comparison Guide (When to Use Which in 2026)",
   excerpt:
@@ -38,7 +41,6 @@ const post = {
   featured: false,
   color: "from-emerald-500 to-teal-600",
   emoji: "🖼️",
-  views: "4.1K",
 };
 
 // ─── SEO SCHEMAS ──────────────────────────────────────────────────────────────
@@ -265,16 +267,7 @@ const BlogPostJpegVsPng = () => {
       </Helmet>
 
       <div className="min-h-screen bg-gray-50">
-        {/* ── Navbar ── */}
-        <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-            <Link to="/" className="font-bold text-lg text-gray-900">Generator<span className="text-indigo-600">PromptAI</span></Link>
-            <div className="flex items-center gap-4">
-              <Link to="/blog" className="text-sm text-gray-500 hover:text-indigo-600 transition-colors hidden sm:inline">Blog</Link>
-              <Link to="/pages/all-tools" className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">Free Tools</Link>
-            </div>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* ── Breadcrumb ── */}
         <div className="max-w-6xl mx-auto px-4 pt-6">
@@ -299,11 +292,10 @@ const BlogPostJpegVsPng = () => {
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className={`text-sm py-1.5 px-3 rounded-r-lg transition-all border-l-2 ${
-                      activeTOC === item.id
-                        ? "border-l-indigo-600 text-indigo-600 bg-indigo-50 font-medium"
-                        : "border-l-transparent text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
-                    }`}
+                    className={`text-sm py-1.5 px-3 rounded-r-lg transition-all border-l-2 ${activeTOC === item.id
+                      ? "border-l-indigo-600 text-indigo-600 bg-indigo-50 font-medium"
+                      : "border-l-transparent text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
+                      }`}
                   >
                     {item.label}
                   </a>
@@ -373,7 +365,7 @@ const BlogPostJpegVsPng = () => {
               <p className="text-lg">
                 Every designer, developer, and content creator has asked this question:{" "}
                 <span className="bg-gradient-to-t from-emerald-200 to-transparent bg-[length:100%_40%] bg-no-repeat bg-bottom font-semibold text-gray-900">
-                should I use JPEG or PNG?
+                  should I use JPEG or PNG?
                 </span>{" "}
                 And most articles give you a vague "it depends". That's useless. Here's the actual answer with real data, real file sizes, and a rule you can apply in 10 seconds.
               </p>
@@ -931,16 +923,7 @@ const BlogPostJpegVsPng = () => {
         </div>
 
         {/* ── Footer ── */}
-        <footer className="bg-white border-t border-gray-200 mt-16">
-          <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-            <p>© 2026 GeneratorPromptAI. All rights reserved.</p>
-            <div className="flex gap-6">
-              <Link to="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
-              <Link to="/pages/all-tools" className="hover:text-indigo-600 transition-colors">Tools</Link>
-              <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

@@ -1,49 +1,46 @@
-// pages/HashtagGenerator.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, RefreshCw, Hash, Zap, TrendingUp, BarChart2 } from "lucide-react";
+import { Copy, RefreshCw, Hash, Home, ChevronDown, Zap, BarChart2, Target, Clock } from "lucide-react";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const PLATFORMS = [
-  { value: "instagram", label: "📸 Instagram", maxTags: 30, tip: "Use 20–30 hashtags in first comment" },
-  { value: "tiktok", label: "🎵 TikTok", maxTags: 10, tip: "5–10 hashtags work best on TikTok" },
-  { value: "youtube", label: "▶️ YouTube", maxTags: 15, tip: "Use 3–5 relevant tags in description" },
-  { value: "twitter", label: "𝕏 Twitter/X", maxTags: 3, tip: "1–3 hashtags get the most engagement" },
-  { value: "linkedin", label: "💼 LinkedIn", maxTags: 10, tip: "3–10 professional hashtags work best" },
+  { value: "instagram", label: "Instagram", maxTags: 30, tip: "Use 20-30 hashtags in first comment for best reach" },
+  { value: "tiktok",    label: "TikTok",    maxTags: 10, tip: "5-10 hashtags work best on TikTok" },
+  { value: "youtube",   label: "YouTube",   maxTags: 15, tip: "Use 3-5 relevant tags in description" },
+  { value: "twitter",   label: "Twitter/X", maxTags: 3,  tip: "1-3 hashtags get the most engagement" },
+  { value: "linkedin",  label: "LinkedIn",  maxTags: 10, tip: "3-10 professional hashtags work best" },
 ];
 
 const CATEGORIES = [
-  { label: "🍕 Food", keywords: "food, foodie, karachi food, street food, recipe, cooking, iftar, biryani, desi food" },
-  { label: "✈️ Travel", keywords: "travel, wanderlust, pakistan travel, lahore, karachi, islamabad, hunza, explore" },
-  { label: "👗 Fashion", keywords: "fashion, style, ootd, outfit, clothing, streetstyle, trending fashion, desi fashion" },
-  { label: "💪 Fitness", keywords: "fitness, workout, gym, motivation, health, exercise, bodybuilding, fit lifestyle" },
-  { label: "💻 Tech", keywords: "tech, programming, coding, software, AI, developer, javascript, python, startup" },
-  { label: "💼 Business", keywords: "business, entrepreneur, startup, money, success, hustle, marketing, growth" },
-  { label: "🌙 Ramadan", keywords: "ramadan, iftar, sehri, ramadan mubarak, ramadan2026, fasting, dua, quran" },
-  { label: "🎉 Eid", keywords: "eid, eid mubarak, eid2026, celebration, eid ul fitr, eid outfit, eid vibes" },
-  { label: "📸 Photography", keywords: "photography, photo, portrait, landscape, camera, photographer, shotoniphone" },
-  { label: "🎮 Gaming", keywords: "gaming, gamer, esports, pubg, freefire, valorant, minecraft, twitch, stream" },
+  { label: "Food",           keywords: "food, foodie, karachi food, street food, recipe, cooking, iftar, biryani, desi food" },
+  { label: "Travel",         keywords: "travel, wanderlust, pakistan travel, lahore, karachi, islamabad, hunza, explore" },
+  { label: "Fashion",        keywords: "fashion, style, ootd, outfit, clothing, streetstyle, trending fashion, desi fashion" },
+  { label: "Fitness",        keywords: "fitness, workout, gym, motivation, health, exercise, bodybuilding, fit lifestyle" },
+  { label: "Tech",           keywords: "tech, programming, coding, software, AI, developer, javascript, python, startup" },
+  { label: "Business",       keywords: "business, entrepreneur, startup, money, success, hustle, marketing, growth" },
+  { label: "Ramadan",        keywords: "ramadan, iftar, sehri, ramadan mubarak, ramadan2026, fasting, dua, quran" },
+  { label: "Eid",            keywords: "eid, eid mubarak, eid2026, celebration, eid ul fitr, eid outfit, eid vibes" },
+  { label: "Photography",    keywords: "photography, photo, portrait, landscape, camera, photographer, shotoniphone" },
+  { label: "Gaming",         keywords: "gaming, gamer, esports, pubg, freefire, valorant, minecraft, twitch, stream" },
 ];
 
 const MODIFIERS = {
   trending: ["2026", "trending", "viral", "fyp", "explorepage", "trendingnow", "reels", "viralvideo", "instareels", "tiktokpakistan"],
-  common: ["love", "daily", "best", "pro", "tips", "life", "style", "vibes", "goals", "inspiration", "motivation", "beautiful", "happy", "fun", "instagood", "photooftheday", "follow"],
-  desi: ["dil", "pyar", "zindagi", "khushi", "desi", "pakistani", "subhanallah", "alhamdulillah", "mashallah", "dua", "sukoon", "junoon", "yaar", "maza", "swag"],
-  niche: ["official", "community", "creator", "content", "network", "hub", "world", "nation", "lovers", "addicts", "fanatics", "culture", "squad"],
+  common:   ["love", "daily", "best", "pro", "tips", "life", "style", "vibes", "goals", "inspiration", "motivation", "beautiful", "happy", "fun", "instagood", "photooftheday", "follow"],
+  desi:     ["dil", "pyar", "zindagi", "khushi", "desi", "pakistani", "subhanallah", "alhamdulillah", "mashallah", "dua", "sukoon", "junoon", "yaar", "maza", "swag"],
+  niche:    ["official", "community", "creator", "content", "network", "hub", "world", "nation", "lovers", "addicts", "fanatics", "culture", "squad"],
 };
 
 function buildHashtags(words, language, maxLength) {
   const generated = new Set();
 
-  // Single word tags
   words.forEach((w) => {
     generated.add(`#${w}`);
     generated.add(`#${w.charAt(0).toUpperCase()}${w.slice(1)}`);
   });
 
-  // Two-word combos (camelCase)
   for (let i = 0; i < words.length; i++) {
     for (let j = i + 1; j < words.length; j++) {
       const a = words[i], b = words[j];
@@ -52,7 +49,6 @@ function buildHashtags(words, language, maxLength) {
     }
   }
 
-  // Modifier combos
   const mods = language === "urdu-roman"
     ? [...MODIFIERS.trending, ...MODIFIERS.desi]
     : language === "mixed"
@@ -74,9 +70,9 @@ function buildHashtags(words, language, maxLength) {
   if (maxLength !== "all") {
     list = list.filter((tag) => {
       const len = tag.length - 1;
-      if (maxLength === "short") return len <= 12;
+      if (maxLength === "short")  return len <= 12;
       if (maxLength === "medium") return len > 12 && len <= 20;
-      if (maxLength === "long") return len > 20;
+      if (maxLength === "long")   return len > 20;
       return true;
     });
   }
@@ -87,8 +83,8 @@ function buildHashtags(words, language, maxLength) {
 function getTier(tag) {
   const t = tag.toLowerCase().replace("#", "");
   const isTrending = MODIFIERS.trending.some((m) => t.includes(m));
-  const isCommon = MODIFIERS.common.some((m) => t.includes(m));
-  const isShort = t.length <= 8;
+  const isCommon   = MODIFIERS.common.some((m) => t.includes(m));
+  const isShort    = t.length <= 8;
   if (isTrending || isShort) return "high";
   if (isCommon) return "medium";
   return "low";
@@ -97,18 +93,16 @@ function getTier(tag) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const HashtagGenerator = () => {
-  const [keywords, setKeywords] = useState("");
+  const [keywords, setKeywords]       = useState("");
   const [excludeWords, setExcludeWords] = useState("");
   const [numHashtags, setNumHashtags] = useState(30);
-  const [maxLength, setMaxLength] = useState("all");
-  const [language, setLanguage] = useState("english");
-  const [platform, setPlatform] = useState("instagram");
-  const [hashtags, setHashtags] = useState([]);
-  const [copied, setCopied] = useState("");
-  const [error, setError] = useState("");
-  const [toast, setToast] = useState("");
-
-  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(""), 2000); };
+  const [maxLength, setMaxLength]     = useState("all");
+  const [language, setLanguage]       = useState("english");
+  const [platform, setPlatform]       = useState("instagram");
+  const [hashtags, setHashtags]       = useState([]);
+  const [copied, setCopied]           = useState("");
+  const [error, setError]             = useState("");
+  const [openFaq, setOpenFaq]         = useState(null);
 
   const currentPlatform = PLATFORMS.find((p) => p.value === platform);
 
@@ -132,134 +126,185 @@ const HashtagGenerator = () => {
     const tags = hashtags.filter((t) => getTier(t) === group).join(" ");
     navigator.clipboard.writeText(tags);
     setCopied(group);
-    showToast(`${group.charAt(0).toUpperCase() + group.slice(1)} hashtags copied!`);
     setTimeout(() => setCopied(""), 2000);
   };
 
   const copyAll = () => {
     navigator.clipboard.writeText(hashtags.join(" "));
     setCopied("all");
-    showToast(`All ${hashtags.length} hashtags copied!`);
     setTimeout(() => setCopied(""), 2000);
   };
 
   const copySingle = (tag) => {
     navigator.clipboard.writeText(tag);
-    showToast(`${tag} copied!`);
   };
 
   const charCount = hashtags.join(" ").length;
 
   const highTags = hashtags.filter((t) => getTier(t) === "high");
-  const medTags = hashtags.filter((t) => getTier(t) === "medium");
-  const lowTags = hashtags.filter((t) => getTier(t) === "low");
+  const medTags  = hashtags.filter((t) => getTier(t) === "medium");
+  const lowTags  = hashtags.filter((t) => getTier(t) === "low");
 
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Hashtag Generator",
-    url: "https://www.generatorpromptai.com/tools/hashtag-generator",
-    applicationCategory: "SocialMediaApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    description: "Free hashtag generator for Instagram, TikTok, YouTube, Twitter/X and LinkedIn. Generate trending viral hashtags with Pakistani and English modifiers.",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
+  const reset = () => {
+    setKeywords("");
+    setExcludeWords("");
+    setHashtags([]);
+    setError("");
+    setCopied("");
+    setNumHashtags(30);
+    setMaxLength("all");
+    setLanguage("english");
+    setPlatform("instagram");
   };
 
-  const faqSchema = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Generate Low Competition Hashtags for Instagram Reels – Free Viral Hashtag Tool",
+    "url": "https://www.generatorpromptai.com/tools/hashtag-generator",
+    "applicationCategory": "SocialMediaApplication",
+    "operatingSystem": "All",
+    "description": "Free hashtag generator for Instagram, TikTok, YouTube and Twitter/X. Generate trending and low competition hashtags sorted by tier. Pakistani and English styles. Copy all with one click.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
+  };
+
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Hashtag Generator", "item": "https://www.generatorpromptai.com/tools/hashtag-generator" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "How many hashtags should I use on Instagram?",
-        acceptedAnswer: { "@type": "Answer", text: "Instagram allows up to 30 hashtags per post. Using 20–30 relevant hashtags in your first comment (not the caption) is the current best practice for maximum reach." },
+        "name": "How to get more impressions on Instagram reels with hashtags?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use a mix of 5 high-competition viral hashtags, 15 medium-competition relevant hashtags, and 5-10 low-competition niche hashtags. Place them in the first comment, not the caption. Our tool automatically sorts your hashtags into these three tiers."
+        }
       },
       {
         "@type": "Question",
-        name: "How many hashtags work best on TikTok?",
-        acceptedAnswer: { "@type": "Answer", text: "5–10 hashtags work best on TikTok. Always include #fyp and 2–3 niche-specific hashtags relevant to your content." },
+        "name": "How many hashtags for Instagram reels to go viral in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Instagram allows up to 30 hashtags per post. The best strategy in 2026 is using 25-30 hashtags with a mix of all three competition tiers. Avoid using only viral hashtags — niche tags help the algorithm understand your content."
+        }
       },
       {
         "@type": "Question",
-        name: "Is this hashtag generator free?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes, completely free. No sign-up, no account, no payment required." },
+        "name": "What are low competition hashtags and why do they matter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Low competition hashtags have fewer posts but a highly targeted audience. When you use them, your post is much more likely to appear on the Explore page for that specific tag. They matter because they bring in views from people actually interested in your niche."
+        }
       },
       {
         "@type": "Question",
-        name: "What does high, medium, low competition mean?",
-        acceptedAnswer: { "@type": "Answer", text: "High competition hashtags (#trending, #fyp) have millions of posts — hard to rank but huge reach. Medium competition hashtags are easier to rank for. Low competition (niche) hashtags have smaller audiences but your post is more likely to be discovered." },
+        "name": "How to find trending hashtags for TikTok Pakistan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Enter your topic keywords in our tool, select TikTok as the platform, and choose Mixed or Urdu Romanized language style. The tool will generate hashtags including Pakistani trending tags like #tiktokpakistan, #desi, and niche-specific tags for your content."
+        }
       },
       {
         "@type": "Question",
-        name: "Can I generate Urdu or desi hashtags?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. Select 'Urdu Romanized' or 'Mixed' language style to include desi modifiers like #desi, #pakistani, #subhanallah, #zindagi and more in your generated hashtags." },
+        "name": "Best hashtag strategy for small Instagram accounts?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Small accounts should focus heavily on low and medium competition hashtags. Use only 3-5 high-competition tags and fill the rest with niche-specific tags under 50k posts. This maximizes the chance of appearing in search results for your specific niche."
+        }
       },
-    ],
+      {
+        "@type": "Question",
+        "name": "Can I generate Urdu or Romanized Pakistani hashtags?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Select Urdu Romanized or Mixed language style to include desi modifiers like #desi, #pakistani, #subhanallah, #zindagi, #pyar, #dil and more. These work well for Pakistani audience content on Instagram and TikTok."
+        }
+      }
+    ]
   };
 
   return (
     <>
       <Helmet>
-        <title>Hashtag Generator - Free Trending Hashtags for Instagram, TikTok & YouTube 2026</title>
+        <title>Generate Low Competition Hashtags for Instagram Reels – Free Viral Hashtag Tool</title>
+
         <meta
           name="description"
-          content="Free hashtag generator for Instagram, TikTok, YouTube Shorts and Twitter/X. Generate trending viral hashtags with Pakistani and English styles. Filter by platform, competition tier and length. No sign-up."
+          content="Free hashtag generator for Instagram reels, TikTok, YouTube and Twitter. Get trending and low competition hashtags sorted by tier. Pakistani and English styles. Copy all with one click – no signup."
         />
+
         <meta
           name="keywords"
-          content="hashtag generator, instagram hashtag generator, tiktok hashtag generator, trending hashtags 2026, viral hashtags, free hashtag tool, reels hashtags, youtube hashtags, pakistan hashtags"
+          content="how to get more impressions on instagram reels with hashtags, best hashtags for instagram reels to go viral 2026, low competition hashtags for instagram growth, instagram hashtag strategy for small accounts, free instagram hashtag generator with copy button, tiktok hashtag generator for more views, how many hashtags for instagram reels 2026, trending hashtags for tiktok pakistan, urdu hashtags for instagram reels pakistan, desi hashtags for tiktok viral videos, niche hashtags generator for small accounts, hashtag competition checker free online"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/hashtag-generator" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Free Hashtag Generator - Trending Hashtags for Instagram & TikTok" />
-        <meta property="og:description" content="Generate trending hashtags for Instagram, TikTok, YouTube and Twitter. Pakistani and English styles. Free, no sign-up." />
+        <meta property="og:title" content="Generate Low Competition Hashtags for Instagram Reels – Free Tool" />
+        <meta property="og:description" content="Get trending and low competition hashtags sorted by tier for Instagram, TikTok, YouTube. Copy all with one click." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/hashtag-generator" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-hashtag-generator.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Hashtag Generator - Instagram, TikTok, YouTube 2026" />
-        <meta name="twitter:description" content="Generate trending viral hashtags for any platform. Pakistani and English styles. Free online tool." />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-hashtag-generator.png" />
+        <meta name="twitter:title" content="Free Hashtag Generator – Low Competition Hashtags for Instagram Reels" />
+        <meta name="twitter:description" content="Generate trending and niche hashtags for Instagram, TikTok, YouTube. Sorted by competition tier. Copy all instantly." />
 
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
-      {/* Toast */}
-      {toast && (
-        <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-medium shadow-lg pointer-events-none">
-          {toast}
-        </div>
-      )}
-
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-5xl mx-auto w-full px-4 py-5">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
+
+        {/* ── Breadcrumb ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Hashtag Generator</span></li>
+            </ol>
+          </nav>
         </div>
 
-        <div className="flex-grow max-w-5xl mx-auto w-full px-4 pb-20">
+        <div className="flex-grow max-w-4xl mx-auto w-full px-4 pb-20">
 
-          {/* Hero */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-pink-100 mb-4">
-              <Hash className="text-pink-600" size={28} />
+          {/* ── Hero ── */}
+          <div className="text-center mb-10 mt-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
+              <Hash className="text-sky-600" size={28} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Hashtag Generator
+              Generate Low Competition Hashtags for Instagram Reels –{" "}
+              <span className="text-sky-600">Free Viral Hashtag Tool</span>
             </h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Generate trending hashtags for Instagram, TikTok, YouTube and Twitter. Pakistani &amp; English styles.
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Get trending and niche hashtags sorted by competition tier. Built for Instagram, TikTok, YouTube and Twitter. Copy all with one click.
             </p>
           </div>
 
-          {/* Tool Card */}
+          {/* ── Tool Card ── */}
           <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-8">
 
             {/* Platform Selector */}
@@ -270,17 +315,18 @@ const HashtagGenerator = () => {
                   <button
                     key={p.value}
                     onClick={() => { setPlatform(p.value); setNumHashtags(Math.min(numHashtags, p.maxTags)); }}
-                    className={`px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${platform === p.value
-                        ? "bg-pink-500 text-white border-pink-500"
-                        : "bg-white text-gray-600 border-gray-200 hover:border-pink-300"
-                      }`}
+                    className={`px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
+                      platform === p.value
+                        ? "bg-sky-600 text-white border-sky-600"
+                        : "bg-white text-gray-600 border-gray-200 hover:border-sky-400"
+                    }`}
                   >
                     {p.label}
                   </button>
                 ))}
               </div>
               {currentPlatform && (
-                <p className="text-xs text-gray-400 mt-2">💡 {currentPlatform.tip}</p>
+                <p className="text-xs text-gray-400 mt-2">{currentPlatform.tip}</p>
               )}
             </div>
 
@@ -295,7 +341,7 @@ const HashtagGenerator = () => {
                   <button
                     key={cat.label}
                     onClick={() => setKeywords(cat.keywords)}
-                    className="px-3 py-1.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-pink-400 hover:text-pink-600 hover:bg-pink-50 transition-all"
+                    className="px-3 py-1.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-sky-400 hover:text-sky-600 hover:bg-sky-50 transition-all"
                   >
                     {cat.label}
                   </button>
@@ -312,9 +358,14 @@ const HashtagGenerator = () => {
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
                 placeholder="e.g. karachi food, street eats, pakistani cuisine, iftar ideas, travel vlog, fitness motivation"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent min-h-[100px] resize-y text-gray-800"
+                rows={3}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800 text-sm resize-y"
               />
-              {error && <p className="mt-2 text-red-500 text-sm">{error}</p>}
+              {error && (
+                <div className="flex items-center gap-2 text-red-500 text-sm mt-2">
+                  {error}
+                </div>
+              )}
             </div>
 
             {/* Options Grid */}
@@ -324,7 +375,7 @@ const HashtagGenerator = () => {
                 <select
                   value={numHashtags}
                   onChange={(e) => setNumHashtags(Number(e.target.value))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white text-gray-800"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-gray-800"
                 >
                   {[10, 15, 20, 25, 30, 50].filter((n) => n <= currentPlatform.maxTags * 2).map((n) => (
                     <option key={n} value={n}>{n} hashtags</option>
@@ -337,11 +388,11 @@ const HashtagGenerator = () => {
                 <select
                   value={maxLength}
                   onChange={(e) => setMaxLength(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white text-gray-800"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-gray-800"
                 >
                   <option value="all">All lengths</option>
-                  <option value="short">Short (≤12 chars)</option>
-                  <option value="medium">Medium (13–20)</option>
+                  <option value="short">Short (12 chars or less)</option>
+                  <option value="medium">Medium (13-20)</option>
                   <option value="long">Long (21+)</option>
                 </select>
               </div>
@@ -351,7 +402,7 @@ const HashtagGenerator = () => {
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white text-gray-800"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-gray-800"
                 >
                   <option value="english">English</option>
                   <option value="urdu-roman">Urdu Romanized</option>
@@ -366,41 +417,65 @@ const HashtagGenerator = () => {
                   value={excludeWords}
                   onChange={(e) => setExcludeWords(e.target.value)}
                   placeholder="e.g. spam, nsfw"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-gray-800"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 text-gray-800 text-sm"
                 />
               </div>
             </div>
 
             {/* Generate Button */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 mb-2">
               <button
                 onClick={generateHashtags}
-                className="flex-1 bg-pink-500 hover:bg-pink-600 active:scale-95 text-white py-3.5 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+                className="bg-sky-600 hover:bg-sky-700 active:scale-95 transition-all text-white font-semibold px-8 py-3 rounded-xl flex items-center justify-center gap-2"
               >
                 <Hash size={18} /> Generate Hashtags
               </button>
               <button
-                onClick={() => { setKeywords(""); setExcludeWords(""); setHashtags([]); setError(""); }}
-                className="px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium transition-colors flex items-center gap-2"
+                onClick={reset}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
               >
-                <RefreshCw size={16} /> Reset
+                <RefreshCw size={15} /> Reset
               </button>
             </div>
 
-            {/* Results */}
+            {/* ── Results ── */}
             {hashtags.length > 0 && (
-              <div>
-                {/* Stats Bar */}
+              <div className="mt-8">
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><Hash size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{hashtags.length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Total Tags</p>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><Zap size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{highTags.length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">High Comp</p>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><BarChart2 size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{medTags.length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Medium Comp</p>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><Target size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{lowTags.length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Low Comp</p>
+                  </div>
+                </div>
+
+                {/* Copy All + Char Count */}
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
                   <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span><strong className="text-gray-800">{hashtags.length}</strong> hashtags</span>
-                    <span><strong className={charCount > 2200 ? "text-red-500" : "text-gray-800"}>{charCount}</strong> / 2,200 chars
-                      {charCount > 2200 && <span className="text-red-500 ml-1">(Instagram limit!)</span>}
+                    <span><strong className="text-gray-800">{charCount}</strong> / 2,200 chars
+                      {charCount > 2200 && <span className="text-red-500 ml-1">(over Instagram limit)</span>}
                     </span>
                   </div>
                   <button
                     onClick={copyAll}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-sm font-medium transition-colors"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-medium transition-colors"
                   >
                     <Copy size={14} />
                     {copied === "all" ? "Copied!" : `Copy All ${hashtags.length}`}
@@ -409,19 +484,19 @@ const HashtagGenerator = () => {
 
                 {/* Tiered Groups */}
                 {[
-                  { id: "high", label: "🔥 High Competition (Viral Reach)", tags: highTags, color: "border-pink-200 bg-pink-50", badge: "bg-pink-100 text-pink-700", copyColor: "bg-pink-500 hover:bg-pink-600 text-white" },
-                  { id: "medium", label: "📈 Medium Competition (Sweet Spot)", tags: medTags, color: "border-sky-200 bg-sky-50", badge: "bg-sky-100 text-sky-700", copyColor: "bg-sky-500 hover:bg-sky-600 text-white" },
-                  { id: "low", label: "🎯 Low Competition (Niche Reach)", tags: lowTags, color: "border-gray-200 bg-gray-50", badge: "bg-gray-100 text-gray-700", copyColor: "bg-gray-600 hover:bg-gray-700 text-white" },
-                ].map(({ id, label, tags, color, badge, copyColor }) => tags.length > 0 && (
-                  <div key={id} className={`border rounded-2xl p-5 mb-4 ${color}`}>
+                  { id: "high",   label: "High Competition (Viral Reach)",       tags: highTags, borderColor: "border-sky-200", bgColor: "bg-sky-50", badgeBg: "bg-sky-100 text-sky-700", copyBg: "bg-sky-600 hover:bg-sky-700 text-white" },
+                  { id: "medium", label: "Medium Competition (Sweet Spot)",       tags: medTags,  borderColor: "border-amber-200", bgColor: "bg-amber-50", badgeBg: "bg-amber-100 text-amber-700", copyBg: "bg-amber-600 hover:bg-amber-700 text-white" },
+                  { id: "low",    label: "Low Competition (Niche Reach)",         tags: lowTags,  borderColor: "border-green-200", bgColor: "bg-green-50", badgeBg: "bg-green-100 text-green-700", copyBg: "bg-green-600 hover:bg-green-700 text-white" },
+                ].map(({ id, label, tags, borderColor, bgColor, badgeBg, copyBg }) => tags.length > 0 && (
+                  <div key={id} className={`border rounded-2xl p-5 mb-4 ${borderColor} ${bgColor}`}>
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <span className="text-sm font-semibold text-gray-800">{label}</span>
-                        <span className={`ml-2 text-xs px-2 py-0.5 rounded-full font-medium ${badge}`}>{tags.length} tags</span>
+                        <span className={`ml-2 text-xs px-2 py-0.5 rounded-full font-medium ${badgeBg}`}>{tags.length} tags</span>
                       </div>
                       <button
                         onClick={() => copyGroup(id)}
-                        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium transition-colors ${copyColor}`}
+                        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium transition-colors ${copyBg}`}
                       >
                         <Copy size={12} />
                         {copied === id ? "Copied!" : "Copy Group"}
@@ -432,7 +507,7 @@ const HashtagGenerator = () => {
                         <button
                           key={i}
                           onClick={() => copySingle(tag)}
-                          className="px-3 py-1.5 bg-white border border-gray-200 hover:border-pink-400 rounded-full text-sm text-gray-700 hover:text-pink-600 transition-all hover:scale-105 active:scale-95"
+                          className="px-3 py-1.5 bg-white border border-gray-200 hover:border-sky-400 rounded-full text-sm text-gray-700 hover:text-sky-600 transition-all hover:scale-105 active:scale-95"
                           title="Click to copy"
                         >
                           {tag}
@@ -441,71 +516,135 @@ const HashtagGenerator = () => {
                     </div>
                   </div>
                 ))}
+
+                {/* Character Warning */}
+                {charCount > 2200 && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 mt-2">
+                    <p className="text-sm text-red-600">
+                      <strong>Instagram character limit exceeded.</strong> Your hashtags total {charCount} characters but Instagram caps at 2,200. Reduce the count or remove some long tags.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
+            {/* Empty State */}
             {!hashtags.length && !error && (
-              <div className="text-center py-14 border-2 border-dashed border-gray-200 rounded-xl text-gray-400">
+              <div className="text-center py-16 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl mt-4">
                 <Hash size={32} className="mx-auto mb-3 text-gray-300" />
-                <p>Enter keywords or pick a category preset above, then click Generate</p>
+                <p>Enter keywords or pick a category preset, then click <strong className="text-gray-500">Generate Hashtags</strong></p>
               </div>
             )}
           </div>
 
-          {/* SEO Content */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-6">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Hashtag Generator — Trending Hashtags for Instagram, TikTok &amp; More
+              Free Hashtag Generator for Instagram Reels, TikTok & YouTube – Sorted by Competition Tier
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Our free hashtag generator creates platform-specific hashtags for Instagram, TikTok, YouTube Shorts, Twitter/X, and LinkedIn. Enter your keywords, pick your platform, and get dozens of relevant hashtags instantly — sorted into high, medium, and low competition tiers so you know exactly how to use them.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Most hashtag tools dump a random list of tags and leave you guessing which ones will actually get views. Our free hashtag generator is different — it automatically sorts every hashtag into <strong>high</strong>, <strong>medium</strong>, and <strong>low competition</strong> tiers so you know exactly which tags will bring viral reach and which ones will help you get discovered in your niche.
             </p>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Perfect for Pakistani creators with dedicated category presets for Ramadan, Eid, Pakistani food, Karachi/Lahore travel, and desi content. Switch to <strong>Mixed</strong> or <strong>Urdu Romanized</strong> language style to include desi hashtags like #desi, #pakistani, #subhanallah, and #zindagi in your set.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Whether you are posting Instagram reels, TikTok videos, YouTube Shorts, or Twitter threads, the strategy is the same: mix a few viral hashtags with targeted niche tags. Our tool makes this easy by giving you copy buttons for each tier separately.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Understanding hashtag competition tiers</h3>
-            <ul className="list-disc list-inside text-gray-600 text-sm space-y-1 mb-4">
-              <li><strong>High competition</strong> (#trending, #fyp, #viral) — Millions of posts. Huge reach but hard to rank. Use 3–5 of these.</li>
-              <li><strong>Medium competition</strong> — Balanced. Easier to appear in search. Use 10–15 of these as your core set.</li>
-              <li><strong>Low competition (niche)</strong> — Small audience but your post is highly discoverable. Use 5–10 niche tags per post.</li>
-            </ul>
-            <p className="text-gray-600 text-sm">The best strategy is to mix all three tiers in every post for maximum reach and discoverability.</p>
+            <p className="text-gray-600 leading-relaxed">
+              Built with Pakistani creators in mind — choose <strong>Urdu Romanized</strong> or <strong>Mixed</strong> language style to get desi hashtags like <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">#desi</code>, <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">#zindagi</code>, <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">#subhanallah</code> alongside trending English tags.
+            </p>
           </div>
 
-          {/* FAQ */}
+          {/* ── How to Use ── */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              How to Get More Impressions on Instagram Reels with Hashtags
+            </h2>
+            <ol className="list-decimal list-inside text-gray-600 space-y-3 text-base">
+              <li>Select your <strong>platform</strong> (Instagram, TikTok, YouTube, Twitter, or LinkedIn).</li>
+              <li>Enter your <strong>keywords</strong> or click a category preset (Food, Travel, Fitness, etc.).</li>
+              <li>Choose language style — English, Urdu Romanized, or Mixed for Pakistani audiences.</li>
+              <li>Click <strong>"Generate Hashtags"</strong> and get tags sorted into high, medium, and low competition tiers.</li>
+              <li><strong>Copy each tier separately</strong> — use 3-5 high, 10-15 medium, and 5-10 low competition tags per post.</li>
+              <li>Paste them in your first comment (not caption) for best Instagram reach.</li>
+            </ol>
+          </div>
+
+          {/* ── Features Grid ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Best Hashtag Strategy for Small Instagram Accounts – Tool Features
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                { q: "How many hashtags should I use on Instagram?", a: "Instagram allows up to 30 hashtags per post. Using 20–30 relevant hashtags in your first comment is the current best practice. Our generator is capped at 30 when Instagram is selected." },
-                { q: "How many hashtags work best on TikTok?", a: "5–10 hashtags work best on TikTok. Always include #fyp and 2–3 niche-specific hashtags. Our tool limits TikTok suggestions accordingly." },
-                { q: "What does high, medium, low competition mean?", a: "High competition hashtags have millions of posts — great reach but hard to rank in. Low competition (niche) hashtags have smaller audiences but your post is much more discoverable. A mix of all three tiers works best." },
-                { q: "Can I generate Urdu or desi hashtags?", a: "Yes. Select 'Urdu Romanized' or 'Mixed' language style to include desi modifiers like #desi, #pakistani, #subhanallah, #zindagi and more in your set." },
-                { q: "Is this hashtag generator free?", a: "Yes, completely free. No sign-up, no account, no payment required. Generate as many hashtag sets as you need." },
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "Competition Tier Sorting", desc: "Every hashtag is classified as high, medium, or low competition so you can build a balanced mix instead of guessing. Small accounts should focus on medium and low tiers." },
+                { title: "Platform-Specific Limits", desc: "Automatically adjusts the max hashtag count for each platform — 30 for Instagram, 10 for TikTok, 3 for Twitter — so you never exceed limits." },
+                { title: "Pakistani & Desi Hashtags", desc: "Switch to Urdu Romanized or Mixed mode to get desi modifiers like #desi, #pakistani, #subhanallah, #pyar, #zindagi alongside trending tags." },
+                { title: "One-Click Copy by Tier", desc: "Copy all hashtags at once or copy each competition tier separately. Paste directly into your first comment for the best Instagram reel strategy." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* ── FAQ Accordion ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Hashtag Generator – Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to get more impressions on Instagram reels with hashtags?",
+                  a: "Use a mix of 5 high-competition viral hashtags, 15 medium-competition relevant hashtags, and 5-10 low-competition niche hashtags. Place them in the first comment, not the caption. Our tool automatically sorts your hashtags into these three tiers."
+                },
+                {
+                  q: "How many hashtags for Instagram reels to go viral in 2026?",
+                  a: "Instagram allows up to 30 hashtags per post. The best strategy in 2026 is using 25-30 hashtags with a mix of all three competition tiers. Avoid using only viral hashtags — niche tags help the algorithm understand your content."
+                },
+                {
+                  q: "What are low competition hashtags and why do they matter?",
+                  a: "Low competition hashtags have fewer posts but a highly targeted audience. When you use them, your post is much more likely to appear on the Explore page for that specific tag. They matter because they bring in views from people actually interested in your niche."
+                },
+                {
+                  q: "How to find trending hashtags for TikTok Pakistan?",
+                  a: "Enter your topic keywords in our tool, select TikTok as the platform, and choose Mixed or Urdu Romanized language style. The tool will generate hashtags including Pakistani trending tags like #tiktokpakistan, #desi, and niche-specific tags for your content."
+                },
+                {
+                  q: "Best hashtag strategy for small Instagram accounts?",
+                  a: "Small accounts should focus heavily on low and medium competition hashtags. Use only 3-5 high-competition tags and fill the rest with niche-specific tags. This maximizes the chance of appearing in search results for your specific niche."
+                },
+                {
+                  q: "Can I generate Urdu or Romanized Pakistani hashtags?",
+                  a: "Yes. Select Urdu Romanized or Mixed language style to include desi modifiers like #desi, #pakistani, #subhanallah, #zindagi, #pyar, #dil and more. These work well for Pakistani audience content on Instagram and TikTok."
+                }
+              ].map((item, i) => (
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
           <section>
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Related Social Media Tools</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Social Media Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/emoji-picker", title: "Emoji Picker", desc: "Search and copy emojis for captions, stories and posts." },
-                { to: "/tools/word-counter", title: "Word Counter", desc: "Count characters for Instagram captions and TikTok bios." },
-                { to: "/tools/midjourney-prompt-generator", title: "Midjourney Prompt Generator", desc: "Create detailed prompts for stunning AI-generated images." },
+                { to: "/tools/emoji-picker",                title: "Emoji Picker",                desc: "Search and copy emojis for captions, stories and posts." },
+                { to: "/tools/word-counter",                title: "Word Counter",                desc: "Count characters for Instagram captions and TikTok bios." },
+                { to: "/tools/midjourney-prompt-generator", title: "Midjourney Prompt Generator",  desc: "Create detailed prompts for stunning AI-generated images." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-pink-400 transition-all"
-                >
-                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-pink-500 transition-colors">{tool.title}</h3>
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all">
+                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">{tool.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>
               ))}

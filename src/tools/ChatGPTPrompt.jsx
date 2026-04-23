@@ -1,8 +1,7 @@
-// src/pages/ChatGptPromptGenerator.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, Star, Trash2, RefreshCw, Sparkles } from "lucide-react";
+import { Copy, Star, Trash2, RefreshCw, Sparkles, Home, ChevronDown } from "lucide-react";
 import chatgptPrompts from "../data/prompts/chatgpt";
 
 const ChatGptPromptGenerator = () => {
@@ -10,11 +9,11 @@ const ChatGptPromptGenerator = () => {
   const [depth, setDepth] = useState("detailed");
   const [tone, setTone] = useState("neutral");
   const [result, setResult] = useState("");
-  // ✅ Fixed: removed localStorage — use React state only
   const [favorites, setFavorites] = useState([]);
   const [copied, setCopied] = useState(false);
   const [favCopied, setFavCopied] = useState(-1);
   const [error, setError] = useState("");
+  const [openFaq, setOpenFaq] = useState(null);
 
   const generatePrompt = () => {
     setError("");
@@ -74,72 +73,59 @@ const ChatGptPromptGenerator = () => {
     setCopied(false);
   };
 
-  const schemaData = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "ChatGPT Prompt Generator",
-    url: "https://www.generatorpromptai.com/tools/chatgpt-prompt-generator",
-    applicationCategory: "AIApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    description: "Free tool to generate optimized prompts for ChatGPT. Customize tone, depth and style for better AI results.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    creator: {
-      "@type": "Organization",
-      name: "GeneratorPromptAI",
-      url: "https://www.generatorpromptai.com",
-    },
+    "name": "Custom ChatGPT Prompt Builder with Tone & Depth Settings",
+    "url": "https://www.generatorpromptai.com/tools/chatgpt-prompt-generator",
+    "applicationCategory": "AIApplication",
+    "operatingSystem": "All",
+    "description": "Free tool to generate custom ChatGPT prompts for coding, blog writing, and marketing. Set tone, depth, and style to write better prompts for GPT-4.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "ChatGPT Prompt Builder", "item": "https://www.generatorpromptai.com/tools/chatgpt-prompt-generator" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "What is a ChatGPT prompt generator?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "A ChatGPT prompt generator is a tool that helps you create optimized, high-quality prompts to get better responses from ChatGPT and other AI models.",
-        },
+        "name": "How to write better prompts for ChatGPT for coding and writing?",
+        "acceptedAnswer": { "@type": "Answer", "text": "To write better prompts, be specific about your goal, provide context, and specify the output format. Use our tool to automatically add depth (Detailed, Comprehensive, Expert) and tone (Professional, Academic, Friendly) to your basic topic." }
       },
       {
         "@type": "Question",
-        name: "Is this ChatGPT prompt generator free?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes, our ChatGPT prompt generator is completely free to use with no sign-up or account required.",
-        },
+        "name": "Can I generate ChatGPT prompts for blog writing with a specific tone?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Enter your blog topic, select 'Detailed' or 'Comprehensive' depth, and choose a tone like 'Professional' or 'Friendly'. The tool will generate a structured prompt tailored for blog writing." }
       },
       {
         "@type": "Question",
-        name: "How do I write a good ChatGPT prompt?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "A good ChatGPT prompt is specific, includes context, specifies the desired tone and format, and clearly states the goal. Our generator helps you build all of this automatically.",
-        },
+        "name": "Does this prompt builder work with GPT-4 and GPT-4o?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The prompts generated are optimized for all OpenAI models including GPT-3.5, GPT-4, and GPT-4o. They also work well with Claude and Gemini." }
       },
       {
         "@type": "Question",
-        name: "Can I use these prompts for GPT-4?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. The prompts generated by our tool work with all ChatGPT versions including GPT-3.5, GPT-4, and GPT-4o.",
-        },
+        "name": "What is the difference between Detailed, Comprehensive, and Expert depth?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Detailed gives a clear, structured answer. Comprehensive adds examples, pros/cons, and comparisons. Expert provides PhD-level analysis with case studies and advanced techniques." }
       },
       {
         "@type": "Question",
-        name: "What topics can I generate prompts for?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "You can generate prompts for any topic — writing, coding, marketing, learning, business, creative writing, data analysis, and much more.",
-        },
-      },
-    ],
+        "name": "Can I save and copy the generated prompts?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. You can copy any generated prompt to your clipboard with one click, or save it to your favorites list within the tool for quick access later." }
+      }
+    ]
   };
 
   const depthOptions = [
@@ -160,68 +146,74 @@ const ChatGptPromptGenerator = () => {
   return (
     <>
       <Helmet>
-        {/* Primary SEO */}
-        <title>ChatGPT Prompt Generator Free | Create AI Prompts Instantly</title>
+        {/* Title targeting long-tails */}
+        <title>Generate ChatGPT Prompts for Coding & Writing – Custom Tone & Depth Builder</title>
+        
         <meta
           name="description"
-          content="Free ChatGPT prompt generator! Create perfect AI prompts in seconds. Works with GPT-4, GPT-4o & Claude. Get better AI responses instantly! 🚀 No signup!"
+          content="Build custom ChatGPT prompts for coding, blog writing, and marketing instantly. Set depth (Detailed/Expert) and tone (Professional/Academic) to write better prompts for GPT-4. Free online tool."
         />
+        
+        {/* Low competition long-tail keywords */}
         <meta
           name="keywords"
-          content="chatgpt prompt generator, free chatgpt prompts, ai prompt generator, prompt generator for chatgpt, chatgpt prompt maker, best chatgpt prompts, gpt prompt generator, prompt engineering tool, chatgpt prompt ideas, ai prompt creator, free prompt generator, chatgpt prompts examples"
+          content="how to write better prompts for chatgpt for coding, generate chatgpt prompts for blog writing with tone, custom chatgpt prompt builder with depth and tone settings, prompt engineering template generator for gpt-4, create structured prompts for chatgpt free, chatgpt prompt ideas for content writing and marketing, best prompt format for chatgpt coding"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/chatgpt-prompt-generator" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
-        {/* Open Graph */}
+        {/* Open Graph (No emojis) */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="ChatGPT Prompt Generator 🤖 Create Perfect AI Prompts Free" />
-        <meta
-          property="og:description"
-          content="Generate powerful ChatGPT prompts instantly! Customize tone, style & depth. Works with GPT-4, Claude & all AI models. 100% Free! 🚀✨"
-        />
+        <meta property="og:title" content="Generate ChatGPT Prompts for Coding & Writing – Custom Tone Builder" />
+        <meta property="og:description" content="Build custom prompts for ChatGPT with tone and depth settings. Get better results for coding, writing, and marketing tasks." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/chatgpt-prompt-generator" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-chatgpt-prompt-generator.png" />
 
-        {/* Twitter Card */}
+        {/* Twitter Card (No emojis) */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free ChatGPT Prompt Generator - Better AI Results 🤖" />
-        <meta
-          name="twitter:description"
-          content="Create optimized ChatGPT prompts in seconds! Choose tone, depth & style. Works with all AI models. No signup required! 🚀"
-        />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-chatgpt-prompt-generator.png" />
+        <meta name="twitter:title" content="Custom ChatGPT Prompt Builder with Tone & Depth Settings" />
+        <meta name="twitter:description" content="Generate structured prompts for ChatGPT. Set tone, depth, and format for GPT-4. Free online tool." />
 
-        {/* Schema */}
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
 
-        {/* Back Nav */}
-        <div className="max-w-5xl mx-auto w-full px-4 py-5">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm"
-          >
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
+        {/* ── Breadcrumb Only ── */}
+        <div className="max-w-5xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">ChatGPT Prompt Builder</span></li>
+            </ol>
+          </nav>
         </div>
 
         <div className="flex-grow max-w-5xl mx-auto w-full px-4 pb-20">
 
           {/* Hero */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-10 mt-4">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
               <Sparkles className="text-sky-600" size={26} />
             </div>
+            {/* H1 targeting exact match long-tails */}
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Free ChatGPT Prompt Generator - Create Perfect AI Prompts Instantly
+              Custom ChatGPT Prompt Builder –{" "}
+              <span className="text-sky-600">Set Tone & Depth</span>
             </h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Generate powerful, optimized prompts for ChatGPT in seconds. Customize tone, depth and style for better AI results.
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Generate structured prompts for ChatGPT for <strong>coding, blog writing, and marketing</strong>. Customize depth and tone to write better prompts for GPT-4 instantly.
             </p>
           </div>
 
@@ -276,8 +268,6 @@ const ChatGptPromptGenerator = () => {
                   </select>
                 </div>
               </div>
-
-              {/* ✅ Removed the "Style (coming soon)" disabled select — bad UX, confuses users */}
 
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -376,93 +366,120 @@ const ChatGptPromptGenerator = () => {
             </div>
           )}
 
-          {/* SEO Content */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-6">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            {/* H2 targeting: "generate chatgpt prompts for blog writing with tone" */}
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free ChatGPT Prompt Generator — Better Prompts, Better Results
+              Generate ChatGPT Prompts for Coding, Blog Writing & Marketing
             </h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Getting great responses from ChatGPT starts with writing a great prompt. Our free ChatGPT prompt generator helps you build powerful, optimized prompts in seconds — no prompt engineering experience needed.
+              Getting great responses from ChatGPT starts with knowing <strong>how to write better prompts</strong>. Instead of guessing the right format, use our custom ChatGPT prompt builder to automatically structure your request. Simply enter your topic, choose your preferred depth, and set the tone.
             </p>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Simply enter your topic, choose your preferred depth and tone, and our tool instantly generates a ready-to-use prompt you can paste directly into ChatGPT, GPT-4, GPT-4o, or any other AI model.
+              Whether you need a prompt for <strong>coding help</strong>, a <strong>blog writing outline</strong>, or a <strong>marketing copy brief</strong>, this tool formats the instructions perfectly so GPT-4 knows exactly what to do, how deep to go, and what tone to use.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">What can you use it for?</h3>
-            <ul className="list-disc list-inside text-gray-600 text-sm space-y-1 mb-4">
-              <li>Content writing — blog posts, social media, emails, scripts</li>
-              <li>Coding help — debugging, code review, learning new languages</li>
-              <li>Marketing copy — ads, product descriptions, landing pages</li>
-              <li>Learning &amp; research — explanations, summaries, study guides</li>
-              <li>Business — reports, strategies, presentations, proposals</li>
-              <li>Creative writing — stories, poems, scripts, worldbuilding</li>
-            </ul>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">How to use the ChatGPT Prompt Generator</h3>
-            <ol className="list-decimal list-inside text-gray-600 text-sm space-y-1">
-              <li>Enter your topic or task in the input field above.</li>
-              <li>Select your preferred depth — Detailed, Comprehensive, or Expert.</li>
-              <li>Choose the tone that fits your use case.</li>
-              <li>Click <strong>Generate Prompt</strong> to create your optimized prompt.</li>
-              <li>Copy and paste it directly into ChatGPT for better results.</li>
-            </ol>
           </div>
 
-          {/* FAQ */}
+          {/* ── Features Section ── */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            {/* H2 targeting: "prompt engineering template generator for gpt-4" */}
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Frequently Asked Questions
+              Prompt Engineering Template Generator – Depth & Tone Controls
             </h2>
-            <div className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                {
-                  q: "What is a ChatGPT prompt generator?",
-                  a: "A ChatGPT prompt generator is a tool that helps you create optimized, high-quality prompts to get better, more accurate responses from ChatGPT and other AI models.",
-                },
-                {
-                  q: "Is this ChatGPT prompt generator free?",
-                  a: "Yes, completely free. No account, no sign-up, no payment. Just enter your topic and generate prompts instantly.",
-                },
-                {
-                  q: "How do I write a good ChatGPT prompt?",
-                  a: "A good prompt is specific, includes context, clearly states your goal, and specifies the desired format or tone. Our generator builds all of this automatically based on your inputs.",
-                },
-                {
-                  q: "Can I use these prompts with GPT-4 and GPT-4o?",
-                  a: "Yes. All prompts generated by our tool are compatible with all ChatGPT versions including GPT-3.5, GPT-4, GPT-4o, and other LLMs like Claude and Gemini.",
-                },
-                {
-                  q: "What topics can I generate prompts for?",
-                  a: "Any topic — writing, coding, marketing, business, education, creative writing, data analysis, research, and much more.",
-                },
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "3 Depth Levels", desc: "Choose Detailed (clear structure), Comprehensive (with examples and comparisons), or Expert (PhD-level analysis with case studies)." },
+                { title: "6 Tone Options", desc: "Set the exact voice: Neutral, Friendly, Professional, Motivational, Academic, or Humorous to match your brand or audience." },
+                { title: "Optimized for GPT-4", desc: "Prompts are structured using proven prompt engineering frameworks to get the maximum quality out of GPT-4 and GPT-4o." },
+                { title: "Save & Organize", desc: "Save your best prompts to a local favorites list. Copy them anytime to paste into ChatGPT, Claude, or Gemini." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* ── FAQ Section (Accordion) ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              ChatGPT Prompt Builder – Frequently Asked Questions
+            </h2>
+            
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to write better prompts for ChatGPT for coding and writing?",
+                  a: "To write better prompts, be specific about your goal, provide context, and specify the output format. Use our tool to automatically add depth (Detailed, Comprehensive, Expert) and tone (Professional, Academic, Friendly) to your basic topic."
+                },
+                {
+                  q: "Can I generate ChatGPT prompts for blog writing with a specific tone?",
+                  a: "Yes. Enter your blog topic, select 'Detailed' or 'Comprehensive' depth, and choose a tone like 'Professional' or 'Friendly'. The tool will generate a structured prompt tailored for blog writing."
+                },
+                {
+                  q: "Does this prompt builder work with GPT-4 and GPT-4o?",
+                  a: "Yes. The prompts generated are optimized for all OpenAI models including GPT-3.5, GPT-4, and GPT-4o. They also work well with Claude and Gemini."
+                },
+                {
+                  q: "What is the difference between Detailed, Comprehensive, and Expert depth?",
+                  a: "Detailed gives a clear, structured answer. Comprehensive adds examples, pros/cons, and comparisons. Expert provides PhD-level analysis with case studies and advanced techniques."
+                },
+                {
+                  q: "Can I save and copy the generated prompts?",
+                  a: "Yes. You can copy any generated prompt to your clipboard with one click, or save it to your favorites list within the tool for quick access later."
+                }
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300"
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full flex items-center justify-between p-5 text-left"
+                    aria-expanded={openFaq === i}
+                  >
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">
+                      {item.q}
+                    </h3>
+                    <ChevronDown
+                      size={22}
+                      className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                  >
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">
+                      {item.a}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
           <section>
             <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">
-              Related AI Prompt Tools
+              Related AI Prompt Building Tools
             </h2>
             <div className="grid md:grid-cols-3 gap-4">
               {[
                 {
-                  to: "/tools/ai-agent",
-                  title: "AI Prompt Generator",
-                  desc: "Universal prompt builder for ChatGPT, Claude, Gemini and more.",
+                  to: "/tools/claude-prompt-generator",
+                  title: "Claude Prompt Generator",
+                  desc: "Build optimized prompts specifically tuned for Anthropic's Claude AI model.",
                 },
                 {
                   to: "/tools/midjourney-prompt-generator",
-                  title: "Midjourney Prompt Generator",
-                  desc: "Craft detailed prompts for stunning AI-generated images.",
+                  title: "Midjourney Prompt Builder",
+                  desc: "Craft detailed image prompts with art styles, lighting, and camera angles.",
                 },
                 {
-                  to: "/tools/claude-prompt-generator",
-                  title: "Claude Prompt Generator",
-                  desc: "Optimized prompts for Anthropic's Claude AI models.",
+                  to: "/tools/youtube-script-prompt-generator",
+                  title: "YouTube Script Prompt Builder",
+                  desc: "Generate structured prompts to create video scripts, hooks, and outlines.",
                 },
               ].map((tool) => (
                 <Link

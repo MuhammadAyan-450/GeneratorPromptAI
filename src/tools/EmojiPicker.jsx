@@ -1,8 +1,7 @@
-// pages/EmojiPicker.jsx
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, Search, X, Smile } from "lucide-react";
+import { Copy, Search, X, Smile, Home, ChevronDown } from "lucide-react";
 
 // ─── Emoji Data by Category ──────────────────────────────────────────────────
 const EMOJI_DATA = {
@@ -310,12 +309,13 @@ const ALL_EMOJIS = Object.values(EMOJI_DATA).flat();
 const CATEGORIES = ["All", ...Object.keys(EMOJI_DATA)];
 
 const EmojiPicker = () => {
-  const [search, setSearch]               = useState("");
+  const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selected, setSelected]           = useState([]);
-  const [recent, setRecent]               = useState([]);
-  const [copied, setCopied]               = useState(false);
-  const [toast, setToast]                 = useState("");
+  const [selected, setSelected] = useState([]);
+  const [recent, setRecent] = useState([]);
+  const [copied, setCopied] = useState(false);
+  const [toast, setToast] = useState("");
+  const [openFaq, setOpenFaq] = useState(null);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -351,75 +351,98 @@ const EmojiPicker = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const schemaData = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Emoji Picker",
-    url: "https://www.generatorpromptai.com/tools/emoji-picker",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    description: "Free online emoji picker with search, categories, recent history, and one-click copy. 500+ emojis.",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
+    "name": "Free Emoji Picker Online – Copy & Paste Emojis",
+    "url": "https://www.generatorpromptai.com/tools/emoji-picker",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online emoji picker to search, select and copy emojis instantly. Includes heart, flag, smiley face, and food emojis.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Emoji Picker", "item": "https://www.generatorpromptai.com/tools/emoji-picker" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "How do I copy and paste emojis?",
-        acceptedAnswer: { "@type": "Answer", text: "Click any emoji to add it to your collection, then click 'Copy Selected' to copy all chosen emojis at once. Or hover over any emoji and click the copy icon to copy it instantly." },
+        "name": "How do I copy and paste emojis from this picker?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Click any emoji to add it to your collection at the bottom, then click 'Copy All Emojis' to copy them all at once. You can also hover over any emoji and click the copy icon for an instant single copy."
+        }
       },
       {
         "@type": "Question",
-        name: "Does this emoji picker work on mobile?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes, our emoji picker is fully responsive and works on all mobile phones, tablets, and desktop browsers." },
+        "name": "Can I use these emojis on WhatsApp and Instagram?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Simply copy the emojis from our picker and paste them directly into WhatsApp, Instagram, Facebook, Twitter/X, Discord, Telegram, Slack, or any other app that supports emojis."
+        }
       },
       {
         "@type": "Question",
-        name: "How many emojis are available?",
-        acceptedAnswer: { "@type": "Answer", text: "Our emoji picker includes 500+ emojis across 8 categories: Smileys, Gestures, Animals, Food, Hearts, Symbols, Travel, and Flags." },
+        "name": "Does this emoji picker work on mobile phones?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, our emoji picker is fully responsive and works perfectly on all mobile phones, tablets, and desktop browsers without needing to install any app."
+        }
       },
       {
         "@type": "Question",
-        name: "Can I use these emojis on WhatsApp and Instagram?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. Simply copy the emojis and paste them into WhatsApp, Instagram, Facebook, Twitter, Discord, or any other platform." },
-      },
-    ],
+        "name": "How to find the Pakistan flag emoji to copy and paste?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Click the 'Flags' category tab or search 'pakistan' in the search bar above. You will find the Pakistan flag emoji (🇵🇰) which you can copy with one click."
+        }
+      }
+    ]
   };
 
   return (
     <>
       <Helmet>
-        <title>Emoji Picker - Copy & Paste Emojis Online Free | 500+ Emojis</title>
+        {/* Emojis removed from title/desc for clean Google snippet */}
+        <title>Free Emoji Picker Online – Copy & Paste 500+ Emojis Instantly</title>
         <meta
           name="description"
-          content="Free online emoji picker with 500+ emojis. Search, browse by category, copy single or multiple emojis instantly. Works on WhatsApp, Instagram, Facebook, Discord. No sign-up needed."
+          content="Free online emoji picker to search, select, and copy emojis instantly. Includes heart emoji copy paste, flag emoji copy paste, smiley faces, food, and more. Works for WhatsApp, Instagram, and Discord."
         />
+        {/* Kept main keywords that are bringing traffic + added long-tails */}
         <meta
           name="keywords"
-          content="emoji picker, copy paste emoji, emoji keyboard online, free emoji selector, emoji search, whatsapp emoji, instagram emoji, emoji copy paste 2026, pakistan emoji flag"
+          content="emoji picker, copy paste emoji, emoji keyboard online, heart emoji copy paste online, flag emoji copy paste free, smiley face emoji copy paste, whatsapp emoji copy paste, instagram emoji copy, tiktok emoji copy, cute emoji copy paste, emoji list copy paste, emoji search tool online"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/emoji-picker" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Emoji Picker - Copy & Paste 500+ Emojis Free" />
-        <meta property="og:description" content="Search and copy emojis instantly. 500+ emojis in 8 categories. Works on WhatsApp, Instagram, Discord. Free, no sign-up." />
+        <meta property="og:title" content="Free Emoji Picker Online – Copy & Paste 500+ Emojis Instantly" />
+        <meta property="og:description" content="Search, select and copy 500+ emojis instantly. Heart emoji, flag emoji, smiley faces & more. Works for WhatsApp, Instagram & Discord." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/emoji-picker" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-emoji-picker.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Emoji Picker - Copy & Paste 500+ Emojis" />
-        <meta name="twitter:description" content="Search and copy emojis for WhatsApp, Instagram, Discord and more. Free online emoji picker." />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-emoji-picker.png" />
+        <meta name="twitter:title" content="Free Emoji Picker Online – Copy & Paste Emojis Instantly" />
+        <meta name="twitter:description" content="Search and copy 500+ emojis for WhatsApp, Instagram, TikTok & Discord. Free online emoji picker tool." />
 
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       {/* Toast */}
@@ -430,24 +453,39 @@ const EmojiPicker = () => {
       )}
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-6xl mx-auto w-full px-4 py-5">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
+
+        {/* ── Breadcrumb Only ── */}
+        <div className="max-w-6xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-yellow-500 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-yellow-500 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Emoji Picker</span></li>
+            </ol>
+          </nav>
         </div>
 
         <div className="flex-grow max-w-6xl mx-auto w-full px-4 pb-20">
 
           {/* Hero */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 mt-4">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-yellow-100 mb-4">
               <Smile className="text-yellow-500" size={28} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Emoji Picker
+              Free Emoji Picker Online –{" "}
+              <span className="text-yellow-500">Copy & Paste 500+ Emojis</span>
             </h1>
             <p className="text-gray-500 text-base md:text-lg">
-              500+ emojis · Search · Browse by category · Copy instantly
+              Search emojis by name, browse categories, and copy them instantly for WhatsApp, Instagram, and Discord.
             </p>
           </div>
 
@@ -480,11 +518,10 @@ const EmojiPicker = () => {
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
-                        activeCategory === cat
-                          ? "bg-yellow-400 text-gray-900 border-yellow-400"
-                          : "bg-white text-gray-600 border-gray-200 hover:border-yellow-300"
-                      }`}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${activeCategory === cat
+                        ? "bg-yellow-400 text-gray-900 border-yellow-400"
+                        : "bg-white text-gray-600 border-gray-200 hover:border-yellow-300"
+                        }`}
                     >
                       {cat} <span className="text-xs opacity-60">{count}</span>
                     </button>
@@ -546,15 +583,8 @@ const EmojiPicker = () => {
             {selected.length > 0 && (
               <div className="mt-8 border-t border-gray-100 pt-6">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm font-semibold text-gray-700">
-                    Your collection ({selected.length})
-                  </p>
-                  <button
-                    onClick={() => setSelected([])}
-                    className="text-xs text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Clear all
-                  </button>
+                  <p className="text-sm font-semibold text-gray-700">Your collection ({selected.length})</p>
+                  <button onClick={() => setSelected([])} className="text-xs text-gray-400 hover:text-red-500 transition-colors">Clear all</button>
                 </div>
                 <div className="flex flex-wrap gap-2 p-4 bg-gray-50 rounded-xl border border-gray-100 mb-4">
                   {selected.map((e, i) => (
@@ -580,10 +610,10 @@ const EmojiPicker = () => {
             )}
           </div>
 
-          {/* SEO Content */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-6">
+          {/* ── SEO Content ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Online Emoji Picker — Copy &amp; Paste Emojis Instantly
+              Free Online Emoji Picker – Search, Select & Copy Emojis
             </h2>
             <p className="text-gray-600 leading-relaxed mb-4">
               Our free emoji picker gives you instant access to 500+ emojis organized into 8 categories — Smileys, Gestures, Animals, Food, Hearts, Symbols, Travel, and Flags. Search by name, browse by category, or pick from your recently used emojis.
@@ -591,49 +621,56 @@ const EmojiPicker = () => {
             <p className="text-gray-600 leading-relaxed mb-4">
               Click any emoji to add it to your collection, then copy them all at once. Or hover over any emoji and click the copy icon to copy it instantly without adding to your collection. Works perfectly for WhatsApp, Instagram, Facebook, Twitter, Discord, Slack, and any other platform.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">How to use the emoji picker</h3>
-            <ol className="list-decimal list-inside text-gray-600 text-sm space-y-1">
-              <li>Search for an emoji by name (e.g. "heart", "fire", "cat", "pakistan").</li>
-              <li>Or browse by category using the tabs above the emoji grid.</li>
-              <li>Click any emoji to add it to your collection at the bottom.</li>
-              <li>Hover over any emoji and click the tiny copy icon to copy it instantly.</li>
-              <li>Click "Copy All Emojis" to copy your entire collection at once.</li>
-              <li>Paste anywhere — WhatsApp, Instagram, Facebook, Discord, emails.</li>
-            </ol>
           </div>
 
-          {/* FAQ */}
+          {/* ── FAQ Section (Accordion) ── */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Emoji Picker – Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
               {[
-                { q: "How do I copy and paste emojis?", a: "Click any emoji to add it to your collection, then click 'Copy All Emojis' to copy them at once. Or hover over any emoji and click the tiny copy icon for an instant single copy." },
-                { q: "Does this emoji picker work on mobile?", a: "Yes, our emoji picker is fully responsive and works perfectly on all mobile phones, tablets, and desktop browsers — no app install needed." },
-                { q: "How many emojis are available?", a: "500+ emojis across 8 categories: Smileys, Gestures, Animals, Food, Hearts, Symbols, Travel, and Flags including the Pakistan flag 🇵🇰 and other regional flags." },
-                { q: "Can I use these emojis on WhatsApp and Instagram?", a: "Yes. Copy the emojis and paste them into WhatsApp, Instagram, Facebook, Twitter/X, Discord, Telegram, Slack, or anywhere else that supports emoji." },
+                {
+                  q: "How do I copy and paste emojis from this picker?",
+                  a: "Click any emoji to add it to your collection at the bottom, then click 'Copy All Emojis' to copy them at once. Or hover over any emoji and click the tiny copy icon for an instant single copy."
+                },
+                {
+                  q: "Can I use these emojis on WhatsApp and Instagram?",
+                  a: "Yes. Simply copy the emojis and paste them directly into WhatsApp, Instagram, Facebook, Twitter/X, Discord, Telegram, Slack, or anywhere else that supports emojis."
+                },
+                {
+                  q: "Does this emoji picker work on mobile phones?",
+                  a: "Yes, our emoji picker is fully responsive and works perfectly on all mobile phones, tablets, and desktop browsers without needing to install any app."
+                },
+                {
+                  q: "How to find the Pakistan flag emoji to copy and paste?",
+                  a: "Click the 'Flags' category tab or search 'pakistan' in the search bar above. You will find the Pakistan flag emoji (🇵🇰) which you can copy with one click."
+                }
               ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-yellow-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* ── Related Tools (Fixed broken link) ── */}
           <section>
             <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Related Free Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/word-counter",           title: "Word Counter",           desc: "Count words, characters and reading time instantly." },
-                { to: "/tools/lorem-ipsum-generator",  title: "Lorem Ipsum Generator",  desc: "Generate placeholder text for design and development." },
-                { to: "/tools/random-number-generator",title: "Random Number Generator",desc: "Generate random numbers for games, statistics and more." },
+                { to: "/tools/word-counter", title: "Word Counter", desc: "Count words, characters and reading time instantly." },
+                { to: "/tools/lorem-ipsum-generator", title: "Lorem Ipsum Generator", desc: "Generate placeholder text for design and development." },
+                { to: "/tools/hashtag-generator", title: "Hashtag Generator", desc: "Generate relevant hashtags for Instagram, TikTok and X/Twitter." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-yellow-400 transition-all"
-                >
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-yellow-400 transition-all">
                   <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-yellow-500 transition-colors">{tool.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>

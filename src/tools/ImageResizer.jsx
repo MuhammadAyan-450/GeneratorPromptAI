@@ -1,10 +1,10 @@
-// pages/ImageResizer.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
-  ArrowLeft, Upload, Download, Image as ImageIcon,
-  Lock, Unlock, RefreshCw, Shield, Maximize2
+  Upload, Download, Image as ImageIcon,
+  Lock, Unlock, RefreshCw, Maximize2, Home,
+  ChevronDown, Ruler, HardDrive, ArrowRightLeft, Percent
 } from "lucide-react";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -17,20 +17,20 @@ const formatBytes = (bytes) => {
 
 // ─── Platform Presets ─────────────────────────────────────────────────────────
 const PRESETS = [
-  { label: "Instagram Post",    w: 1080, h: 1080 },
-  { label: "Instagram Story",   w: 1080, h: 1920 },
-  { label: "Facebook Cover",    w: 820,  h: 312  },
-  { label: "Twitter Header",    w: 1500, h: 500  },
-  { label: "YouTube Thumb",     w: 1280, h: 720  },
-  { label: "WhatsApp DP",       w: 500,  h: 500  },
-  { label: "LinkedIn Banner",   w: 1584, h: 396  },
-  { label: "HD Wallpaper",      w: 1920, h: 1080 },
+  { label: "Instagram Post", w: 1080, h: 1080 },
+  { label: "Instagram Story", w: 1080, h: 1920 },
+  { label: "Facebook Cover", w: 820, h: 312 },
+  { label: "Twitter Header", w: 1500, h: 500 },
+  { label: "YouTube Thumb", w: 1280, h: 720 },
+  { label: "WhatsApp DP", w: 500, h: 500 },
+  { label: "LinkedIn Banner", w: 1584, h: 396 },
+  { label: "HD Wallpaper", w: 1920, h: 1080 },
 ];
 
 const FORMAT_OPTIONS = [
-  { value: "image/jpeg", label: "JPG",  ext: "jpg",  hasQuality: true  },
-  { value: "image/png",  label: "PNG",  ext: "png",  hasQuality: false },
-  { value: "image/webp", label: "WebP", ext: "webp", hasQuality: true  },
+  { value: "image/jpeg", label: "JPG", ext: "jpg", hasQuality: true },
+  { value: "image/png", label: "PNG", ext: "png", hasQuality: false },
+  { value: "image/webp", label: "WebP", ext: "webp", hasQuality: true },
 ];
 
 const QUICK_SCALES = [25, 50, 75, 100, 150, 200];
@@ -38,31 +38,31 @@ const QUICK_SCALES = [25, 50, 75, 100, 150, 200];
 // ─── Component ────────────────────────────────────────────────────────────────
 const ImageResizer = () => {
   const [originalImage, setOriginalImage] = useState(null);
-  const [resizedImage,  setResizedImage]  = useState(null);
-  const [originalSize,  setOriginalSize]  = useState(0);
-  const [resizedSize,   setResizedSize]   = useState(0);
-  const [origWidth,     setOrigWidth]     = useState(0);
-  const [origHeight,    setOrigHeight]    = useState(0);
-  const [width,         setWidth]         = useState("");
-  const [height,        setHeight]        = useState("");
-  const [aspectLocked,  setAspectLocked]  = useState(true);
-  const [usePercent,    setUsePercent]    = useState(false);
-  const [percent,       setPercent]       = useState(100);
-  const [outputFormat,  setOutputFormat]  = useState("image/jpeg");
-  const [quality,       setQuality]       = useState(0.92);
-  const [loading,       setLoading]       = useState(false);
-  const [error,         setError]         = useState(null);
-  const [isDragging,    setIsDragging]    = useState(false);
-  const [activePreset,  setActivePreset]  = useState("");
+  const [resizedImage, setResizedImage] = useState(null);
+  const [originalSize, setOriginalSize] = useState(0);
+  const [resizedSize, setResizedSize] = useState(0);
+  const [origWidth, setOrigWidth] = useState(0);
+  const [origHeight, setOrigHeight] = useState(0);
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
+  const [aspectLocked, setAspectLocked] = useState(true);
+  const [usePercent, setUsePercent] = useState(false);
+  const [percent, setPercent] = useState(100);
+  const [outputFormat, setOutputFormat] = useState("image/jpeg");
+  const [quality, setQuality] = useState(0.92);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [activePreset, setActivePreset] = useState("");
+  const [openFaq, setOpenFaq] = useState(null);
 
   const fileInputRef = useRef(null);
-  const imgRef       = useRef(null);
-  const origUrlRef   = useRef(null);
+  const imgRef = useRef(null);
+  const origUrlRef = useRef(null);
   const resizedUrlRef = useRef(null);
 
-  // Cleanup object URLs
   useEffect(() => () => {
-    if (origUrlRef.current)   URL.revokeObjectURL(origUrlRef.current);
+    if (origUrlRef.current) URL.revokeObjectURL(origUrlRef.current);
     if (resizedUrlRef.current) URL.revokeObjectURL(resizedUrlRef.current);
   }, []);
 
@@ -135,7 +135,7 @@ const ImageResizer = () => {
 
     if (usePercent) {
       const scale = percent / 100;
-      tw = Math.round(origWidth  * scale);
+      tw = Math.round(origWidth * scale);
       th = Math.round(origHeight * scale);
       setWidth(String(tw));
       setHeight(String(th));
@@ -154,14 +154,14 @@ const ImageResizer = () => {
     setError(null);
 
     const canvas = document.createElement("canvas");
-    canvas.width  = tw;
+    canvas.width = tw;
     canvas.height = th;
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
     ctx.drawImage(imgRef.current, 0, 0, tw, th);
 
-    const fmt  = outputFormat;
+    const fmt = outputFormat;
     const qual = FORMAT_OPTIONS.find((f) => f.value === fmt)?.hasQuality ? quality : undefined;
 
     canvas.toBlob(
@@ -180,7 +180,7 @@ const ImageResizer = () => {
 
   const downloadResized = () => {
     if (!resizedImage) return;
-    const ext  = FORMAT_OPTIONS.find((f) => f.value === outputFormat)?.ext || "jpg";
+    const ext = FORMAT_OPTIONS.find((f) => f.value === outputFormat)?.ext || "jpg";
     const link = document.createElement("a");
     link.href = resizedImage;
     link.download = `resized-${width}x${height}-${Date.now()}.${ext}`;
@@ -189,11 +189,11 @@ const ImageResizer = () => {
 
   const reset = () => {
     setOriginalImage(null); setResizedImage(null);
-    setOriginalSize(0);     setResizedSize(0);
-    setWidth("");           setHeight("");
-    setPercent(100);        setUsePercent(false);
-    setError(null);         setLoading(false);
-    setActivePreset("");    setAspectLocked(true);
+    setOriginalSize(0); setResizedSize(0);
+    setWidth(""); setHeight("");
+    setPercent(100); setUsePercent(false);
+    setError(null); setLoading(false);
+    setActivePreset(""); setAspectLocked(true);
     imgRef.current = null;
   };
 
@@ -203,167 +203,215 @@ const ImageResizer = () => {
 
   const currentFormat = FORMAT_OPTIONS.find((f) => f.value === outputFormat);
 
-  const schemaData = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Image Resizer",
-    url: "https://www.generatorpromptai.com/tools/image-resizer",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    description: "Free online image resizer. Resize JPG, PNG and WebP images to any pixel dimension or percentage. Aspect ratio lock, platform presets, quality control. 100% private.",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
+    "name": "Resize Image to 1080x1080 for Instagram Post Online – Free Pixel Dimension Tool",
+    "url": "https://www.generatorpromptai.com/tools/image-resizer",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online image resizer to change JPG, PNG and WebP to any pixel dimension or percentage. Platform presets for Instagram 1080x1080, YouTube 1280x720, Twitter 1500x500. Aspect ratio lock, no upload.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Image Resizer", "item": "https://www.generatorpromptai.com/tools/image-resizer" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "What size should an Instagram post image be?",
-        acceptedAnswer: { "@type": "Answer", text: "Instagram post images should be 1080×1080px for square posts. Use our Instagram Post preset to resize automatically." },
+        "name": "How to resize image to 1080x1080 for Instagram post online?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your photo, click the Instagram Post preset (1080x1080), then click Resize Image. The tool automatically sets the correct dimensions and you can download the resized image as JPG, PNG or WebP."
+        }
       },
       {
         "@type": "Question",
-        name: "Can I resize an image without losing quality?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. Resizing down (making an image smaller) preserves quality well, especially with high quality settings. Resizing up (enlarging) can cause some blurriness as pixels are interpolated." },
+        "name": "Can I resize an image without losing quality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, when resizing down (making smaller) quality is preserved very well with high quality output settings. Resizing up (enlarging) will cause some blurriness because pixels are being interpolated — this is a fundamental limitation of all image resizers."
+        }
       },
       {
         "@type": "Question",
-        name: "Does this image resizer upload my photos to a server?",
-        acceptedAnswer: { "@type": "Answer", text: "No. Everything happens entirely in your browser. Your images are never uploaded to any server — 100% private and secure." },
+        "name": "How to resize image to 50 percent online for free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your image and click the 50% quick scale button. The width and height fields update automatically to half the original dimensions. Then click Resize Image to process and download."
+        }
       },
       {
         "@type": "Question",
-        name: "How do I resize an image to a specific percentage?",
-        acceptedAnswer: { "@type": "Answer", text: "Use the quick scale buttons (25%, 50%, 75% etc.) or toggle Percentage mode and enter any value from 1% to 200%." },
+        "name": "What size for YouTube thumbnail 1280x720?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "YouTube thumbnails should be 1280x720 pixels in 16:9 aspect ratio. Select the YouTube Thumb preset in our tool and it sets 1280x720 automatically."
+        }
       },
       {
         "@type": "Question",
-        name: "What output formats are available?",
-        acceptedAnswer: { "@type": "Answer", text: "You can download resized images as JPG (smallest file size), PNG (lossless), or WebP (best compression for web)." },
+        "name": "Does this image resizer upload my photos to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All resizing happens entirely in your browser using the HTML5 Canvas API. Your images are never uploaded, stored, or sent to any server."
+        }
       },
-    ],
+      {
+        "@type": "Question",
+        "name": "How to resize photo for WhatsApp profile picture 500x500?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your photo, click the WhatsApp DP preset (500x500), then click Resize Image. Download the result and set it as your WhatsApp profile picture."
+        }
+      }
+    ]
   };
 
   return (
     <>
       <Helmet>
-        <title>Image Resizer - Resize Images Online Free | Pixel & Percentage | Platform Presets</title>
+        <title>Resize Image to 1080x1080 for Instagram Post Online – Free Pixel Dimension Tool</title>
+
         <meta
           name="description"
-          content="Free online image resizer — resize JPG, PNG and WebP images to any pixel dimension or percentage. Platform presets for Instagram, YouTube, Twitter, Facebook. Aspect ratio lock. 100% private, no upload."
+          content="Free online image resizer — change JPG, PNG and WebP to any pixel dimension or percentage. Platform presets for Instagram 1080x1080, YouTube 1280x720, Twitter 1500x500. Aspect ratio lock. No upload to server."
         />
+
         <meta
           name="keywords"
-          content="image resizer, resize image online, resize photo free, resize image pixels, percentage image resize, instagram image resize, youtube thumbnail resize, free image resizer 2026, aspect ratio lock"
+          content="how to resize image to 1080x1080 for instagram post online, resize photo to specific pixel dimensions free no upload, resize image to 50 percent online free tool, resize image for youtube thumbnail 1280x720 free, change image dimensions without losing quality online, resize photo for whatsapp profile picture 500x500, free online image resizer with aspect ratio lock, resize image to exact pixels for website free, resize jpg png webp to custom dimensions free, best free image resizer for social media 2026"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-resizer" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Image Resizer - Resize Images Free Online | Platform Presets" />
-        <meta property="og:description" content="Resize images to any size online. Platform presets for Instagram, YouTube, Twitter, Facebook. Download as JPG, PNG or WebP. 100% private." />
+        <meta property="og:title" content="Resize Image to 1080x1080 for Instagram Post Online – Free Tool" />
+        <meta property="og:description" content="Resize images to any pixel dimension or percentage. Instagram, YouTube, Twitter presets. Aspect ratio lock. No server upload." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-resizer" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-resizer.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Image Resizer - Resize Photos Online with Platform Presets" />
-        <meta name="twitter:description" content="Resize images for Instagram, YouTube, Facebook and more. Custom pixel dimensions or percentage. Free, private, no upload." />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-resizer.png" />
+        <meta name="twitter:title" content="Free Image Resizer – Resize to 1080x1080, 1280x720, Custom Pixels" />
+        <meta name="twitter:description" content="Resize images online to any dimension. Instagram, YouTube, Twitter presets. Aspect ratio lock. Free, no upload." />
 
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-5xl mx-auto w-full px-4 py-5">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
+
+        {/* ── Breadcrumb ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Image Resizer</span></li>
+            </ol>
+          </nav>
         </div>
 
         <div className="flex-grow max-w-5xl mx-auto w-full px-4 pb-20">
 
-          {/* Hero */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-100 mb-4">
-              <Maximize2 className="text-blue-600" size={26} />
+          {/* ── Hero ── */}
+          <div className="text-center mb-10 mt-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
+              <Maximize2 className="text-sky-600" size={28} />
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">Image Resizer</h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Resize photos to any dimension or percentage. Platform presets for Instagram, YouTube, Twitter and more.
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
+              Resize Image to 1080x1080 for Instagram Post Online –{" "}
+              <span className="text-sky-600">Free Pixel Dimension Tool</span>
+            </h1>
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Change JPG, PNG and WebP to any pixel dimension or percentage. Platform presets for Instagram, YouTube, Twitter and more. No upload to server.
             </p>
-            <div className="inline-flex items-center gap-2 mt-3 bg-green-50 border border-green-200 text-green-700 text-xs font-medium px-3 py-1.5 rounded-full">
-              <Shield size={13} /> 100% private — images never leave your browser
-            </div>
           </div>
 
-          {/* Upload */}
+          {/* ── Upload State ── */}
           {!originalImage && (
-            <div
-              className={`border-2 border-dashed rounded-2xl p-14 text-center cursor-pointer transition-all mb-8 ${
-                isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:border-blue-400 hover:bg-blue-50/20"
-              }`}
-              onClick={() => fileInputRef.current?.click()}
-              onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFile(e.dataTransfer.files?.[0]); }}
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={(e) => handleFile(e.target.files?.[0])}
-                className="hidden"
-              />
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Upload className="text-blue-600" size={28} />
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-8">
+              <div
+                className={`border-2 border-dashed rounded-2xl p-14 text-center cursor-pointer transition-all ${isDragging ? "border-sky-500 bg-sky-50" : "border-gray-300 hover:border-sky-400 hover:bg-sky-50/30"
+                  }`}
+                onClick={() => fileInputRef.current?.click()}
+                onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFile(e.dataTransfer.files?.[0]); }}
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(e) => handleFile(e.target.files?.[0])}
+                  className="hidden"
+                />
+                <div className="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Upload className="text-sky-600" size={28} />
+                </div>
+                <p className="text-xl font-semibold text-gray-800 mb-2">Drop image here or click to upload</p>
+                <p className="text-gray-400 text-sm">JPG, PNG, WebP — any size</p>
+                {error && <p className="mt-3 text-red-500 text-sm">{error}</p>}
               </div>
-              <p className="text-xl font-semibold text-gray-800 mb-2">Drop image here or click to upload</p>
-              <p className="text-gray-400 text-sm">JPG, PNG, WebP — any size</p>
-              {error && <p className="mt-3 text-red-500 text-sm">{error}</p>}
             </div>
           )}
 
           {originalImage && (
             <div className="space-y-5">
 
-              {/* Platform Presets */}
-              <div className="bg-white border border-gray-200 rounded-2xl p-5">
-                <p className="text-sm font-semibold text-gray-700 mb-3">Platform Size Presets</p>
+              {/* ── Platform Presets ── */}
+              <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">Platform Size Presets</label>
                 <div className="flex flex-wrap gap-2">
                   {PRESETS.map((p) => (
                     <button
                       key={p.label}
                       onClick={() => applyPreset(p)}
-                      className={`px-3 py-2 rounded-xl border text-sm font-medium transition-all ${
-                        activePreset === p.label
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "bg-white text-gray-600 border-gray-200 hover:border-blue-400"
-                      }`}
+                      className={`px-3 py-2 rounded-xl border text-sm font-medium transition-all ${activePreset === p.label
+                          ? "bg-sky-600 text-white border-sky-600"
+                          : "bg-white text-gray-600 border-gray-200 hover:border-sky-400"
+                        }`}
                     >
                       {p.label}
-                      <span className="ml-1 text-xs opacity-60">{p.w}×{p.h}</span>
+                      <span className="ml-1 text-xs opacity-60">{p.w}x{p.h}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Controls + Preview grid */}
+              {/* ── Controls + Preview Grid ── */}
               <div className="grid lg:grid-cols-2 gap-5">
 
                 {/* Left: Settings */}
                 <div className="space-y-4">
 
-                  {/* Original preview */}
-                  <div className="bg-white border border-gray-200 rounded-2xl p-5">
+                  {/* Original Preview */}
+                  <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-sm font-semibold text-gray-700">Original</span>
-                      <span className="text-xs text-gray-400">{formatBytes(originalSize)} · {origWidth}×{origHeight}px</span>
+                      <span className="text-xs text-gray-400">{formatBytes(originalSize)} · {origWidth}x{origHeight}px</span>
                     </div>
                     <div className="bg-gray-50 rounded-xl border border-gray-100 overflow-hidden">
                       <img src={originalImage} alt="Original" className="w-full max-h-52 object-contain" />
@@ -371,35 +419,33 @@ const ImageResizer = () => {
                   </div>
 
                   {/* Resize Settings */}
-                  <div className="bg-white border border-gray-200 rounded-2xl p-5">
+                  <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
                     <div className="flex items-center justify-between mb-4">
-                      <p className="text-sm font-semibold text-gray-700">Resize Settings</p>
+                      <label className="text-sm font-semibold text-gray-700">Resize Settings</label>
                       <button
                         onClick={() => setAspectLocked(!aspectLocked)}
-                        className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-all ${
-                          aspectLocked
-                            ? "bg-blue-50 border-blue-300 text-blue-600"
+                        className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-all ${aspectLocked
+                            ? "bg-sky-50 border-sky-300 text-sky-600"
                             : "bg-gray-50 border-gray-200 text-gray-500"
-                        }`}
+                          }`}
                       >
                         {aspectLocked ? <Lock size={13} /> : <Unlock size={13} />}
                         {aspectLocked ? "Ratio locked" : "Ratio unlocked"}
                       </button>
                     </div>
 
-                    {/* Quick Scale Buttons */}
+                    {/* Quick Scale */}
                     <div className="mb-4">
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Quick Scale</p>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Quick Scale</label>
                       <div className="flex gap-2 flex-wrap">
                         {QUICK_SCALES.map((s) => (
                           <button
                             key={s}
                             onClick={() => applyScale(s)}
-                            className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ${
-                              usePercent && percent === s
-                                ? "bg-blue-600 text-white border-blue-600"
-                                : "bg-gray-50 border-gray-200 text-gray-600 hover:border-blue-400"
-                            }`}
+                            className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ${usePercent && percent === s
+                                ? "bg-sky-600 text-white border-sky-600"
+                                : "bg-gray-50 border-gray-200 text-gray-600 hover:border-sky-400"
+                              }`}
                           >
                             {s}%
                           </button>
@@ -407,7 +453,7 @@ const ImageResizer = () => {
                       </div>
                     </div>
 
-                    {/* Width / Height inputs */}
+                    {/* Width / Height */}
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       <div>
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Width (px)</label>
@@ -415,7 +461,7 @@ const ImageResizer = () => {
                           type="number" min="1" max="8000"
                           value={width}
                           onChange={(e) => { setUsePercent(false); handleWidthChange(e.target.value); }}
-                          className="w-full px-3 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                          className="w-full px-3 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800"
                         />
                       </div>
                       <div>
@@ -424,12 +470,12 @@ const ImageResizer = () => {
                           type="number" min="1" max="8000"
                           value={height}
                           onChange={(e) => { setUsePercent(false); handleHeightChange(e.target.value); }}
-                          className="w-full px-3 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                          className="w-full px-3 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800"
                         />
                       </div>
                     </div>
 
-                    {/* Output format */}
+                    {/* Output Format */}
                     <div className="mb-4">
                       <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Output Format</label>
                       <div className="flex gap-2">
@@ -437,11 +483,10 @@ const ImageResizer = () => {
                           <button
                             key={f.value}
                             onClick={() => setOutputFormat(f.value)}
-                            className={`flex-1 py-2 rounded-xl border text-sm font-medium transition-all ${
-                              outputFormat === f.value
-                                ? "bg-blue-600 text-white border-blue-600"
-                                : "bg-white text-gray-600 border-gray-200 hover:border-blue-400"
-                            }`}
+                            className={`flex-1 py-2 rounded-xl border text-sm font-medium transition-all ${outputFormat === f.value
+                                ? "bg-sky-600 text-white border-sky-600"
+                                : "bg-white text-gray-600 border-gray-200 hover:border-sky-400"
+                              }`}
                           >
                             {f.label}
                           </button>
@@ -449,17 +494,17 @@ const ImageResizer = () => {
                       </div>
                     </div>
 
-                    {/* Quality slider — only for JPG/WebP */}
+                    {/* Quality Slider */}
                     {currentFormat?.hasQuality && (
                       <div className="mb-4">
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                          Quality — <span className="text-blue-600">{Math.round(quality * 100)}%</span>
+                          Quality — <span className="text-sky-600">{Math.round(quality * 100)}%</span>
                         </label>
                         <input
                           type="range" min="0.5" max="1.0" step="0.01"
                           value={quality}
                           onChange={(e) => setQuality(Number(e.target.value))}
-                          className="w-full accent-blue-600"
+                          className="w-full accent-sky-600"
                         />
                         <div className="flex justify-between text-xs text-gray-400 mt-1">
                           <span>Smaller file</span><span>Best quality</span>
@@ -469,19 +514,19 @@ const ImageResizer = () => {
 
                     {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
-                    {/* Action buttons */}
+                    {/* Action Buttons */}
                     <div className="flex gap-3">
                       <button
                         onClick={resize}
                         disabled={loading || !width || !height}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+                        className="flex-1 bg-sky-600 hover:bg-sky-700 active:scale-95 transition-all text-white font-semibold px-8 py-3 rounded-xl disabled:opacity-40 flex items-center justify-center gap-2"
                       >
                         <Maximize2 size={17} />
                         {loading ? "Resizing..." : "Resize Image"}
                       </button>
                       <button
                         onClick={reset}
-                        className="px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium transition-colors flex items-center gap-2"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
                       >
                         <RefreshCw size={15} /> Reset
                       </button>
@@ -489,8 +534,8 @@ const ImageResizer = () => {
                   </div>
                 </div>
 
-                {/* Right: Resized output */}
-                <div className="bg-white border border-gray-200 rounded-2xl p-5">
+                {/* Right: Resized Output */}
+                <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-sm font-semibold text-gray-700">Resized Output</span>
                     {resizedSize > 0 && (
@@ -508,17 +553,17 @@ const ImageResizer = () => {
 
                   {loading ? (
                     <div className="h-64 bg-gray-50 rounded-xl border border-gray-100 flex flex-col items-center justify-center">
-                      <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-3" />
-                      <p className="text-sm text-blue-600">Resizing...</p>
+                      <div className="w-10 h-10 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-3" />
+                      <p className="text-sm text-sky-600">Resizing...</p>
                     </div>
                   ) : resizedImage ? (
                     <>
-                      {/* Size comparison bar */}
+                      {/* Size Comparison Bar */}
                       {resizedSize > 0 && (
                         <div className="mb-3 bg-gray-50 rounded-xl p-3 border border-gray-100">
                           <div className="flex justify-between text-xs text-gray-500 mb-1.5">
-                            <span>Original: {formatBytes(originalSize)} ({origWidth}×{origHeight}px)</span>
-                            <span>New: {formatBytes(resizedSize)} ({width}×{height}px)</span>
+                            <span>Original: {formatBytes(originalSize)} ({origWidth}x{origHeight}px)</span>
+                            <span>New: {formatBytes(resizedSize)} ({width}x{height}px)</span>
                           </div>
                           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                             <div
@@ -528,12 +573,37 @@ const ImageResizer = () => {
                           </div>
                         </div>
                       )}
+
+                      {/* Stats Grid */}
+                      <div className="grid grid-cols-4 gap-3 mb-4">
+                        <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center">
+                          <div className="flex justify-center text-sky-500 mb-1"><Ruler size={16} /></div>
+                          <p className="text-sm font-bold text-gray-800">{origWidth}x{origHeight}</p>
+                          <p className="text-xs text-gray-500 mt-0.5">Original</p>
+                        </div>
+                        <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center">
+                          <div className="flex justify-center text-sky-500 mb-1"><ArrowRightLeft size={16} /></div>
+                          <p className="text-sm font-bold text-gray-800">{width}x{height}</p>
+                          <p className="text-xs text-gray-500 mt-0.5">New Size</p>
+                        </div>
+                        <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center">
+                          <div className="flex justify-center text-green-500 mb-1"><HardDrive size={16} /></div>
+                          <p className="text-sm font-bold text-gray-800">{formatBytes(resizedSize)}</p>
+                          <p className="text-xs text-gray-500 mt-0.5">File Size</p>
+                        </div>
+                        <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center">
+                          <div className="flex justify-center text-sky-500 mb-1"><Percent size={16} /></div>
+                          <p className="text-sm font-bold text-gray-800">{savingsPct > 0 ? `-${savingsPct}%` : savingsPct < 0 ? `+${Math.abs(savingsPct)}%` : "0%"}</p>
+                          <p className="text-xs text-gray-500 mt-0.5">Change</p>
+                        </div>
+                      </div>
+
                       <div className="bg-gray-50 rounded-xl border border-gray-100 overflow-hidden mb-4">
-                        <img src={resizedImage} alt="Resized" className="w-full max-h-80 object-contain" />
+                        <img src={resizedImage} alt="Resized" className="w-full max-h-64 object-contain" />
                       </div>
                       <button
                         onClick={downloadResized}
-                        className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+                        className="w-full bg-sky-600 hover:bg-sky-700 active:scale-95 transition-all text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2"
                       >
                         <Download size={17} /> Download {currentFormat?.label}
                       </button>
@@ -549,63 +619,113 @@ const ImageResizer = () => {
             </div>
           )}
 
-          {/* SEO Content */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mt-8 mb-6">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8 mt-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Online Image Resizer — Pixel &amp; Percentage, Platform Presets
+              Free Online Image Resizer with Aspect Ratio Lock – No Software Needed
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Our free image resizer lets you resize JPG, PNG, and WebP images to any exact pixel dimension or percentage scale — all inside your browser. No uploads, no server, 100% private. Download resized images as JPG, PNG, or WebP with adjustable quality.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Resizing images for social media, websites, or email should not require Photoshop or any downloaded software. Our free image resizer works entirely in your browser — upload a photo, pick a platform preset or enter custom dimensions, and download the resized image instantly.
             </p>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Choose from 8 platform presets including Instagram Post (1080×1080), Instagram Story (1080×1920), YouTube Thumbnail (1280×720), Twitter Header (1500×500), and more. Or enter any custom width and height with aspect ratio lock to prevent stretching.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              The <strong>aspect ratio lock</strong> ensures your image never gets stretched or distorted. Change the width and the height adjusts automatically (and vice versa). Or unlock the ratio to set exact dimensions for non-proportional resizing like YouTube thumbnails or Facebook covers.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Standard image sizes for social media</h3>
-            <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
-              <li><strong>Instagram Post:</strong> 1080×1080px (square)</li>
-              <li><strong>Instagram Story / Reels:</strong> 1080×1920px</li>
-              <li><strong>YouTube Thumbnail:</strong> 1280×720px (16:9)</li>
-              <li><strong>Twitter / X Header:</strong> 1500×500px</li>
-              <li><strong>Facebook Cover:</strong> 820×312px</li>
-              <li><strong>LinkedIn Banner:</strong> 1584×396px</li>
-              <li><strong>WhatsApp Profile Picture:</strong> 500×500px</li>
-            </ul>
+            <p className="text-gray-600 leading-relaxed">
+              All processing uses the HTML5 Canvas API running locally in your browser. Your images are <strong>never uploaded to any server</strong>, making this tool safe for private photos, client work, and confidential business images.
+            </p>
           </div>
 
-          {/* FAQ */}
+          {/* ── How to Use ── */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              How to Resize Image to Exact Pixels for Website Free
+            </h2>
+            <ol className="list-decimal list-inside text-gray-600 space-y-3 text-base">
+              <li>Click <strong>Upload</strong> or drag and drop your image into the tool.</li>
+              <li>Enter your target <strong>width and height in pixels</strong>, or click a platform preset.</li>
+              <li>Keep <strong>aspect ratio locked</strong> to prevent distortion, or unlock for exact dimensions.</li>
+              <li>Choose output format (JPG, PNG, WebP) and adjust quality if needed.</li>
+              <li>Click <strong>"Resize Image"</strong> and download the result.</li>
+            </ol>
+          </div>
+
+          {/* ── Features Grid ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Resize Photo to Specific Pixel Dimensions Without Losing Quality – Features
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                { q: "What size should an Instagram post image be?", a: "Instagram post images should be 1080×1080px for square posts. Use our Instagram Post preset to resize automatically to the correct dimensions." },
-                { q: "Can I resize without losing quality?", a: "Resizing down (making smaller) preserves quality very well with high quality settings. Resizing up (enlarging) will cause some blurriness as pixels are interpolated — this is a limitation of all image resizers." },
-                { q: "Does this tool upload my images?", a: "No. All resizing happens entirely in your browser. Your images are never uploaded to any server — completely private and secure." },
-                { q: "How do I resize by percentage?", a: "Click any quick scale button (25%, 50%, 75%, 100%, 150%, 200%) to resize proportionally. The pixel dimensions update automatically." },
-                { q: "What output formats are available?", a: "JPG (smallest file, best for photos), PNG (lossless, best for graphics and transparency), or WebP (best compression for web use)." },
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "8 Platform Size Presets", desc: "One-click presets for Instagram Post (1080x1080), Instagram Story (1080x1920), YouTube Thumbnail (1280x720), Twitter Header (1500x500), Facebook Cover, LinkedIn Banner, WhatsApp DP, and HD Wallpaper." },
+                { title: "Aspect Ratio Lock", desc: "Toggle the lock to keep width and height proportional. Change one dimension and the other adjusts automatically — prevents stretched or distorted images." },
+                { title: "Quick Percentage Scale", desc: "Resize to 25%, 50%, 75%, 100%, 150%, or 200% of the original size with one click. Perfect for batch-like proportional resizing of single images." },
+                { title: "100% Private — No Upload", desc: "All resizing runs in your browser using the HTML5 Canvas API. Your images are never uploaded, stored, or sent to any server. Works offline after page load." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* ── FAQ Accordion ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Image Resizer – Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to resize image to 1080x1080 for Instagram post online?",
+                  a: "Upload your photo, click the Instagram Post preset (1080x1080), then click Resize Image. The tool automatically sets the correct dimensions and you can download the resized image as JPG, PNG or WebP."
+                },
+                {
+                  q: "Can I resize an image without losing quality?",
+                  a: "Yes, when resizing down (making smaller) quality is preserved very well with high quality output settings. Resizing up (enlarging) will cause some blurriness because pixels are being interpolated — this is a fundamental limitation of all image resizers."
+                },
+                {
+                  q: "How to resize image to 50 percent online for free?",
+                  a: "Upload your image and click the 50% quick scale button. The width and height fields update automatically to half the original dimensions. Then click Resize Image to process and download."
+                },
+                {
+                  q: "What size for YouTube thumbnail 1280x720?",
+                  a: "YouTube thumbnails should be 1280x720 pixels in 16:9 aspect ratio. Select the YouTube Thumb preset in our tool and it sets 1280x720 automatically."
+                },
+                {
+                  q: "Does this image resizer upload my photos to a server?",
+                  a: "No. All resizing happens entirely in your browser using the HTML5 Canvas API. Your images are never uploaded, stored, or sent to any server."
+                },
+                {
+                  q: "How to resize photo for WhatsApp profile picture 500x500?",
+                  a: "Upload your photo, click the WhatsApp DP preset (500x500), then click Resize Image. Download the result and set it as your WhatsApp profile picture."
+                }
+              ].map((item, i) => (
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
           <section>
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Related Image Tools</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Image Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 { to: "/tools/image-compressor", title: "Image Compressor", desc: "Reduce image file size by up to 90% without quality loss." },
-                { to: "/tools/image-cropper",    title: "Image Cropper",    desc: "Crop images with social media presets and custom ratios." },
-                { to: "/tools/image-converter",  title: "Image Converter",  desc: "Convert between JPG, PNG and WebP formats instantly." },
+                { to: "/tools/image-cropper", title: "Image Cropper", desc: "Crop images with social media presets and custom ratios." },
+                { to: "/tools/image-converter", title: "Image Converter", desc: "Convert between JPG, PNG and WebP formats instantly." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-blue-400 transition-all"
-                >
-                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-blue-600 transition-colors">{tool.title}</h3>
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all">
+                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">{tool.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>
               ))}

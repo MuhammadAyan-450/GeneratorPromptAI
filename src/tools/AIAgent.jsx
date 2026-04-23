@@ -1,15 +1,13 @@
-// src/pages/AIAgent.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Send, RefreshCw, Copy, Star, Brain, Bot } from "lucide-react";
-import { Helmet } from "react-helmet-async"; // ✅ Fixed: was react-helmet (wrong package)
+import { Send, RefreshCw, Copy, Star, Brain, Bot, Home, ChevronDown } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const AIAgent = () => {
-  // ✅ Fixed: removed localStorage (not supported in this environment, causes errors on some browsers)
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! 👋 I'm your AI Agent powered by Groq + Llama 3.3. Ask me anything!" }
+    { role: "assistant", content: "Hello! 👋 I'm your free AI Agent. Ask me anything, generate prompts, or brainstorm ideas!" }
   ]);
 
   const [input, setInput] = useState("");
@@ -17,6 +15,7 @@ const AIAgent = () => {
   const [thinkingSteps, setThinkingSteps] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [copiedIndex, setCopiedIndex] = useState(-1);
+  const [openFaq, setOpenFaq] = useState(null);
 
   const messagesEndRef = useRef(null);
 
@@ -92,120 +91,107 @@ const AIAgent = () => {
     ]);
   };
 
-  const schemaData = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "AI Agent Chatbot",
-    url: "https://generatorpromptai.com/tools/ai-agent",
-    applicationCategory: "AIApplication",
-    operatingSystem: "Web",
-    browserRequirements: "Requires JavaScript",
-    provider: {
-      "@type": "Organization",
-      name: "Generator PromptAI",
-      url: "https://generatorpromptai.com"
-    },
-    description:
-      "Free AI chatbot powered by Groq and Llama 3.3. Ask questions, generate prompts, write content, and get instant answers with no login required.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD"
-    }
+    "@type": "WebApplication",
+    "name": "Free AI Agent for Prompt Generation & Brainstorming",
+    "url": "https://www.generatorpromptai.com/tools/ai-agent",
+    "applicationCategory": "ChatApplication",
+    "operatingSystem": "Web",
+    "description": "Free online AI Agent to generate prompts, brainstorm ideas, write content, and get instant answers. No signup or login required.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "AI Agent", "item": "https://www.generatorpromptai.com/tools/ai-agent" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "What AI model powers this chatbot?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Our AI Agent is powered by Groq and Llama 3.3, one of the fastest and most capable open-source large language models available.",
-        },
+        "name": "Can I use this AI agent to generate prompts for ChatGPT and Midjourney?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, simply tell the AI agent what kind of prompt you need (e.g., 'Write a prompt for ChatGPT to write a blog post about SEO') and it will generate a structured, ready-to-use prompt for you." }
       },
       {
         "@type": "Question",
-        name: "Is this AI chatbot free to use?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes, the AI Agent on GeneratorPromptAI is completely free to use with no sign-up required.",
-        },
+        "name": "Is this AI assistant free without signup?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, our AI agent is 100% free to use. You do not need to create an account, provide an email, or log in. Just open the page and start chatting immediately." }
       },
       {
         "@type": "Question",
-        name: "What can I use the AI Agent for?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "You can use it to ask questions, generate AI prompts for ChatGPT or Midjourney, get content ideas, write code, summarize text, and much more.",
-        },
+        "name:": "How to brainstorm content ideas with AI for free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Open our AI Agent and type your topic or niche. Ask it to 'Give me 10 YouTube video ideas about [topic]' or 'Brainstorm 5 blog post titles about [topic]'. It will generate creative ideas instantly." }
       },
       {
         "@type": "Question",
-        name: "How fast is the AI Agent?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Our AI Agent uses Groq's ultra-fast inference engine, making responses significantly faster than most AI chatbots.",
-        },
-      },
-    ],
+        "name": "Can I use the AI agent to write code and debug errors?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. Our AI agent can write code snippets in various programming languages, explain complex code logic, and help you find and fix bugs in your code." }
+      }
+    ]
   };
 
   return (
     <>
       <Helmet>
-        {/* Primary SEO */}
-        <title>Free AI Chatbot Online | Talk to AI Bot No Login Required</title>
+        <title>Free AI Agent for Prompt Generation & Brainstorming – No Signup</title>
         <meta
           name="description"
-          content="Free AI chatbot online! Chat with advanced AI instantly - ask questions, generate content, get answers 24/7. No signup, unlimited messages! 🤖✨"
+          content="Use our free AI Agent to generate prompts for ChatGPT & Midjourney, brainstorm content ideas, write code, and get instant answers. No login required – start chatting now."
         />
         <meta
           name="keywords"
-          content="free ai chatbot, ai chatbot online, talk to ai, chat with ai free, ai bot online, free ai assistant, chatbot no login, ai chat free online, best free ai chatbot, ai conversation bot, ask ai questions free, chatgpt alternative free"
+          content="free AI agent for prompt generation, AI assistant without signup, brainstorm ideas with AI free, free AI chat for writing, ask AI questions online no login, AI agent to write code, free online chatbot for developers, generate AI prompts free, AI content brainstorming tool"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/ai-agent" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
-        {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Free AI Chatbot 🤖 Chat with AI Online - No Signup!" />
-        <meta
-          property="og:description"
-          content="Talk to AI for free! Get instant answers, generate content, brainstorm ideas. Powered by Llama 3.3 & Groq. Zero signup, unlimited chats! 💬"
-        />
+        <meta property="og:title" content="Free AI Agent for Prompt Generation & Brainstorming" />
+        <meta property="og:description" content="Generate prompts, brainstorm ideas, write code, and get answers instantly with our free AI Agent. No signup needed." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/ai-agent" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-ai-agent.png" />
 
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free AI Chatbot - Chat with AI Instantly 🤖" />
-        <meta
-          name="twitter:description"
-          content="Free AI chat powered by Llama 3.3. Ask anything, generate content, get smart answers. No login needed! 💬✨"
-        />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-ai-agent.png" />
+        <meta name="twitter:title" content="Free AI Agent – Prompt Generator & Idea Brainstormer" />
+        <meta name="twitter:description" content="Chat with AI to generate prompts, brainstorm content ideas, and write code. 100% free, no login." />
 
-        {/* Schema */}
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <Navbar />
 
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
 
-        {/* Top Nav */}
-        <div className="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition-colors text-sm"
-          >
-            <ArrowLeft size={18} /> Back to Home
-          </Link>
+        {/* ── Top Nav (Breadcrumb + New Chat) ── */}
+        <div className="max-w-6xl mx-auto px-4 pt-6 pb-2 flex items-center justify-between">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-indigo-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-indigo-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">AI Agent</span></li>
+            </ol>
+          </nav>
           <button
             onClick={newChat}
             className="px-4 py-2 bg-white shadow hover:shadow-md rounded-xl flex items-center gap-2 text-sm text-gray-700 transition-all"
@@ -216,16 +202,17 @@ const AIAgent = () => {
 
         <div className="max-w-5xl mx-auto px-4 pb-10">
 
-          {/* Page Title (for SEO — visible on page) */}
+          {/* Page Title (SEO Optimized) */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-100 mb-3">
               <Bot className="text-indigo-600" size={24} />
             </div>
+            {/* H1 Targeting Low Comp */}
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-              Free AI Chatbot Online - Chat with AI Bot Instantly
+              Free AI Agent – Generate Prompts & Brainstorm Ideas Instantly
             </h1>
             <p className="text-gray-500 text-sm">
-              Powered by <strong>Groq + Llama 3.3</strong> — Ask anything, get instant answers
+              Ask questions, write content, or generate AI prompts. <strong>100% free, no signup required.</strong>
             </p>
           </div>
 
@@ -240,10 +227,11 @@ const AIAgent = () => {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] px-5 py-4 rounded-3xl relative break-words shadow-sm ${msg.role === "user"
-                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
-                      : "bg-white text-gray-900 border border-gray-200"
-                      }`}
+                    className={`max-w-[80%] px-5 py-4 rounded-3xl relative break-words shadow-sm ${
+                      msg.role === "user"
+                        ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
+                        : "bg-white text-gray-900 border border-gray-200"
+                    }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
 
@@ -304,16 +292,17 @@ const AIAgent = () => {
                 onKeyDown={(e) =>
                   e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())
                 }
-                placeholder="Ask me anything..."
+                placeholder="Ask me anything, or type 'generate a prompt for...'"
                 className="flex-1 px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 text-sm"
               />
               <button
                 onClick={sendMessage}
                 disabled={isThinking || !input.trim()}
-                className={`px-6 py-3.5 rounded-2xl flex items-center justify-center transition-all ${isThinking || !input.trim()
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 active:scale-95"
-                  }`}
+                className={`px-6 py-3.5 rounded-2xl flex items-center justify-center transition-all ${
+                  isThinking || !input.trim()
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 active:scale-95"
+                }`}
               >
                 {isThinking ? (
                   <RefreshCw size={18} className="animate-spin" />
@@ -340,57 +329,123 @@ const AIAgent = () => {
             </div>
           )}
 
-          {/* SEO Content */}
+          {/* ── SEO Content 1 ── */}
           <div className="mt-10 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free AI Chatbot Powered by Groq &amp; Llama 3.3
+              Free AI Agent for Prompt Generation & Content Brainstorming
             </h2>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Our AI Agent is a free online chatbot powered by Groq's ultra-fast inference engine and Meta's Llama 3.3 large language model. It delivers fast, intelligent responses to any question — no sign-up or payment required.
+              Our free online AI Agent is designed to help you <strong>generate prompts for ChatGPT, Claude, and Midjourney</strong>, brainstorm content ideas, write emails, and get instant answers to complex questions. It acts as your personal AI assistant, running entirely in your browser with zero login required.
             </p>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Use it to generate AI prompts for ChatGPT, Midjourney, or Claude, write content, answer questions, summarize text, debug code, or just have a conversation. It's one of the fastest free AI chatbots available online.
+              Whether you are a developer looking to debug code, a content creator needing fresh ideas, or a student wanting to summarize notes, this tool adapts to your needs instantly.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">What can you do with the AI Agent?</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1 text-sm mb-4">
-              <li>Generate prompts for ChatGPT, Midjourney, Claude, and more</li>
-              <li>Get instant answers to any question</li>
-              <li>Write blog posts, social media captions, and emails</li>
-              <li>Debug and explain code in any programming language</li>
-              <li>Summarize long articles or documents</li>
-              <li>Brainstorm ideas and creative content</li>
-            </ul>
           </div>
 
-          {/* FAQ */}
-          <div className="mt-6 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+          {/* ── Features Section ── */}
+          <div className="mt-8 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              What Can You Do With This AI Assistant?
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                {
-                  q: "What AI model powers this chatbot?",
-                  a: "Our AI Agent uses Groq's inference engine running Meta's Llama 3.3 — one of the fastest and most capable open-source AI models available today.",
-                },
-                {
-                  q: "Is this AI chatbot completely free?",
-                  a: "Yes, completely free. No account, no credit card, no limits. Just open the page and start chatting.",
-                },
-                {
-                  q: "What can I use the AI Agent for?",
-                  a: "You can use it to ask questions, generate prompts for other AI tools, write content, debug code, summarize text, brainstorm ideas, and much more.",
-                },
-                {
-                  q: "How fast is the AI Agent?",
-                  a: "Groq's inference engine is among the fastest in the world, making our AI Agent significantly faster than most AI chatbots including many paid alternatives.",
-                },
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "Generate AI Prompts", desc: "Create structured prompts for ChatGPT, Midjourney, Claude, and YouTube scripts in seconds." },
+                { title: "Brainstorm Content Ideas", desc: "Get unlimited blog topics, YouTube video ideas, and social media captions tailored to your niche." },
+                { title: "Write & Edit Code", desc: "Ask the AI to write code snippets, explain programming logic, or find bugs in your script." },
+                { title: "Summarize & Explain Text", desc: "Paste long articles or documents and ask the AI to summarize them into bullet points or simple terms." },
+                { title: "No Signup Required", desc: "Start chatting immediately. No account creation, no email, no credit card needed." },
+                { title: "Fast & Private", desc: "Get responses instantly. Your chats are processed securely without being stored on external servers." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* ── FAQ Section (Accordion) ── */}
+          <div className="mt-8 bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              AI Agent – Frequently Asked Questions
+            </h2>
+            
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "Can I use this AI agent to generate prompts for ChatGPT and Midjourney?",
+                  a: "Yes, simply tell the AI agent what kind of prompt you need (e.g., 'Write a prompt for ChatGPT to write a blog post about SEO') and it will generate a structured, ready-to-use prompt for you."
+                },
+                {
+                  q: "Is this AI assistant free without signup?",
+                  a: "Yes, our AI agent is 100% free to use. You do not need to create an account, provide an email, or log in. Just open the page and start chatting immediately."
+                },
+                {
+                  q: "How to brainstorm content ideas with AI for free?",
+                  a: "Open our AI Agent and type your topic or niche. Ask it to 'Give me 10 YouTube video ideas about [topic]' or 'Brainstorm 5 blog post titles about [topic]'. It will generate creative ideas instantly."
+                },
+                {
+                  q: "Can I use the AI agent to write code and debug errors?",
+                  a: "Absolutely. Our AI agent can write code snippets in various programming languages, explain complex code logic, and help you find and fix bugs in your code."
+                },
+                {
+                  q: "Are my chats saved or monitored?",
+                  a: "No. Your conversations are not permanently stored or monitored. The AI processes your messages to provide real-time answers without saving your personal chat history."
+                }
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-indigo-200 transition-colors duration-300"
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full flex items-center justify-between p-5 text-left"
+                    aria-expanded={openFaq === i}
+                  >
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">
+                      {item.q}
+                    </h3>
+                    <ChevronDown
+                      size={22}
+                      className={`text-indigo-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                  >
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">
+                      {item.a}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Related Free AI & Developer Tools
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { to: "/tools/chatgpt-prompt-generator", title: "ChatGPT Prompt Generator", desc: "Build structured prompts specifically optimized for ChatGPT responses." },
+                { to: "/tools/midjourney-prompt-generator", title: "Midjourney Prompt Builder", desc: "Create detailed image prompts with art styles, lighting, and camera angles." },
+                { to: "/tools/password-generator", title: "Password Generator", desc: "Generate strong, secure random passwords with custom length and symbols." }
+              ].map((tool) => (
+                <Link
+                  key={tool.to}
+                  to={tool.to}
+                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-indigo-400 transition-all"
+                >
+                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-indigo-600 transition-colors">
+                    {tool.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
 
         </div>
       </div>

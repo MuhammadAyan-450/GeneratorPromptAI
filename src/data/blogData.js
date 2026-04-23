@@ -30,6 +30,53 @@ export const BLOG_POSTS = [
     image: null,
     color: "from-blue-500 to-indigo-500",
     emoji: "🖼️",
+  },
+  {
+    id: 3,
+    slug: "how-to-convert-pdf-to-word-without-formatting-loss",
+    title: "How to Convert PDF to Word Without Losing Formatting (2026)",
+    excerpt:
+      "Tired of PDF to Word converters that mess up your formatting? Here's what actually works — free methods tested with real documents, plus the one mistake everyone makes.",
+    category: "Web Tips",
+    tag: "PDF Tools",
+    readTime: 8,
+    date: "April 16, 2026",
+    dateISO: "2026-04-16",
+    featured: false,
+    image: null,
+    color: "from-red-500 to-rose-600",
+    emoji: "📄",
+  },
+  {
+    id: 4,
+    slug: "jpeg-vs-png-complete-comparison-guide",
+    title: "JPEG vs PNG — Complete Comparison Guide (When to Use Which in 2026)",
+    excerpt:
+      "JPEG vs PNG: which format should you use? Complete comparison of file size, quality, transparency, and use cases.",
+    category: "Web Tips",
+    tag: "Images",
+    readTime: 7,
+    date: "April 14, 2026",
+    dateISO: "2026-04-14",
+    featured: false,
+    color: "from-emerald-500 to-teal-600",
+    emoji: "🖼️",
+  },
+  {
+    id: 5,
+    slug: "how-to-generate-lorem-ipsum-text-custom-length",
+    title: "How to Generate Lorem Ipsum Text of Any Length (2026 Guide)",
+    excerpt:
+      "Need placeholder text for your design or project? Learn how to generate Lorem Ipsum text with exact word or paragraph count — free, instant, no signup.",
+    category: "Web Tips",
+    tag: "Text Tools",
+    readTime: 5,
+    date: "April 18, 2026",
+    dateISO: "2026-04-18",
+    featured: false,
+    image: null,
+    color: "from-violet-500 to-purple-600",
+    emoji: "📝",
   }
 ];
 

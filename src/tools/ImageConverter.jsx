@@ -1,8 +1,7 @@
-// pages/ImageConverter.jsx
 import React, { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Upload, Download, Image as ImageIcon, RefreshCw, Shield, X, Zap } from "lucide-react";
+import { Copy, RefreshCw, Upload, Download, Image as ImageIcon, X, Home, ChevronDown, Zap, HardDrive, ArrowRightLeft, Percent } from "lucide-react";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const formatBytes = (bytes) => {
@@ -22,12 +21,12 @@ const FORMATS = [
 ];
 
 const QUICK_CONVERSIONS = [
-  { label: "JPG → PNG",  from: "JPG/PNG/WebP", to: "image/png"  },
-  { label: "JPG → WebP", from: "JPG/PNG/WebP", to: "image/webp" },
-  { label: "PNG → JPG",  from: "JPG/PNG/WebP", to: "image/jpeg" },
-  { label: "PNG → WebP", from: "JPG/PNG/WebP", to: "image/webp" },
-  { label: "WebP → JPG", from: "JPG/PNG/WebP", to: "image/jpeg" },
-  { label: "WebP → PNG", from: "JPG/PNG/WebP", to: "image/png"  },
+  { label: "JPG to PNG",  to: "image/png"  },
+  { label: "JPG to WebP", to: "image/webp" },
+  { label: "PNG to JPG",  to: "image/jpeg" },
+  { label: "PNG to WebP", to: "image/webp" },
+  { label: "WebP to JPG", to: "image/jpeg" },
+  { label: "WebP to PNG", to: "image/png"  },
 ];
 
 // ─── Convert a single file using canvas ──────────────────────────────────────
@@ -41,7 +40,6 @@ function convertFile(file, toMime, quality) {
       canvas.height = img.naturalHeight;
       const ctx = canvas.getContext("2d");
 
-      // Fill white background for JPG (no transparency)
       if (toMime === "image/jpeg") {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -70,12 +68,11 @@ const ImageCard = ({ item, onRemove }) => {
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-      {/* Header */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50">
         <div className="flex items-center gap-2 min-w-0">
           <ImageIcon size={14} className="text-gray-400 flex-shrink-0" />
           <span className="text-sm font-medium text-gray-700 truncate">{item.name}</span>
-          {item.width && <span className="text-xs text-gray-400 flex-shrink-0">{item.width}×{item.height}px</span>}
+          {item.width && <span className="text-xs text-gray-400 flex-shrink-0">{item.width}x{item.height}px</span>}
         </div>
         <button onClick={() => onRemove(item.id)} className="text-gray-400 hover:text-red-500 transition-colors ml-3 flex-shrink-0">
           <X size={15} />
@@ -98,7 +95,7 @@ const ImageCard = ({ item, onRemove }) => {
         <div className="p-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-              Converted → {getExt(item.toMime).toUpperCase()}
+              Converted to {getExt(item.toMime).toUpperCase()}
             </span>
             {item.convertedSize > 0 && (
               <span className={`text-xs font-medium ${bigger ? "text-orange-500" : "text-green-600"}`}>
@@ -129,7 +126,7 @@ const ImageCard = ({ item, onRemove }) => {
               <a
                 href={item.convertedUrl}
                 download={`converted-${item.name.replace(/\.[^.]+$/, "")}.${getExt(item.toMime)}`}
-                className="mt-3 w-full bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium py-2.5 rounded-xl inline-flex items-center justify-center gap-2 transition-colors"
+                className="mt-3 w-full bg-sky-600 hover:bg-sky-700 text-white text-sm font-medium py-2.5 rounded-xl inline-flex items-center justify-center gap-2 transition-colors"
               >
                 <Download size={14} /> Download {getExt(item.toMime).toUpperCase()}
               </a>
@@ -151,9 +148,9 @@ const ImageConverter = () => {
   const [toFormat, setToFormat]     = useState("image/webp");
   const [quality, setQuality]       = useState(0.92);
   const [isDragging, setIsDragging] = useState(false);
+  const [openFaq, setOpenFaq]       = useState(null);
   const fileInputRef = useRef(null);
 
-  // ✅ Fixed: convert is now a stable function using latest state via params
   const runConvert = useCallback(async (id, file, mime, qual) => {
     try {
       const { blob, width, height } = await convertFile(file, mime, qual);
@@ -202,134 +199,191 @@ const ImageConverter = () => {
   const clearAll    = () => setImages([]);
 
   const handleDrop = (e) => {
-    e.preventDefault(); setIsDragging(false);
+    e.preventDefault();
+    setIsDragging(false);
     addFiles(e.dataTransfer.files);
   };
 
-  const allDone     = images.length > 0 && images.every((img) => !img.loading);
-  const totalSaved  = images.reduce((acc, img) => acc + Math.max(0, img.originalSize - img.convertedSize), 0);
+  const totalOriginal   = images.reduce((acc, img) => acc + img.originalSize, 0);
+  const totalConverted = images.reduce((acc, img) => acc + img.convertedSize, 0);
+  const totalSaved     = Math.max(0, totalOriginal - totalConverted);
+  const avgSavings     = images.length > 0 && allDone
+    ? Math.round(images.reduce((acc, img) => {
+        const s = img.originalSize > 0 ? Math.round(((img.originalSize - img.convertedSize) / img.originalSize) * 100) : 0;
+        return acc + s;
+      }, 0) / images.filter((img) => !img.loading).length)
+    : 0;
+  const allDone = images.length > 0 && images.every((img) => !img.loading);
 
-  const schemaData = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Image Converter",
-    url: "https://www.generatorpromptai.com/tools/image-converter",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    description: "Free browser-based image converter. Convert JPG to PNG, PNG to WebP, WebP to JPG instantly. No upload, 100% private.",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
+    "name": "Convert JPG to PNG Without Losing Quality Online – Free Image Format Converter",
+    "url": "https://www.generatorpromptai.com/tools/image-converter",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online image converter to change JPG to PNG, PNG to WebP, WebP to JPG instantly in your browser. Batch convert up to 10 images. No server upload, 100% private.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Image Converter", "item": "https://www.generatorpromptai.com/tools/image-converter" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "How do I convert JPG to PNG online?",
-        acceptedAnswer: { "@type": "Answer", text: "Upload your JPG image, select PNG as the output format, and our tool instantly converts it in your browser. No upload to any server required." },
+        "name": "How to convert JPG to PNG without losing quality online for free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your JPG image to our tool and select PNG as the output format. The conversion happens in your browser using the HTML5 Canvas API, so no quality is lost during the process. The converted PNG preserves the exact pixel data of your original image."
+        }
       },
       {
         "@type": "Question",
-        name: "Does converting PNG to WebP reduce file size?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. WebP typically produces files 25–35% smaller than PNG and JPEG at equivalent visual quality, making it ideal for websites and apps." },
+        "name": "Does converting PNG to WebP reduce file size?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. WebP typically produces files 25-35% smaller than PNG and JPEG at equivalent visual quality. This makes it the best format for websites and apps where loading speed matters."
+        }
       },
       {
         "@type": "Question",
-        name: "Will converting JPG to PNG improve image quality?",
-        acceptedAnswer: { "@type": "Answer", text: "No. Converting JPG to PNG won't restore quality lost during JPEG compression. However, PNG will preserve the current quality without further loss and adds transparency support." },
+        "name": "How to convert WebP to JPG for email attachment?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your WebP image, select JPG as the output format, and download. JPG is universally supported by all email clients and most software, making it ideal for email attachments."
+        }
       },
       {
         "@type": "Question",
-        name: "Can I convert multiple images at once?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. Upload up to 10 images at once and they'll all be converted to your chosen format simultaneously." },
+        "name": "Can I batch convert multiple images to a different format at once?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Upload up to 10 images at once and they will all be converted to your chosen format simultaneously. Use the Download All button to save every converted image in one click."
+        }
       },
       {
         "@type": "Question",
-        name: "Are my images uploaded to a server?",
-        acceptedAnswer: { "@type": "Answer", text: "No. All conversion happens in your browser using the HTML5 Canvas API. Your images are never uploaded to any server." },
+        "name": "Does this image converter upload my files to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All conversion happens locally in your browser using the HTML5 Canvas API. Your images are never uploaded, stored, or sent to any server. They stay on your device at all times."
+        }
       },
-    ],
+      {
+        "@type": "Question",
+        "name": "Will converting JPG to PNG improve image quality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Converting JPG to PNG cannot restore quality that was already lost during JPEG compression. However, PNG will preserve the current quality without any further loss and adds support for transparent backgrounds."
+        }
+      }
+    ]
   };
 
   return (
     <>
       <Helmet>
-        <title>Image Converter - Convert JPG to PNG, PNG to WebP, WebP to JPG Free Online</title>
+        <title>Convert JPG to PNG Without Losing Quality Online – Free Image Format Converter</title>
+
         <meta
           name="description"
-          content="Free online image converter — convert JPG to PNG, PNG to WebP, WebP to JPG instantly in your browser. Batch convert up to 10 images. 100% private, no server upload. No sign-up needed."
+          content="Free online image converter — change JPG to PNG, PNG to WebP, WebP to JPG instantly in your browser. Batch convert up to 10 images. No server upload, 100% private. No sign-up needed."
         />
+
         <meta
           name="keywords"
-          content="image converter, jpg to png, png to jpg, jpg to webp, png to webp, webp to jpg, webp to png, convert image format online free, image format converter 2026"
+          content="how to convert jpg to png without losing quality online free, convert png to webp for faster website loading free tool, change webp to jpg for email attachment free online, batch convert images to webp format free no upload, convert image format online without uploading to server, free image format converter no sign up required, how to convert png to jpg for smaller file size, online image converter that works in browser offline, convert multiple images to different format at once free, jpg to png converter for transparent background online"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-converter" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Image Converter - JPG to PNG, PNG to WebP Free Online" />
-        <meta property="og:description" content="Convert JPG, PNG and WebP images online for free. Batch convert up to 10 images. 100% private — no server upload." />
+        <meta property="og:title" content="Convert JPG to PNG Without Losing Quality Online – Free Image Converter" />
+        <meta property="og:description" content="Change image formats instantly in your browser. JPG to PNG, PNG to WebP, WebP to JPG. Batch convert up to 10 images. No server upload." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-converter" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-converter.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Image Converter - JPG PNG WebP Online" />
+        <meta name="twitter:title" content="Free Image Converter – JPG to PNG, PNG to WebP Without Losing Quality" />
         <meta name="twitter:description" content="Convert image formats online free. JPG to PNG, PNG to WebP, WebP to JPG. Batch up to 10. No server upload." />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-converter.png" />
 
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-5xl mx-auto w-full px-4 py-5">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-teal-600 transition-colors text-sm">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
+
+        {/* ── Breadcrumb ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Image Converter</span></li>
+            </ol>
+          </nav>
         </div>
 
-        <div className="flex-grow max-w-5xl mx-auto w-full px-4 pb-20">
+        <div className="flex-grow max-w-4xl mx-auto w-full px-4 pb-20">
 
-          {/* Hero */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-teal-100 mb-4">
-              <ImageIcon className="text-teal-600" size={28} />
+          {/* ── Hero ── */}
+          <div className="text-center mb-10 mt-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
+              <ImageIcon className="text-sky-600" size={28} />
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">Image Converter</h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Convert JPG, PNG and WebP images instantly. Batch convert up to 10 images. Free &amp; private.
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
+              Convert JPG to PNG Without Losing Quality Online –{" "}
+              <span className="text-sky-600">Free Image Format Converter</span>
+            </h1>
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Change JPG to PNG, PNG to WebP, WebP to JPG instantly in your browser. Batch convert up to 10 images. No server upload.
             </p>
-            <div className="inline-flex items-center gap-2 mt-3 bg-green-50 border border-green-200 text-green-700 text-xs font-medium px-3 py-1.5 rounded-full">
-              <Shield size={13} /> 100% private — images never leave your browser
-            </div>
           </div>
 
-          {/* Quick Conversions */}
-          <div className="mb-5">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 text-center">Quick Select</p>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {QUICK_CONVERSIONS.map((qc) => (
-                <button
-                  key={qc.label}
-                  onClick={() => setToFormat(qc.to)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-                    toFormat === qc.to
-                      ? "bg-teal-600 text-white border-teal-600"
-                      : "bg-white text-gray-600 border-gray-200 hover:border-teal-400 hover:text-teal-600"
-                  }`}
-                >
-                  {qc.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* ── Tool Card ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-8">
 
-          {/* Settings Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 mb-5">
+            {/* Quick Conversions */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-3">Quick Select Conversion</label>
+              <div className="flex flex-wrap gap-2">
+                {QUICK_CONVERSIONS.map((qc) => (
+                  <button
+                    key={qc.label}
+                    onClick={() => setToFormat(qc.to)}
+                    className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
+                      toFormat === qc.to
+                        ? "bg-sky-600 text-white border-sky-600"
+                        : "bg-white text-gray-600 border-gray-200 hover:border-sky-400"
+                    }`}
+                  >
+                    {qc.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Format Buttons */}
             <div className="mb-5">
@@ -341,8 +395,8 @@ const ImageConverter = () => {
                     onClick={() => setToFormat(f.mime)}
                     className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all ${
                       toFormat === f.mime
-                        ? "border-teal-500 bg-teal-50 text-teal-700"
-                        : "border-gray-200 text-gray-600 hover:border-teal-300"
+                        ? "border-sky-500 bg-sky-50 text-sky-700"
+                        : "border-gray-200 text-gray-600 hover:border-sky-300"
                     }`}
                   >
                     <span className="text-sm font-bold">{f.label}</span>
@@ -353,161 +407,233 @@ const ImageConverter = () => {
             </div>
 
             {/* Quality (only for JPG/WebP) */}
-            {toFormat !== "image/png" && (
-              <div className="flex items-center gap-3 mb-5">
+            {toFormat !== "image/png" ? (
+              <div className="flex items-center gap-3 mb-6">
                 <span className="text-sm font-semibold text-gray-700 w-20 flex-shrink-0">Quality</span>
                 <input
                   type="range" min="0.50" max="0.98" step="0.01"
                   value={quality}
                   onChange={(e) => setQuality(Number(e.target.value))}
-                  className="flex-1 accent-teal-600"
+                  className="flex-1 accent-sky-600"
                 />
-                <span className="text-sm font-bold text-teal-600 w-10 text-right">{Math.round(quality * 100)}%</span>
+                <span className="text-sm font-bold text-sky-600 w-10 text-right">{Math.round(quality * 100)}%</span>
               </div>
+            ) : (
+              <p className="text-xs text-gray-400 mb-6">PNG is lossless — quality slider not applicable.</p>
             )}
 
-            {toFormat === "image/png" && (
-              <p className="text-xs text-gray-400 mb-5">PNG is lossless — quality slider not applicable.</p>
-            )}
-
-            {/* Re-convert button */}
-            {images.length > 0 && (
-              <button
-                onClick={reConvertAll}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-medium transition-colors"
-              >
-                <RefreshCw size={15} /> Re-convert with new settings
-              </button>
-            )}
-          </div>
-
-          {/* Drop Zone */}
-          <div
-            className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all mb-6 ${
-              isDragging ? "border-teal-500 bg-teal-50" : "border-gray-300 hover:border-teal-400 hover:bg-teal-50/20"
-            }`}
-            onClick={() => fileInputRef.current?.click()}
-            onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              multiple
-              onChange={(e) => addFiles(e.target.files)}
-              className="hidden"
-            />
-            <div className="w-14 h-14 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Upload className="text-teal-600" size={24} />
+            {/* Drop Zone */}
+            <div
+              className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all mb-6 ${
+                isDragging ? "border-sky-500 bg-sky-50" : "border-gray-300 hover:border-sky-400 hover:bg-sky-50/30"
+              }`}
+              onClick={() => fileInputRef.current?.click()}
+              onDrop={handleDrop}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                onChange={(e) => addFiles(e.target.files)}
+                className="hidden"
+              />
+              <div className="w-14 h-14 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Upload className="text-sky-600" size={24} />
+              </div>
+              <p className="text-base font-semibold text-gray-800 mb-1">Drop images here or click to upload</p>
+              <p className="text-gray-400 text-sm">JPG, PNG, WebP — Up to 10 images at once</p>
             </div>
-            <p className="text-base font-semibold text-gray-800 mb-1">Drop images here or click to upload</p>
-            <p className="text-gray-400 text-sm">JPG, PNG, WebP · Up to 10 images</p>
-          </div>
 
-          {/* Batch Stats */}
-          {allDone && images.length > 1 && (
-            <div className="bg-teal-50 border border-teal-200 rounded-2xl px-6 py-4 mb-5 flex flex-wrap gap-4 items-center">
-              <div className="flex items-center gap-2 text-teal-700">
-                <Zap size={16} />
-                <span className="text-sm font-semibold">{images.length} images converted</span>
-              </div>
-              {totalSaved > 0 && (
-                <span className="text-sm text-teal-700">Total saved: <strong>{formatBytes(totalSaved)}</strong></span>
+            {/* Re-convert + Clear */}
+            <div className="flex flex-wrap gap-3">
+              {images.length > 0 && (
+                <button
+                  onClick={reConvertAll}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                >
+                  <RefreshCw size={15} /> Re-convert with new settings
+                </button>
               )}
-              <button
-                onClick={() => images.forEach((img) => {
-                  if (!img.convertedUrl) return;
-                  const a = document.createElement("a");
-                  a.href = img.convertedUrl;
-                  a.download = `converted-${img.name.replace(/\.[^.]+$/, "")}.${getExt(img.toMime)}`;
-                  a.click();
-                })}
-                className="ml-auto inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
-              >
-                <Download size={14} /> Download All
-              </button>
+              {images.length > 0 && (
+                <button
+                  onClick={clearAll}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                >
+                  <X size={15} /> Clear all
+                </button>
+              )}
             </div>
-          )}
 
-          {/* Clear All */}
-          {images.length > 0 && (
-            <div className="flex justify-end mb-3">
-              <button onClick={clearAll} className="text-sm text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1">
-                <X size={13} /> Clear all
-              </button>
-            </div>
-          )}
+            {/* ── Stats Grid ── */}
+            {allDone && images.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><ArrowRightLeft size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{images.length}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Converted</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><HardDrive size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{formatBytes(totalOriginal)}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Original</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-green-500 mb-1"><Zap size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{totalSaved > 0 ? formatBytes(totalSaved) : "—"}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">Saved</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><Percent size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{avgSavings > 0 ? `${avgSavings}%` : "—"}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">Avg Change</p>
+                </div>
+              </div>
+            )}
 
-          {/* Image Cards */}
-          <div className="space-y-4">
+            {/* Download All Bar */}
+            {allDone && images.length > 1 && (
+              <div className="mt-4 bg-green-50 border border-green-200 rounded-xl px-5 py-3 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-sm text-green-700 font-medium">
+                  {images.length} images converted{totalSaved > 0 ? ` — Saved ${formatBytes(totalSaved)} total` : ""}
+                </span>
+                <button
+                  onClick={() => images.forEach((img) => {
+                    if (!img.convertedUrl) return;
+                    const a = document.createElement("a");
+                    a.href = img.convertedUrl;
+                    a.download = `converted-${img.name.replace(/\.[^.]+$/, "")}.${getExt(img.toMime)}`;
+                    a.click();
+                  })}
+                  className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                >
+                  <Download size={14} /> Download All
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* ── Image Cards ── */}
+          <div className="space-y-4 mb-8">
             {images.map((img) => (
               <ImageCard key={img.id} item={img} onRemove={removeImage} />
             ))}
           </div>
 
-          {/* SEO Content */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mt-8 mb-6">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Image Converter — JPG, PNG &amp; WebP Online
+              Free Image Format Converter Online – No Server Upload Required
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Our free image converter lets you convert between JPG, PNG, and WebP formats instantly — all inside your browser. No files are ever uploaded to any server. Everything is processed locally using the HTML5 Canvas API, making it completely private and secure.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Need to change an image from JPG to PNG, PNG to WebP, or WebP to JPG? Most online converters upload your files to a remote server, which raises privacy concerns and adds upload time. Our free image converter does everything <strong>locally in your browser</strong> using the HTML5 Canvas API — your images never leave your device.
             </p>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Upload up to 10 images at once for batch conversion. Adjust quality for JPG and WebP output. Re-convert with different settings without re-uploading. Download all converted images in one click.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Upload up to 10 images at once for batch conversion. Switch between output formats and quality settings without re-uploading. Download individual files or grab them all at once with the Download All button.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">When to use each format</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">When to use each image format</h3>
             <ul className="list-disc list-inside text-gray-600 text-sm space-y-1 mb-4">
-              <li><strong>JPG</strong> — Best for photographs. Smaller size but lossy compression. No transparency support.</li>
-              <li><strong>PNG</strong> — Lossless quality. Supports transparency (transparent backgrounds). Larger file size.</li>
-              <li><strong>WebP</strong> — Google's modern format. 25–35% smaller than JPG/PNG at same quality. Best for websites.</li>
-            </ul>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Common conversions</h3>
-            <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
-              <li><strong>JPG → PNG</strong> — Add transparency support or switch to lossless format</li>
-              <li><strong>PNG → WebP</strong> — Reduce file size for faster website loading</li>
-              <li><strong>JPG → WebP</strong> — Smaller photos for better web performance</li>
-              <li><strong>WebP → JPG</strong> — Convert for older software or email attachments</li>
-              <li><strong>WebP → PNG</strong> — Convert for editing in apps that don't support WebP</li>
+              <li><strong>JPG</strong> — Best for photographs. Small file size with lossy compression. No transparency support.</li>
+              <li><strong>PNG</strong> — Lossless quality that preserves every pixel. Supports transparent backgrounds. Larger file sizes.</li>
+              <li><strong>WebP</strong> — Google's modern format. Produces files 25-35% smaller than JPG and PNG at the same visual quality. Best for websites.</li>
             </ul>
           </div>
 
-          {/* FAQ */}
+          {/* ── How to Use ── */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              How to Convert PNG to WebP for Faster Website Loading
+            </h2>
+            <ol className="list-decimal list-inside text-gray-600 space-y-3 text-base">
+              <li>Click a <strong>Quick Select</strong> button (e.g., "PNG to WebP") or manually choose the output format.</li>
+              <li>Drag and drop your images into the upload area or click to browse files.</li>
+              <li>Adjust quality if converting to JPG or WebP (not needed for lossless PNG).</li>
+              <li>Wait for conversion — see original and converted images side by side with size comparison.</li>
+              <li>Click <strong>Download</strong> on each image or <strong>Download All</strong> to save everything at once.</li>
+            </ol>
+          </div>
+
+          {/* ── Features Grid ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Convert Images to Different Format Without Uploading – Key Features
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                { q: "How do I convert JPG to PNG online?", a: "Upload your JPG image, select PNG as the output format, and our tool converts it instantly in your browser. No server upload required." },
-                { q: "Does converting PNG to WebP reduce file size?", a: "Yes. WebP produces files 25–35% smaller than PNG and JPEG at equivalent quality, making it ideal for websites and apps." },
-                { q: "Will converting JPG to PNG improve quality?", a: "No. Converting JPG to PNG won't restore quality lost during JPEG compression. However, it will stop further quality loss and adds transparency support." },
-                { q: "Can I convert multiple images at once?", a: "Yes. Upload up to 10 images at once and they'll all convert simultaneously. Use Download All to save them in one click." },
-                { q: "Are my images uploaded to a server?", a: "No. All conversion happens in your browser using the HTML5 Canvas API. Your images never leave your device." },
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "100% Browser-Based Privacy", desc: "All conversion uses the HTML5 Canvas API running locally in your browser. Your images are never uploaded, stored, or sent to any server." },
+                { title: "Batch Convert Up to 10 Images", desc: "Upload multiple images at once and convert them all to your chosen format simultaneously. Download individually or all at once." },
+                { title: "Side-by-Side Size Comparison", desc: "Every converted image shows original and converted versions next to each other with exact file sizes and percentage change so you know the impact." },
+                { title: "6 Quick Conversion Shortcuts", desc: "One-click buttons for the most common conversions: JPG to PNG, JPG to WebP, PNG to JPG, PNG to WebP, WebP to JPG, and WebP to PNG." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* ── FAQ Accordion ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Image Converter – Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to convert JPG to PNG without losing quality online for free?",
+                  a: "Upload your JPG image to our tool and select PNG as the output format. The conversion happens in your browser using the HTML5 Canvas API, so no quality is lost during the process. The converted PNG preserves the exact pixel data of your original image."
+                },
+                {
+                  q: "Does converting PNG to WebP reduce file size?",
+                  a: "Yes. WebP typically produces files 25-35% smaller than PNG and JPEG at equivalent visual quality. This makes it the best format for websites and apps where loading speed matters."
+                },
+                {
+                  q: "How to convert WebP to JPG for email attachment?",
+                  a: "Upload your WebP image, select JPG as the output format, and download. JPG is universally supported by all email clients and most software, making it ideal for email attachments."
+                },
+                {
+                  q: "Can I batch convert multiple images to a different format at once?",
+                  a: "Yes. Upload up to 10 images at once and they will all be converted to your chosen format simultaneously. Use the Download All button to save every converted image in one click."
+                },
+                {
+                  q: "Does this image converter upload my files to a server?",
+                  a: "No. All conversion happens locally in your browser using the HTML5 Canvas API. Your images are never uploaded, stored, or sent to any server. They stay on your device at all times."
+                },
+                {
+                  q: "Will converting JPG to PNG improve image quality?",
+                  a: "No. Converting JPG to PNG cannot restore quality that was already lost during JPEG compression. However, PNG will preserve the current quality without any further loss and adds support for transparent backgrounds."
+                }
+              ].map((item, i) => (
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
           <section>
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Related Image Tools</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Image Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 { to: "/tools/image-compressor", title: "Image Compressor", desc: "Reduce image size by up to 90% without quality loss." },
                 { to: "/tools/image-resizer",    title: "Image Resizer",    desc: "Resize photos to exact pixel dimensions for any platform." },
-                { to: "/tools/image-cropper",    title: "Image Cropper",    desc: "Crop images with custom aspect ratios for social media." },
+                { to: "/tools/image-cropper",    title: "Image Cropper",    desc: "Crop images with custom aspect ratios for social media." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-teal-400 transition-all"
-                >
-                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-teal-600 transition-colors">{tool.title}</h3>
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all">
+                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">{tool.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>
               ))}

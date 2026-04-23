@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, RefreshCw, Type, FileText, Hash, AlignLeft } from "lucide-react";
+import { Copy, RefreshCw, Type, FileText, Hash, AlignLeft, Home, ChevronDown } from "lucide-react";
 
 const CaseConverter = () => {
   const [text, setText] = useState("");
   const [copied, setCopied] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
 
   // Stats
   const [wordCount, setWordCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
 
   useEffect(() => {
-    // Calculate stats whenever text changes
     setCharCount(text.length);
     setWordCount(text.trim() === "" ? 0 : text.trim().split(/\s+/).length);
   }, [text]);
 
   // --- Actions ---
-
   const toUpperCase = () => setText(text.toUpperCase());
   const toLowerCase = () => setText(text.toLowerCase());
 
@@ -76,63 +75,52 @@ const CaseConverter = () => {
     document.body.removeChild(element);
   };
 
-  // --- Schema Data ---
-  const schemaData = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Case Converter",
-    url: "https://www.generatorpromptai.com/tools/case-converter",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    creator: {
-      "@type": "Organization",
-      name: "GeneratorPromptAI",
-      url: "https://www.generatorpromptai.com"
-    },
-    description: "Free online case converter tool. Convert text to Uppercase, Lowercase, Title Case, Sentence Case, and more instantly.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD"
-    }
+    "name": "Convert Text to Uppercase Lowercase Title Case Online",
+    "url": "https://www.generatorpromptai.com/tools/case-converter",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online tool to convert text to UPPERCASE, lowercase, Title Case, Sentence case, and camelCase instantly. Fix caps lock mistakes easily.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Case Converter", "item": "https://www.generatorpromptai.com/tools/case-converter" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "How do I use the Case Converter?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Simply type or paste your text into the box and click the button for the style you want (e.g., Uppercase, Lowercase, Title Case). The text will convert instantly."
-        }
+        "name": "How to change text to Title Case online?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Paste your text into the tool above and click the 'Title Case' button. It will automatically capitalize the first letter of every word, which is perfect for headings and titles." }
       },
       {
         "@type": "Question",
-        name: "Is the Case Converter free?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes, our case converter is 100% free to use with no sign-up or limits."
-        }
+        "name": "How to fix caps lock text online?",
+        "acceptedAnswer": { "@type": "Answer", "text": "If you accidentally typed something with caps lock on, paste it into our tool and click 'lowercase' to instantly convert it back to normal text. You can also use 'Sentence case' to fix it properly." }
       },
       {
         "@type": "Question",
-        name: "What is Title Case?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Title Case capitalizes the first letter of every word, often used for headlines or book titles."
-        }
+        "name": "How to convert text to camelCase for programming?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Paste your text with spaces or underscores into the tool and click 'camelCase'. It will remove spaces, lowercase the first word, and capitalize the first letter of each subsequent word (e.g., 'my variable name' becomes 'myVariableName')." }
       },
       {
         "@type": "Question",
-        name: "Can I download the converted text?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes, you can copy the text to your clipboard or download it as a .txt file using the buttons provided."
-        }
+        "name": "Is my text saved when I use this converter?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. All text conversion happens locally in your web browser using JavaScript. We do not store, save, or transmit your text to any server." }
       }
     ]
   };
@@ -140,71 +128,74 @@ const CaseConverter = () => {
   return (
     <>
       <Helmet>
-        {/* Primary SEO */}
-        <title>Case Converter Online Free | Change Text to Upper Lower</title>
+        {/* Title targeting long-tails */}
+        <title>Convert Text to Uppercase, Lowercase, Title Case & camelCase Free</title>
+        
         <meta
           name="description"
-          content="Free case converter! Instantly change text to UPPERCASE, lowercase, Title Case, Sentence case & more. Copy-paste ready. No signup required! ✍️"
+          content="Convert text to UPPERCASE, lowercase, Title Case, Sentence case, and camelCase instantly. Fix caps lock mistakes easily. Free online text case converter – no signup."
         />
+        
+        {/* Low comp keywords */}
         <meta
           name="keywords"
-          content="case converter, uppercase to lowercase converter, text case converter, convert to uppercase, convert to lowercase, title case converter online, sentence case converter, change text case, caps converter, lowercase to uppercase, text transformer tool"
+          content="convert text to uppercase lowercase title case online, change text case to sentence case free, camelcase text converter online free, fix caps lock text online tool, inverse case text converter, free online text case changer, uppercase to lowercase converter without paste"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/case-converter" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
-        {/* Open Graph */}
+        {/* Open Graph (No emojis) */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Case Converter Tool ✍️ Change Text Case Instantly - Free" />
-        <meta
-          property="og:description"
-          content="Convert text to UPPERCASE, lowercase, Title Case, or Sentence case in 1 click! Free online tool. Perfect for writers & editors! 📝"
-        />
+        <meta property="og:title" content="Convert Text to Uppercase, Lowercase, Title Case & camelCase Free" />
+        <meta property="og:description" content="Change text to UPPERCASE, lowercase, Title Case, Sentence case, or camelCase in 1 click. Free online tool for writers and developers." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/case-converter" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-case-converter.png" />
 
-        {/* Twitter Card */}
+        {/* Twitter Card (No emojis) */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Case Converter - Transform Text Case Online ✍️" />
-        <meta
-          name="twitter:description"
-          content="Change text to uppercase, lowercase, title case & more instantly! Free tool for writers, students & professionals. 📝"
-        />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-case-converter.png" />
+        <meta name="twitter:title" content="Free Text Case Converter – Uppercase, Lowercase, camelCase" />
+        <meta name="twitter:description" content="Change text case instantly. Fix caps lock mistakes and convert to camelCase for coding. 100% free tool." />
 
-        {/* Schema: WebApplication */}
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-
-        {/* Schema: FAQ */}
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
 
-        {/* Back Nav */}
-        <div className="max-w-4xl mx-auto w-full px-4 py-5">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm"
-          >
-            <ArrowLeft size={16} />
-            Back to Home
-          </Link>
+        {/* ── Breadcrumb Only ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Case Converter</span></li>
+            </ol>
+          </nav>
         </div>
 
         <div className="flex-grow max-w-4xl mx-auto w-full px-4 pb-20">
 
           {/* Hero */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-10 mt-4">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
               <Type className="text-sky-600" size={28} />
             </div>
+            {/* H1 targeting exact matches */}
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Free Case Converter - Change Text to Uppercase, Lowercase & Title Case
+              Convert Text to{" "}
+              <span className="text-sky-600">Uppercase, Lowercase, Title Case & camelCase</span>
             </h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Easily convert text to Uppercase, Lowercase, Title Case, and more. Fast, free, and works instantly in your browser.
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Change text formatting instantly. Fix caps lock mistakes, format headings, or convert to <strong>camelCase</strong> for programming. 100% free online tool.
             </p>
           </div>
 
@@ -278,69 +269,105 @@ const CaseConverter = () => {
             </div>
           </div>
 
-          {/* SEO Content Section */}
+          {/* ── SEO Content 1 ── */}
           <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            {/* H2 targeting: "change text case to sentence case free" */}
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Online Case Converter — Transform Text Instantly
+              Free Online Text Case Changer – Fix Caps Lock & Format Headings
             </h2>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Our <strong>Case Converter</strong> tool is designed for anyone who needs to quickly change the formatting of text. Whether you have accidentally left your caps lock on or need to format a headline for a blog post, this tool handles it all instantly in your browser.
+              Our free <strong>Case Converter</strong> tool is built for writers, students, and developers who need to quickly change text formatting. If you accidentally typed an entire paragraph with caps lock on, simply paste it here and click <strong>lowercase</strong> or <strong>Sentence case</strong> to fix it instantly without retyping.
             </p>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Use it to convert standard text to <strong>UPPERCASE</strong> for emphasis, <strong>lowercase</strong> for email addresses, or <strong>Title Case</strong> for headings. It’s completely free, requires no sign-up, and works on all devices.
+              You can also use it to format blog post titles using <strong>Title Case</strong>, emphasize specific text with <strong>UPPERCASE</strong>, or clean up variable names using <strong>camelCase</strong>. The tool processes everything locally in your browser.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Available Conversions:</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
-              <li><strong>Sentence Case:</strong> Capitalizes only the first letter of the sentence.</li>
-              <li><strong>Title Case:</strong> Capitalizes the first letter of every word (great for headers).</li>
-              <li><strong>Uppercase:</strong> Converts all letters to capitals.</li>
-              <li><strong>Lowercase:</strong> Converts all letters to small letters.</li>
-              <li><strong>Inverse Case:</strong> Swaps the case of every letter (e.g., "Hello" becomes "hELLO").</li>
-            </ul>
           </section>
 
-          {/* FAQ Section */}
+          {/* ── Features Section ── */}
           <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            {/* H2 targeting: "camelcase text converter online free" */}
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Frequently Asked Questions
+              camelCase Text Converter & 6 Formatting Options
             </h2>
-            <div className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                {
-                  q: "How do I convert text to Title Case?",
-                  a: "Simply paste your text into the box and click the 'Title Case' button. Our tool will automatically capitalize the first letter of every word."
-                },
-                {
-                  q: "Is my text saved on your servers?",
-                  a: "No. All text processing happens locally in your browser using JavaScript. We do not store or transmit your data."
-                },
-                {
-                  q: "Can I use this on mobile?",
-                  a: "Yes, our case converter is fully responsive and works perfectly on smartphones, tablets, and desktops."
-                },
-                {
-                  q: "What is camelCase used for?",
-                  a: "camelCase is a common naming convention in programming (e.g., `myVariableName`). Our tool helps you format text into this style easily."
-                }
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "Fix Caps Lock Mistakes", desc: "Accidentally typed in all caps? Convert it back to lowercase or Sentence case with one click." },
+                { title: "camelCase for Developers", desc: "Convert standard text into camelCase formatting instantly for JavaScript variables and function names." },
+                { title: "Title Case for Headings", desc: "Automatically capitalize the first letter of every word to create clean, professional-looking headings." },
+                { title: "100% Private & Instant", desc: "Text conversion happens instantly in your browser. Your data is never uploaded to any server." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Related Tools */}
+          {/* ── FAQ Section (Accordion) ── */}
+          <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Text Case Converter – Frequently Asked Questions
+            </h2>
+            
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to change text to Title Case online?",
+                  a: "Paste your text into the tool above and click the 'Title Case' button. It will automatically capitalize the first letter of every word, which is perfect for headings and titles."
+                },
+                {
+                  q: "How to fix caps lock text online?",
+                  a: "If you accidentally typed something with caps lock on, paste it into our tool and click 'lowercase' to instantly convert it back to normal text. You can also use 'Sentence case' to fix it properly."
+                },
+                {
+                  q: "How to convert text to camelCase for programming?",
+                  a: "Paste your text with spaces or underscores into the tool and click 'camelCase'. It will remove spaces, lowercase the first word, and capitalize the first letter of each subsequent word (e.g., 'my variable name' becomes 'myVariableName')."
+                },
+                {
+                  q: "Is my text saved when I use this converter?",
+                  a: "No. All text conversion happens locally in your web browser using JavaScript. We do not store, save, or transmit your text to any server."
+                }
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300"
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full flex items-center justify-between p-5 text-left"
+                    aria-expanded={openFaq === i}
+                  >
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">
+                      {item.q}
+                    </h3>
+                    <ChevronDown
+                      size={22}
+                      className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                  >
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">
+                      {item.a}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ── Related Tools ── */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              Related Free Online Tools
+              Related Free Text & Code Tools
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/word-counter", title: "Word Counter", desc: "Count words, characters, and sentences in your text." },
-                { to: "/tools/lorem-ipsum-generator", title: "Lorem Ipsum Generator", desc: "Generate placeholder text for your designs and layouts." },
-                { to: "/tools/remove-duplicate-lines", title: "Remove Duplicate Lines", desc: "Clean up lists by removing duplicate entries instantly." },
+                { to: "/tools/word-counter", title: "Word Counter", desc: "Count words, characters, sentences, and get estimated reading time." },
+                { to: "/tools/lorem-ipsum-generator", title: "Lorem Ipsum Generator", desc: "Generate placeholder dummy text for your designs and layouts." },
+                { to: "/tools/remove-duplicate-lines", title: "Remove Duplicate Lines", desc: "Clean up lists by removing duplicate entries and sorting alphabetically." },
               ].map((tool) => (
                 <Link
                   key={tool.to}

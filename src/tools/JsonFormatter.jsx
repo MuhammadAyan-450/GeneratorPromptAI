@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, RefreshCw, Download, AlertCircle, FileJson } from "lucide-react";
+import { Copy, RefreshCw, Download, AlertCircle, FileJson, Home, ChevronDown, Hash, Layers, Code, FileText } from "lucide-react";
 
 const sampleJson = JSON.stringify({
   "name": "Generator Prompt AI",
@@ -15,6 +14,69 @@ const sampleJson = JSON.stringify({
   }
 }, null, 2);
 
+// ─── JSON Syntax Highlighting ───────────────────────────────────────────────────
+function HighlightedJson({ json }) {
+  const regex = /("(?:[^"\\]|\\.)*")(\s*:)?|(-?\d+\.?\d*(?:[eE][+-]?\d+)?)|(true|false|null)|([{}[\],])/g;
+  let match;
+  let lastIndex = 0;
+  const parts = [];
+  let keyIdx = 0;
+
+  while ((match = regex.exec(json)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(<span key={`w${lastIndex}`} className="text-gray-400">{json.slice(lastIndex, match.index)}</span>);
+    }
+    const k = keyIdx++;
+    if (match[1] && match[2]) {
+      parts.push(<span key={k} className="text-sky-400">{match[1]}</span>);
+      parts.push(<span key={`${k}c`} className="text-gray-500">{match[2]}</span>);
+    } else if (match[1]) {
+      parts.push(<span key={k} className="text-green-400">{match[1]}</span>);
+    } else if (match[3]) {
+      parts.push(<span key={k} className="text-orange-400">{match[3]}</span>);
+    } else if (match[4]) {
+      parts.push(<span key={k} className="text-purple-400">{match[4]}</span>);
+    } else if (match[5]) {
+      parts.push(<span key={k} className="text-gray-500">{match[5]}</span>);
+    }
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < json.length) {
+    parts.push(<span key={`e${lastIndex}`} className="text-gray-400">{json.slice(lastIndex)}</span>);
+  }
+  return <>{parts}</>;
+}
+
+// ─── Stats Calculator ──────────────────────────────────────────────────────────
+function getJsonStats(jsonStr) {
+  if (!jsonStr) return null;
+  try {
+    const parsed = JSON.parse(jsonStr);
+    let keyCount = 0;
+    let maxDepth = 0;
+    function traverse(obj, depth) {
+      if (depth > maxDepth) maxDepth = depth;
+      if (Array.isArray(obj)) {
+        obj.forEach((item) => traverse(item, depth + 1));
+      } else if (obj && typeof obj === "object") {
+        const keys = Object.keys(obj);
+        keyCount += keys.length;
+        keys.forEach((k) => traverse(obj[k], depth + 1));
+      }
+    }
+    traverse(parsed, 0);
+    return {
+      keys: keyCount,
+      depth: maxDepth,
+      chars: jsonStr.length,
+      lines: jsonStr.split("\n").length,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
 const JsonFormatter = () => {
   const [inputJson, setInputJson] = useState("");
   const [formattedJson, setFormattedJson] = useState("");
@@ -22,6 +84,7 @@ const JsonFormatter = () => {
   const [isMinified, setIsMinified] = useState(false);
   const [autoFormat, setAutoFormat] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
 
   const formatAndValidate = (jsonStr = inputJson, minify = isMinified) => {
     if (!jsonStr.trim()) {
@@ -29,7 +92,6 @@ const JsonFormatter = () => {
       setError(null);
       return;
     }
-
     try {
       const parsed = JSON.parse(jsonStr);
       const formatted = minify ? JSON.stringify(parsed) : JSON.stringify(parsed, null, 2);
@@ -77,7 +139,7 @@ const JsonFormatter = () => {
     if (!formattedJson) return;
     navigator.clipboard.writeText(formattedJson);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleDownload = () => {
@@ -99,60 +161,80 @@ const JsonFormatter = () => {
     setError(null);
   };
 
+  const reset = () => {
+    clearAll();
+    setIsMinified(false);
+    setAutoFormat(true);
+  };
+
+  const stats = getJsonStats(formattedJson);
+
   // ── SCHEMAS ──
   const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "JSON Formatter & Validator",
-    url: "https://www.generatorpromptai.com/tools/json-formatter",
-    description: "Free online tool to format, minify, beautify and validate JSON with detailed error messages.",
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "All",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI" }
+    "name": "Fix JSON Formatting Errors Online – Free Beautify Minify Validate Tool",
+    "url": "https://www.generatorpromptai.com/tools/json-formatter",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "description": "Free online JSON formatter to beautify, minify and validate JSON with real-time error detection showing exact line and column. Syntax highlighted output, copy and download.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const schemaBreadCrumb = {
+  const schemaBreadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.generatorpromptai.com/" },
-      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://www.generatorpromptai.com/pages/all-tools" },
-      { "@type": "ListItem", position: 3, name: "JSON Formatter", item: "https://www.generatorpromptai.com/tools/json-formatter" }
-    ]
-  };
-
-  const schemaHowTo = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "How to Format and Validate JSON Online",
-    description: "Step-by-step guide to beautifying and validating JSON code.",
-    step: [
-      { "@type": "HowToStep", name: "Paste JSON", text: "Paste or type your raw JSON data into the left input editor." },
-      { "@type": "HowToStep", name: "Auto-Format", text: "The tool automatically validates and formats the code in real-time." },
-      { "@type": "HowToStep", name: "Toggle View", text: "Switch between Pretty Print (indented) and Minified (single line) views." },
-      { "@type": "HowToStep", name: "Copy or Download", text: "Copy the clean JSON to your clipboard or download it as a .json file." }
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "JSON Formatter", "item": "https://www.generatorpromptai.com/tools/json-formatter" }
     ]
   };
 
   const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "How do I fix JSON formatting errors?",
-        acceptedAnswer: { "@type": "Answer", text: "Paste your broken JSON into our formatter. If there is an error, the tool will highlight the exact issue and tell you the line and column number where the syntax is invalid (e.g., missing comma or quote)." }
+        "name": "How to fix JSON formatting errors online?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paste your broken JSON into our formatter. If there is a syntax error, the tool will show the exact issue with the line and column number where it is invalid, such as a missing comma, extra comma, or unclosed quote. Fix the error in the input editor and the output updates in real-time."
+        }
       },
       {
         "@type": "Question",
-        name: "Is my JSON data safe?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. Our JSON formatter runs 100% in your browser. Your data is never sent to any server, making it completely safe and private." }
+        "name": "How to minify JSON for production API?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paste your JSON, click the Minified toggle, and the tool removes all unnecessary whitespace and line breaks to produce the smallest possible file size. Copy or download the minified JSON for use in production APIs and web applications."
+        }
       },
       {
         "@type": "Question",
-        name: "What is the difference between Pretty Print and Minified JSON?",
-        acceptedAnswer: { "@type": "Answer", text: "Pretty Print adds spaces and line breaks to make JSON readable for humans. Minified JSON removes all unnecessary spaces to make the file size as small as possible, which is ideal for production APIs." }
+        "name": "Is my JSON data safe in this formatter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, 100% safe. Our JSON formatter runs entirely in your browser using JavaScript. Your data is never sent to any server, making it completely private and secure. This is important when formatting JSON that contains API keys, tokens, or sensitive data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between pretty print and minified JSON?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pretty Print adds indentation and line breaks to make JSON readable for humans. Minified JSON removes all unnecessary whitespace to produce the smallest possible file size, which is ideal for production APIs, reducing bandwidth and improving load times."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I format very large JSON files online?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Because the tool runs entirely in your browser without server-side processing limits, it can handle large JSON arrays and nested objects smoothly without timing out. Very large files may be slightly slower depending on your device."
+        }
       }
     ]
   };
@@ -160,65 +242,94 @@ const JsonFormatter = () => {
   return (
     <>
       <Helmet>
-        <title>JSON Formatter & Validator Online - Beautify & Minify Free</title>
-        <meta name="description" content="Format, beautify, minify and validate JSON instantly online. Real-time error detection with exact line/column info. 100% browser-based, free & private." />
-        <meta name="keywords" content="json formatter online, json beautifier, json minifier, json validator, pretty print json, json error checker, free developer tools" />
-        <link rel="canonical" href="https://www.generatorpromptai.com/tools/json-formatter" />
+        <title>Fix JSON Formatting Errors Online – Free Beautify Minify Validate Tool</title>
 
-        <meta property="og:title" content="JSON Formatter & Validator – Free Online Tool" />
-        <meta property="og:description" content="Beautify, minify, validate JSON with real-time errors – fast & private." />
+        <meta
+          name="description"
+          content="Free online JSON formatter to beautify, minify and validate JSON with real-time error detection showing exact line and column. Syntax highlighted output. Copy and download. No signup."
+        />
+
+        <meta
+          name="keywords"
+          content="how to fix json formatting errors online, fix json syntax error with line and column number, minify json for production api free online, beautify json with syntax highlighting free tool, validate json online without uploading to server, pretty print json for readability free, json error checker with exact position free online, format large json files online free, free json formatter no sign up required, online json validator with line number"
+        />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/json-formatter" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="GeneratorPromptAI" />
+        <meta property="og:title" content="Fix JSON Formatting Errors Online – Free Beautify Minify Validate Tool" />
+        <meta property="og:description" content="Beautify, minify, validate JSON with real-time line/column error detection. Syntax highlighted output. Free, private, no signup." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/json-formatter" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free JSON Formatter & Validator" />
-        <meta name="twitter:description" content="Format & debug JSON instantly – line-by-line errors included." />
+        <meta name="twitter:title" content="Free JSON Formatter – Fix Errors, Beautify, Minify Online" />
+        <meta name="twitter:description" content="Format and debug JSON with exact error positions. Syntax highlighted output. Free and private." />
 
         <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
-        <script type="application/ld+json">{JSON.stringify(schemaBreadCrumb)}</script>
-        <script type="application/ld+json">{JSON.stringify(schemaHowTo)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-6xl mx-auto w-full px-4 py-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-sky-600 transition-colors">
-            <ArrowLeft size={20} /> Back to Home
-          </Link>
+
+        {/* ── Breadcrumb ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">JSON Formatter</span></li>
+            </ol>
+          </nav>
         </div>
 
         <div className="flex-grow max-w-6xl mx-auto w-full px-4 pb-20">
-          {/* Header */}
-          <div className="text-center mb-10">
+
+          {/* ── Hero ── */}
+          <div className="text-center mb-10 mt-4">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
               <FileJson className="text-sky-600" size={28} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              JSON Formatter & Validator
+              Fix JSON Formatting Errors Online –{" "}
+              <span className="text-sky-600">Free Beautify Minify Validate Tool</span>
             </h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Beautify • Minify • Validate • Real-time errors • Free & private
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Format, beautify, minify and validate JSON with real-time error detection showing exact line and column. Syntax highlighted output.
             </p>
           </div>
 
-          {/* Main Tool Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden mb-12">
+          {/* ── Tool Card ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden mb-8">
+
             <div className="grid lg:grid-cols-2 gap-0">
+
               {/* Input Editor */}
               <div className="p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-gray-200 flex flex-col">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                  <h3 className="font-semibold text-lg text-gray-900">Input JSON</h3>
+                  <label className="font-semibold text-gray-700 text-sm">Paste your JSON here</label>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={loadSample}
-                      className="px-3 py-1.5 text-xs font-medium bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 rounded-lg transition"
+                      className="px-3 py-1.5 text-xs font-medium bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 rounded-xl transition"
                     >
                       Load Sample
                     </button>
                     <button
-                      onClick={() => { setIsMinified(!isMinified); }}
-                      className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition ${
-                        isMinified ? "bg-gray-900 text-white border-gray-900" : "bg-gray-100 hover:bg-gray-200 border-gray-300 text-gray-700"
+                      onClick={() => setIsMinified(!isMinified)}
+                      className={`px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${
+                        isMinified
+                          ? "bg-sky-600 text-white border-sky-600"
+                          : "bg-gray-100 hover:bg-gray-200 border-gray-300 text-gray-700"
                       }`}
                     >
                       {isMinified ? "Minified" : "Pretty Print"}
@@ -232,12 +343,6 @@ const JsonFormatter = () => {
                       />
                       Auto
                     </label>
-                    <button
-                      onClick={clearAll}
-                      className="px-3 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition text-gray-700"
-                    >
-                      Clear
-                    </button>
                   </div>
                 </div>
 
@@ -245,137 +350,210 @@ const JsonFormatter = () => {
                   value={inputJson}
                   onChange={(e) => setInputJson(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder='Paste or type JSON here...&#10;e.g. {"name":"John","skills":["React","Node"]}'
-                  className="flex-1 w-full min-h-[450px] px-4 py-4 font-mono text-sm border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-gray-900 shadow-inner"
-                  spellCheck="false"
+                  placeholder={'Paste or type JSON here...\ne.g. {"name":"John","skills":["React","Node"]}'}
+                  rows={16}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800 font-mono text-sm resize-y"
+                  spellCheck={false}
                   aria-label="JSON input editor"
                 />
 
                 {error && (
-                  <div className="mt-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-r text-red-700 text-sm">
-                    <div className="flex items-start gap-2">
-                      <AlertCircle size={18} className="mt-0.5 flex-shrink-0" />
-                      <div>
-                        <strong className="font-semibold">Validation Error:</strong>
-                        <p className="mt-1 font-mono text-xs">{error}</p>
-                      </div>
+                  <div className="mt-3 flex items-start gap-2 text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+                    <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+                    <div>
+                      <strong className="font-semibold">Validation Error:</strong>
+                      <p className="mt-0.5 font-mono text-xs">{error}</p>
                     </div>
                   </div>
                 )}
+
+                <div className="flex gap-3 mt-4">
+                  <button
+                    onClick={() => formatAndValidate(inputJson, isMinified)}
+                    className="bg-sky-600 hover:bg-sky-700 active:scale-95 transition-all text-white font-semibold px-8 py-3 rounded-xl"
+                  >
+                    Format JSON
+                  </button>
+                  <button
+                    onClick={reset}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                  >
+                    <RefreshCw size={15} /> Reset
+                  </button>
+                </div>
               </div>
 
-              {/* Output Editor */}
+              {/* Output Panel */}
               <div className="p-6 md:p-8 flex flex-col bg-gray-50/50">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-semibold text-lg text-gray-900">Output</h3>
+                  <span className="text-xs text-gray-500 uppercase tracking-widest font-semibold">Formatted Output</span>
                   <div className="flex gap-2">
                     <button
                       onClick={handleCopy}
                       disabled={!formattedJson}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white hover:bg-gray-100 border border-gray-300 rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed text-gray-700"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-xs font-medium text-gray-700 transition-colors disabled:opacity-40"
                     >
-                      <Copy size={14} />
-                      {copied ? "Copied!" : "Copy"}
+                      <Copy size={13} /> {copied ? "Copied!" : "Copy"}
                     </button>
                     <button
                       onClick={handleDownload}
                       disabled={!formattedJson}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-gray-900 text-white hover:bg-gray-800 rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-medium transition-colors disabled:opacity-40"
                     >
-                      <Download size={14} />
-                      Download .json
+                      <Download size={13} /> Download .json
                     </button>
                   </div>
                 </div>
 
-                <pre className="flex-1 p-4 rounded-xl font-mono text-sm overflow-auto bg-white border border-gray-200 text-gray-800 leading-relaxed whitespace-pre-wrap min-h-[450px]">
-                  {formattedJson || (error ? "" : "// Paste JSON on the left to format & validate")}
-                </pre>
+                {formattedJson ? (
+                  <div className="bg-gray-900 rounded-2xl p-6 flex-1 overflow-auto min-h-[420px]">
+                    <pre className="text-sm font-mono leading-relaxed">
+                      <HighlightedJson json={formattedJson} />
+                    </pre>
+                  </div>
+                ) : (
+                  <div className="flex-1 bg-gray-900 rounded-2xl p-6 flex items-center justify-center min-h-[420px]">
+                    <p className="text-gray-500 text-sm font-mono">
+                      {error ? "" : "// Paste JSON on the left to format and validate"}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="p-4 text-center text-sm text-gray-500 bg-gray-50 border-t border-gray-200">
-              Tip: Press <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-xs font-mono font-bold shadow-sm">Ctrl + Enter</kbd> to format manually • 100% in-browser & private
-            </div>
+            {/* Stats Grid */}
+            {stats && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 border-t border-gray-200">
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><Code size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{stats.keys}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Keys</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><Layers size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{stats.depth}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Max Depth</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><Hash size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{stats.chars}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Characters</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><FileText size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{stats.lines}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Lines</p>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* SEO Content */}
-          <section className="mb-12 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Online JSON Formatter, Validator & Minifier
+              Free Online JSON Formatter with Line and Column Error Detection
             </h2>
-            <div className="text-gray-600 space-y-4 leading-relaxed">
-              <p>
-                Instantly format, beautify, minify, and validate any JSON code online. See readable indented output or compact single-line version with real-time syntax error detection showing the exact line and column. Perfect for API debugging, cleaning up config files, data sharing, or parsing messy JSON from server logs.
-              </p>
-              <p>
-                Our tool requires no sign-up and uploads no data to external servers. All text processing happens directly inside your browser, ensuring your sensitive API keys and data structures remain 100% private. It easily handles large JSON payloads without crashing.
-              </p>
-            </div>
-          </section>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Our free JSON formatter instantly beautifies, minifies, and validates any JSON code in your browser. When there is a syntax error, the tool shows the <strong>exact line and column number</strong> where the problem occurs — whether it is a missing comma, trailing comma, unclosed string, or mismatched bracket. This makes debugging API responses and config files significantly faster.
+            </p>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              All processing happens locally in your browser. Your JSON data is <strong>never sent to any server</strong>, making this tool safe for formatting sensitive data like API keys, authentication tokens, and database exports. The syntax-highlighted output uses color coding for keys, strings, numbers, and booleans so you can visually parse the structure at a glance.
+            </p>
+          </div>
 
-          {/* How to Use */}
-          <section className="mb-12 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">How to Use the JSON Formatter</h2>
-            <ol className="list-decimal list-inside space-y-3 text-gray-700 text-base">
-              <li>Paste or type your raw JSON into the left editor box (or click <strong>Load Sample</strong>).</li>
-              <li>Formatting happens automatically if <strong>Auto</strong> is checked (or press <strong>Ctrl + Enter</strong>).</li>
-              <li>Switch between <strong>Pretty Print</strong> (readable) and <strong>Minified</strong> (compact single-line) views.</li>
-              <li>If there’s an error (missing comma, bracket, quote), a detailed message with line/column will appear in red.</li>
-              <li>Click <strong>Copy</strong> to copy to your clipboard or <strong>Download .json</strong> to save the file locally.</li>
+          {/* ── How to Use ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              How to Minify JSON for Production API Online
+            </h2>
+            <ol className="list-decimal list-inside text-gray-600 space-y-3 text-base">
+              <li>Paste or type your raw JSON into the <strong>left editor</strong> (or click <strong>Load Sample</strong>).</li>
+              <li>Formatting happens <strong>automatically</strong> if Auto is checked (or press <strong>Ctrl + Enter</strong>).</li>
+              <li>Switch to <strong>Minified</strong> view to remove all whitespace for production use.</li>
+              <li>If there is an error, the exact <strong>line and column number</strong> appears in red below the input.</li>
+              <li>Click <strong>Copy</strong> to copy to clipboard or <strong>Download .json</strong> to save the file.</li>
             </ol>
-          </section>
+          </div>
 
-          {/* FAQ Section for SEO */}
-          <section className="mb-12 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+          {/* ── Features Grid ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Validate JSON with Exact Error Position – Key Features
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                {
-                  q: "How do I fix JSON formatting errors?",
-                  a: "Paste your broken JSON into our formatter. If there is an error, the tool will highlight the exact issue and tell you the line and column number where the syntax is invalid (e.g., missing comma or quote)."
-                },
-                {
-                  q: "Is my JSON data safe?",
-                  a: "Yes. Our JSON formatter runs 100% in your browser. Your data is never sent to any external server, making it completely secure and private."
-                },
-                {
-                  q: "What is the difference between Pretty Print and Minified JSON?",
-                  a: "Pretty Print adds spaces and line breaks to make JSON easy for humans to read. Minified JSON removes all unnecessary white space to make the file size as small as possible, which is ideal for production APIs and web performance."
-                },
-                {
-                  q: "Can I format very large JSON files?",
-                  a: "Yes. Because the tool runs entirely in your browser without server limits, it can handle large JSON arrays and objects smoothly without timing out."
-                }
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "Exact Error Position", desc: "When JSON is invalid, the tool calculates and displays the precise line and column number where the syntax error occurs — not just a generic error message." },
+                { title: "Syntax Highlighted Output", desc: "Color-coded output distinguishes keys (blue), strings (green), numbers (orange), booleans (purple), and brackets (gray) so you can read the structure instantly." },
+                { title: "Pretty Print and Minify", desc: "Toggle between readable indented format for debugging and compact single-line format for production APIs and web performance optimization." },
+                { title: "100% Private — No Server", desc: "All JSON parsing and formatting runs locally in your browser using JavaScript. Your data is never uploaded, stored, or transmitted to any server." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
 
-          {/* Related Tools */}
+          {/* ── FAQ Accordion ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              JSON Formatter – Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to fix JSON formatting errors online?",
+                  a: "Paste your broken JSON into our formatter. If there is a syntax error, the tool will show the exact issue with the line and column number where it is invalid, such as a missing comma, extra comma, or unclosed quote. Fix the error in the input editor and the output updates in real-time."
+                },
+                {
+                  q: "How to minify JSON for production API?",
+                  a: "Paste your JSON, click the Minified toggle, and the tool removes all unnecessary whitespace and line breaks to produce the smallest possible file size. Copy or download the minified JSON for use in production APIs and web applications."
+                },
+                {
+                  q: "Is my JSON data safe in this formatter?",
+                  a: "Yes, 100% safe. Our JSON formatter runs entirely in your browser using JavaScript. Your data is never sent to any server, making it completely private and secure. This is important when formatting JSON that contains API keys, tokens, or sensitive data."
+                },
+                {
+                  q: "What is the difference between pretty print and minified JSON?",
+                  a: "Pretty Print adds indentation and line breaks to make JSON readable for humans. Minified JSON removes all unnecessary whitespace to produce the smallest possible file size, which is ideal for production APIs, reducing bandwidth and improving load times."
+                },
+                {
+                  q: "Can I format very large JSON files online?",
+                  a: "Yes. Because the tool runs entirely in your browser without server-side processing limits, it can handle large JSON arrays and nested objects smoothly without timing out. Very large files may be slightly slower depending on your device."
+                }
+              ].map((item, i) => (
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
           <section>
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">Related Developer Tools</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Developer Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/fake-data-generator", title: "Fake Data Generator", desc: "Generate realistic dummy JSON data for testing." },
-                { to: "/tools/word-counter", title: "Word Counter", desc: "Count characters/words in JSON strings or docs." },
-                { to: "/tools/json-validator", title: "JSON Validator", desc: "Strictly validate JSON schemas and structures." },
+                { to: "/tools/fake-data-generator",  title: "Fake Data Generator",  desc: "Generate realistic dummy JSON data for testing." },
+                { to: "/tools/word-counter",         title: "Word Counter",          desc: "Count characters and words in JSON strings." },
+                { to: "/tools/excel-formula-beautifier", title: "Excel Formula Beautifier", desc: "Format messy Excel formulas for readability." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-300 transition-all"
-                >
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all">
                   <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">{tool.title}</h3>
-                  <p className="text-gray-500 text-sm">{tool.desc}</p>
+                  <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>
               ))}
             </div>
           </section>
+
         </div>
       </div>
     </>

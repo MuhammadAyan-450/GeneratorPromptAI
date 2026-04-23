@@ -1,9 +1,8 @@
-// pages/ImageCompressor.jsx
 import React, { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import imageCompression from "browser-image-compression";
-import { ArrowLeft, Upload, Download, Image as ImageIcon, AlertCircle, RefreshCw, Shield, Zap, X } from "lucide-react";
+import { Copy, RefreshCw, Upload, Download, Image as ImageIcon, Shield, Zap, X, Home, ChevronDown, HardDrive, Percent, Layers } from "lucide-react";
 
 const formatBytes = (bytes) => {
   if (!bytes) return "—";
@@ -14,26 +13,26 @@ const formatBytes = (bytes) => {
 };
 
 const QUALITY_PRESETS = [
-  { label: "Maximum",     value: 0.92, desc: "Best quality, larger file" },
-  { label: "Balanced",    value: 0.80, desc: "Great quality, good savings" },
-  { label: "Aggressive",  value: 0.65, desc: "Smaller file, slight loss" },
-  { label: "Minimum",     value: 0.50, desc: "Smallest size, visible loss" },
+  { label: "Maximum", value: 0.92, desc: "Best quality, larger file" },
+  { label: "Balanced", value: 0.80, desc: "Great quality, good savings" },
+  { label: "Aggressive", value: 0.65, desc: "Smaller file, slight loss" },
+  { label: "Minimum", value: 0.50, desc: "Smallest size, visible loss" },
 ];
 
 const DIMENSION_OPTIONS = [
-  { label: "1200px (Social media)",  value: 1200 },
-  { label: "1600px",                 value: 1600 },
-  { label: "1920px (Full HD)",       value: 1920 },
-  { label: "2560px (2K)",            value: 2560 },
-  { label: "3840px (4K)",            value: 3840 },
-  { label: "Original size",          value: 9999 },
+  { label: "1200px (Social media)", value: 1200 },
+  { label: "1600px", value: 1600 },
+  { label: "1920px (Full HD)", value: 1920 },
+  { label: "2560px (2K)", value: 2560 },
+  { label: "3840px (4K)", value: 3840 },
+  { label: "Original size", value: 9999 },
 ];
 
 const FORMAT_OPTIONS = [
-  { label: "Keep original",  value: "original" },
+  { label: "Keep original", value: "original" },
   { label: "Convert to WebP (best compression)", value: "image/webp" },
-  { label: "Convert to JPEG",value: "image/jpeg" },
-  { label: "Convert to PNG", value: "image/png"  },
+  { label: "Convert to JPEG", value: "image/jpeg" },
+  { label: "Convert to PNG", value: "image/png" },
 ];
 
 // ─── Single Image Item ────────────────────────────────────────────────────────
@@ -44,7 +43,6 @@ const ImageItem = ({ item, onRemove }) => {
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-      {/* Header */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
         <span className="text-sm font-medium text-gray-700 truncate max-w-[200px]">{item.name}</span>
         <button onClick={() => onRemove(item.id)} className="text-gray-400 hover:text-red-500 transition-colors">
@@ -86,7 +84,6 @@ const ImageItem = ({ item, onRemove }) => {
               <div className="bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
                 <img src={item.compressedUrl} alt="Compressed" className="w-full h-48 object-contain" />
               </div>
-              {/* Size bar */}
               {savings > 0 && (
                 <div className="mt-3">
                   <div className="flex justify-between text-xs text-gray-400 mb-1">
@@ -122,11 +119,12 @@ const ImageItem = ({ item, onRemove }) => {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const ImageCompressor = () => {
-  const [images, setImages]           = useState([]);
-  const [quality, setQuality]         = useState(0.80);
+  const [images, setImages] = useState([]);
+  const [quality, setQuality] = useState(0.80);
   const [maxDimension, setMaxDimension] = useState(1920);
   const [outputFormat, setOutputFormat] = useState("original");
-  const [isDragging, setIsDragging]   = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
   const fileInputRef = useRef(null);
 
   const compressFile = useCallback(async (file, id) => {
@@ -162,14 +160,14 @@ const ImageCompressor = () => {
     if (!validFiles.length) return;
 
     const newImages = validFiles.map((file) => ({
-      id:            Math.random().toString(36).slice(2),
-      name:          file.name,
-      originalUrl:   URL.createObjectURL(file),
-      originalSize:  file.size,
+      id: Math.random().toString(36).slice(2),
+      name: file.name,
+      originalUrl: URL.createObjectURL(file),
+      originalSize: file.size,
       compressedUrl: null,
       compressedSize: 0,
-      loading:       true,
-      error:         null,
+      loading: true,
+      error: null,
       file,
     }));
 
@@ -183,139 +181,196 @@ const ImageCompressor = () => {
   };
 
   const removeImage = (id) => setImages((prev) => prev.filter((img) => img.id !== id));
-  const clearAll    = () => setImages([]);
+
+  const clearAll = () => {
+    setImages([]);
+  };
 
   const handleDrop = (e) => {
-    e.preventDefault(); setIsDragging(false);
+    e.preventDefault();
+    setIsDragging(false);
     addFiles(e.dataTransfer.files);
   };
 
-  const totalSaved = images.reduce((acc, img) => acc + Math.max(0, img.originalSize - img.compressedSize), 0);
-  const allDone    = images.length > 0 && images.every((img) => !img.loading);
+  const totalOriginal = images.reduce((acc, img) => acc + img.originalSize, 0);
+  const totalCompressed = images.reduce((acc, img) => acc + img.compressedSize, 0);
+  const totalSaved = Math.max(0, totalOriginal - totalCompressed);
+  const avgSavings = images.length > 0 && allDone
+    ? Math.round(images.reduce((acc, img) => {
+      const s = img.originalSize > 0 ? Math.round(((img.originalSize - img.compressedSize) / img.originalSize) * 100) : 0;
+      return acc + s;
+    }, 0) / images.filter((img) => !img.loading).length)
+    : 0;
+  const allDone = images.length > 0 && images.every((img) => !img.loading);
 
-  const schemaData = {
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Image Compressor",
-    url: "https://www.generatorpromptai.com/tools/image-compressor",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    description: "Free browser-based image compressor. Compress JPG, PNG and WebP images online without uploading to any server. 100% private.",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI", url: "https://www.generatorpromptai.com" },
+    "name": "Compress Images Without Losing Quality Online – Free JPG PNG WebP Compressor",
+    "url": "https://www.generatorpromptai.com/tools/image-compressor",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online image compressor that works entirely in your browser. Compress JPG, PNG and WebP images without uploading to any server. Reduce file size by up to 90% with no quality loss.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Image Compressor", "item": "https://www.generatorpromptai.com/tools/image-compressor" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "Does this image compressor upload my images to a server?",
-        acceptedAnswer: { "@type": "Answer", text: "No. Our image compressor works entirely in your browser. Your images are never uploaded to any server, making it 100% private and secure." },
+        "name": "How to compress image without losing quality online for free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your image to our tool and select the Maximum (92%) or Balanced (80%) quality preset. The tool compresses the image in your browser without uploading to any server, preserving visual quality while reducing file size significantly."
+        }
       },
       {
         "@type": "Question",
-        name: "What image formats are supported?",
-        acceptedAnswer: { "@type": "Answer", text: "Our tool supports JPG, PNG, and WebP image formats. You can also convert between formats while compressing." },
+        "name": "Does this image compressor upload my photos to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Our tool works 100% in your browser using JavaScript. Your images never leave your device. No data is uploaded, stored, or sent to any server."
+        }
       },
       {
         "@type": "Question",
-        name: "Can I compress multiple images at once?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. You can upload up to 10 images at once and compress them all simultaneously with the same settings." },
+        "name": "How to reduce JPG file size for WhatsApp without losing quality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your JPG photo, select Balanced (80%) quality and 1200px max dimension, then compress and download. The result will be a much smaller file that WhatsApp sends instantly without visible quality loss."
+        }
       },
       {
         "@type": "Question",
-        name: "How much can I reduce image file size?",
-        acceptedAnswer: { "@type": "Answer", text: "Depending on the original image and quality settings, our tool can reduce file size by 50–90% while maintaining good visual quality." },
+        "name": "Can I batch compress multiple images at once for free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can upload up to 10 images at once and they will all be compressed simultaneously with the same quality and dimension settings. Use the Download All button to save them all at once."
+        }
       },
       {
         "@type": "Question",
-        name: "What quality setting should I use?",
-        acceptedAnswer: { "@type": "Answer", text: "For most uses (social media, web, WhatsApp), the Balanced preset (80%) works great. For websites needing maximum performance, use Aggressive (65%). For professional use, use Maximum (92%)." },
+        "name": "How to compress PNG to WebP for faster website loading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your PNG images, select WebP as the output format, choose Balanced or Aggressive quality, and compress. WebP produces files 25-35% smaller than PNG at the same visual quality and is supported by all modern browsers."
+        }
       },
-    ],
+      {
+        "@type": "Question",
+        "name": "How much can I reduce image file size?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Depending on the original image and settings, you can reduce file size by 50-90%. Most photos compress 60-80% with the Balanced (80%) preset while maintaining excellent visual quality."
+        }
+      }
+    ]
   };
 
   return (
     <>
       <Helmet>
-        <title>Image Compressor - Compress JPG PNG WebP Online Free | No Upload Needed</title>
+        <title>Compress Images Without Losing Quality Online – Free JPG PNG WebP Compressor</title>
+
         <meta
           name="description"
-          content="Free online image compressor — compress JPG, PNG and WebP images instantly in your browser. Reduce image size by up to 90% with no quality loss. Batch compress up to 10 images. 100% private, no upload."
+          content="Free online image compressor — reduce JPG, PNG and WebP file size by up to 90% without losing quality. Works entirely in your browser, no upload to any server. Batch compress up to 10 images."
         />
+
         <meta
           name="keywords"
-          content="image compressor, compress image online, compress jpg, compress png, compress webp, reduce image size, photo compressor, image optimizer, batch image compressor, free image compression 2026"
+          content="how to compress image without losing quality online free, compress image for website without uploading to server, reduce jpg file size for whatsapp without losing quality, batch compress images online free no upload, compress png to webp for faster website loading, make image file smaller for email attachment free, compress photo for instagram without losing quality, free image compressor for website optimization, reduce image size for faster website loading free, compress high resolution photos for web free online tool"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/image-compressor" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Image Compressor - Compress JPG PNG WebP Free Online" />
-        <meta property="og:description" content="Compress images online for free. Reduce size by up to 90%. Batch compress up to 10 images. 100% private — no upload to server." />
+        <meta property="og:title" content="Compress Images Without Losing Quality Online – Free JPG PNG WebP Compressor" />
+        <meta property="og:description" content="Reduce image file size by up to 90% without quality loss. Works in your browser — no server upload. Batch compress up to 10 images." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/image-compressor" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-image-compressor.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Image Compressor - Compress JPG PNG WebP Online" />
-        <meta name="twitter:description" content="Compress images online. Reduce size up to 90%. Batch up to 10 images. 100% private, no server upload." />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-image-compressor.png" />
+        <meta name="twitter:title" content="Free Image Compressor – Compress JPG PNG WebP Without Losing Quality" />
+        <meta name="twitter:description" content="Reduce image file size up to 90% in your browser. No upload to server. Batch compress up to 10 images free." />
 
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-5xl mx-auto w-full px-4 py-5">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
+
+        {/* ── Breadcrumb ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Image Compressor</span></li>
+            </ol>
+          </nav>
         </div>
 
-        <div className="flex-grow max-w-5xl mx-auto w-full px-4 pb-20">
+        <div className="flex-grow max-w-4xl mx-auto w-full px-4 pb-20">
 
-          {/* Hero */}
-          <div className="text-center mb-8">
+          {/* ── Hero ── */}
+          <div className="text-center mb-10 mt-4">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
               <ImageIcon className="text-sky-600" size={28} />
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">Image Compressor</h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Compress JPG, PNG and WebP images online. Up to 90% smaller. Batch compress up to 10 images.
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
+              Compress Images Without Losing Quality Online –{" "}
+              <span className="text-sky-600">Free JPG PNG WebP Compressor</span>
+            </h1>
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Reduce image file size by up to 90% in your browser. No upload to any server. Batch compress up to 10 images at once.
             </p>
-            {/* Privacy Badge */}
-            <div className="inline-flex items-center gap-2 mt-3 bg-green-50 border border-green-200 text-green-700 text-xs font-medium px-3 py-1.5 rounded-full">
-              <Shield size={13} /> 100% private — images never leave your browser
-            </div>
           </div>
 
-          {/* Settings Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 mb-5">
+          {/* ── Tool Card ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-8">
 
             {/* Quality Presets */}
-            <div className="mb-5">
+            <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-3">Quality Preset</label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {QUALITY_PRESETS.map((preset) => (
                   <button
                     key={preset.value}
                     onClick={() => setQuality(preset.value)}
-                    className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all ${
-                      quality === preset.value
-                        ? "border-sky-500 bg-sky-50 text-sky-700"
-                        : "border-gray-200 text-gray-600 hover:border-sky-300"
-                    }`}
+                    className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all ${quality === preset.value
+                      ? "border-sky-500 bg-sky-50 text-sky-700"
+                      : "border-gray-200 text-gray-600 hover:border-sky-300"
+                      }`}
                   >
                     <span className="text-sm font-medium">{preset.label}</span>
                     <span className="text-xs text-gray-400 mt-0.5">{preset.desc}</span>
                   </button>
                 ))}
               </div>
-              {/* Fine-tune slider */}
               <div className="mt-3 flex items-center gap-3">
                 <span className="text-xs text-gray-400 w-16">Fine-tune</span>
                 <input
@@ -329,13 +384,13 @@ const ImageCompressor = () => {
             </div>
 
             {/* Dimension + Format */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-5">
+            <div className="grid sm:grid-cols-2 gap-4 mb-6">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Max Dimension</label>
                 <select
                   value={maxDimension}
                   onChange={(e) => setMaxDimension(Number(e.target.value))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-gray-800"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white text-gray-800"
                 >
                   {DIMENSION_OPTIONS.map((d) => (
                     <option key={d.value} value={d.value}>{d.label}</option>
@@ -347,7 +402,7 @@ const ImageCompressor = () => {
                 <select
                   value={outputFormat}
                   onChange={(e) => setOutputFormat(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-gray-800"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white text-gray-800"
                 >
                   {FORMAT_OPTIONS.map((f) => (
                     <option key={f.value} value={f.value}>{f.label}</option>
@@ -356,145 +411,216 @@ const ImageCompressor = () => {
               </div>
             </div>
 
-            {/* Re-compress button */}
-            {images.length > 0 && (
-              <button
-                onClick={recompressAll}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-medium transition-colors"
-              >
-                <RefreshCw size={15} /> Re-compress with new settings
-              </button>
+            {/* Drop Zone */}
+            <div
+              className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all mb-6 ${isDragging ? "border-sky-500 bg-sky-50" : "border-gray-300 hover:border-sky-400 hover:bg-sky-50/30"
+                }`}
+              onClick={() => fileInputRef.current?.click()}
+              onDrop={handleDrop}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                onChange={(e) => addFiles(e.target.files)}
+                className="hidden"
+              />
+              <div className="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Upload className="text-sky-600" size={28} />
+              </div>
+              <p className="text-lg font-semibold text-gray-800 mb-1">
+                Drop images here or click to upload
+              </p>
+              <p className="text-gray-400 text-sm">JPG, PNG, WebP — Up to 10 images at once</p>
+            </div>
+
+            {/* Re-compress + Clear */}
+            <div className="flex flex-wrap gap-3">
+              {images.length > 0 && (
+                <button
+                  onClick={recompressAll}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                >
+                  <RefreshCw size={15} /> Re-compress with new settings
+                </button>
+              )}
+              {images.length > 0 && (
+                <button
+                  onClick={clearAll}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                >
+                  <X size={15} /> Clear all
+                </button>
+              )}
+            </div>
+
+            {/* ── Stats Grid ── */}
+            {allDone && images.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><Layers size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{images.length}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Images</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><HardDrive size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{formatBytes(totalOriginal)}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Original Size</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-green-500 mb-1"><Zap size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{formatBytes(totalSaved)}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Total Saved</p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                  <div className="flex justify-center text-sky-500 mb-1"><Percent size={20} /></div>
+                  <p className="text-lg font-bold text-gray-800">{avgSavings}%</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Avg Reduction</p>
+                </div>
+              </div>
+            )}
+
+            {/* Download All Bar */}
+            {allDone && images.length > 1 && (
+              <div className="mt-4 bg-green-50 border border-green-200 rounded-xl px-5 py-3 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-sm text-green-700 font-medium">
+                  {images.length} images compressed — Saved {formatBytes(totalSaved)} total
+                </span>
+                <button
+                  onClick={() => {
+                    images.forEach((img) => {
+                      if (img.compressedUrl) {
+                        const a = document.createElement("a");
+                        a.href = img.compressedUrl;
+                        a.download = img.downloadName || `compressed-${img.name}`;
+                        a.click();
+                      }
+                    });
+                  }}
+                  className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                >
+                  <Download size={15} /> Download All
+                </button>
+              </div>
             )}
           </div>
 
-          {/* Drop Zone */}
-          <div
-            className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all mb-6 ${
-              isDragging ? "border-sky-500 bg-sky-50" : "border-gray-300 hover:border-sky-400 hover:bg-sky-50/30"
-            }`}
-            onClick={() => fileInputRef.current?.click()}
-            onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              multiple
-              onChange={(e) => addFiles(e.target.files)}
-              className="hidden"
-            />
-            <div className="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Upload className="text-sky-600" size={28} />
-            </div>
-            <p className="text-lg font-semibold text-gray-800 mb-1">
-              Drop images here or click to upload
-            </p>
-            <p className="text-gray-400 text-sm">JPG, PNG, WebP · Up to 10 images at once</p>
-          </div>
-
-          {/* Stats bar */}
-          {allDone && images.length > 1 && (
-            <div className="bg-green-50 border border-green-200 rounded-2xl px-6 py-4 mb-5 flex flex-wrap gap-6 items-center">
-              <div className="flex items-center gap-2 text-green-700">
-                <Zap size={18} />
-                <span className="font-semibold text-sm">{images.length} images compressed</span>
-              </div>
-              <div className="text-sm text-green-700">
-                Total saved: <strong>{formatBytes(totalSaved)}</strong>
-              </div>
-              <button
-                onClick={() => {
-                  images.forEach((img) => {
-                    if (img.compressedUrl) {
-                      const a = document.createElement("a");
-                      a.href = img.compressedUrl;
-                      a.download = img.downloadName || `compressed-${img.name}`;
-                      a.click();
-                    }
-                  });
-                }}
-                className="ml-auto inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
-              >
-                <Download size={15} /> Download All
-              </button>
-            </div>
-          )}
-
-          {/* Clear all */}
-          {images.length > 0 && (
-            <div className="flex justify-end mb-4">
-              <button onClick={clearAll} className="text-sm text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1">
-                <X size={14} /> Clear all
-              </button>
-            </div>
-          )}
-
-          {/* Image List */}
-          <div className="space-y-4">
+          {/* ── Image List ── */}
+          <div className="space-y-4 mb-8">
             {images.map((img) => (
               <ImageItem key={img.id} item={img} onRemove={removeImage} />
             ))}
           </div>
 
-          {/* SEO Content */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mt-8 mb-6">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Online Image Compressor — Fast, Private &amp; Powerful
+              Free Image Compressor for Website Optimization — No Server Upload
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Our free image compressor reduces JPG, PNG, and WebP file sizes by up to 90% — all inside your browser. No files are ever uploaded to any server, making it completely private and secure. Adjust quality, max dimensions, and even convert to WebP (the most efficient format) while compressing.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Large images are the number one reason websites load slowly. A single 5MB photo can add several seconds to your page load time, especially on mobile. Our free image compressor solves this by reducing JPG, PNG, and WebP file sizes by up to <strong>90%</strong> — all inside your browser without uploading to any server.
             </p>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Perfect for compressing images before uploading to websites, sending on WhatsApp, posting to Instagram, or attaching to emails. Smaller images load faster, use less mobile data, and improve website performance.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Unlike other tools that upload your photos to a remote server for processing, our compressor uses the <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">browser-image-compression</code> library to do everything locally. This means your images are <strong>100% private</strong> — they never leave your device. This is especially important for sensitive photos, client work, and confidential business images.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Which quality setting should I use?</h3>
-            <ul className="list-disc list-inside text-gray-600 text-sm space-y-1 mb-4">
-              <li><strong>Maximum (92%)</strong> — Professional use, printing, archiving. Best quality, larger file.</li>
-              <li><strong>Balanced (80%)</strong> — Social media, WhatsApp, email. Great quality with good savings.</li>
-              <li><strong>Aggressive (65%)</strong> — Websites, fast loading. Smaller file with minimal visible loss.</li>
-              <li><strong>Minimum (50%)</strong> — Thumbnails, previews. Smallest possible size.</li>
-            </ul>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Why convert to WebP?</h3>
-            <p className="text-gray-600 text-sm">
-              WebP is Google's modern image format and produces files 25–35% smaller than JPEG and PNG at the same visual quality. It's supported by all modern browsers. Use the Output Format selector to convert your images to WebP while compressing.
+            <p className="text-gray-600 leading-relaxed">
+              You can also convert between formats while compressing. Converting PNG to <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">WebP</code> alone saves 25-35% on file size at identical visual quality, and WebP is now supported by Chrome, Firefox, Safari, and Edge.
             </p>
           </div>
 
-          {/* FAQ */}
+          {/* ── How to Use ── */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              How to Reduce Image File Size for Email Attachment Free
+            </h2>
+            <ol className="list-decimal list-inside text-gray-600 space-y-3 text-base">
+              <li>Drag and drop your images into the upload area or click to browse files.</li>
+              <li>Choose a quality preset — <strong>Balanced (80%)</strong> works best for most uses.</li>
+              <li>Set max dimension (e.g., 1200px for email, 1920px for web) and output format.</li>
+              <li>Wait for compression to finish — each image shows original vs compressed side by side.</li>
+              <li>Click <strong>Download</strong> on each image or <strong>Download All</strong> to save everything at once.</li>
+            </ol>
+          </div>
+
+          {/* ── Features Grid ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Compress High Resolution Photos for Web — Key Features
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                { q: "Does this image compressor upload my images?", a: "No. Everything happens entirely in your browser using JavaScript. Your images are never sent to any server. They're 100% private and secure." },
-                { q: "What formats are supported?", a: "JPG, PNG, and WebP. You can also convert between formats using the Output Format selector — for example, convert PNG to WebP for the best compression." },
-                { q: "Can I compress multiple images at once?", a: "Yes. Upload up to 10 images at once and they'll all be compressed simultaneously. Use Download All to save them in one click." },
-                { q: "How much can I reduce image file size?", a: "Between 50–90% depending on the original image and quality setting. Most photos compress 60–80% with Balanced quality (80%)." },
-                { q: "What quality setting should I use?", a: "For social media and WhatsApp, use Balanced (80%). For websites needing fast loading, use Aggressive (65%). For professional photos, use Maximum (92%)." },
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "100% Browser-Based Privacy", desc: "No images are uploaded to any server. All compression happens locally in your browser using JavaScript. Your photos stay on your device at all times." },
+                { title: "Batch Compress Up to 10 Images", desc: "Upload multiple images at once and compress them all simultaneously with the same quality and dimension settings. Download individually or all at once." },
+                { title: "Format Conversion While Compressing", desc: "Convert PNG to WebP, JPG to WebP, or any combination while compressing. WebP produces files 25-35% smaller than JPEG at the same visual quality." },
+                { title: "Visual Before/After Comparison", desc: "See original and compressed images side by side with exact file sizes and percentage saved. Know exactly what you are getting before downloading." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Related Tools */}
+          {/* ── FAQ Accordion ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Image Compressor – Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to compress image without losing quality online for free?",
+                  a: "Upload your image to our tool and select the Maximum (92%) or Balanced (80%) quality preset. The tool compresses the image in your browser without uploading to any server, preserving visual quality while reducing file size significantly."
+                },
+                {
+                  q: "Does this image compressor upload my photos to a server?",
+                  a: "No. Our tool works 100% in your browser using JavaScript. Your images never leave your device. No data is uploaded, stored, or sent to any server."
+                },
+                {
+                  q: "How to reduce JPG file size for WhatsApp without losing quality?",
+                  a: "Upload your JPG photo, select Balanced (80%) quality and 1200px max dimension, then compress and download. The result will be a much smaller file that WhatsApp sends instantly without visible quality loss."
+                },
+                {
+                  q: "Can I batch compress multiple images at once for free?",
+                  a: "Yes. You can upload up to 10 images at once and they will all be compressed simultaneously with the same quality and dimension settings. Use the Download All button to save them all at once."
+                },
+                {
+                  q: "How to compress PNG to WebP for faster website loading?",
+                  a: "Upload your PNG images, select WebP as the output format, choose Balanced or Aggressive quality, and compress. WebP produces files 25-35% smaller than PNG at the same visual quality and is supported by all modern browsers."
+                },
+                {
+                  q: "How much can I reduce image file size?",
+                  a: "Depending on the original image and settings, you can reduce file size by 50-90%. Most photos compress 60-80% with the Balanced (80%) preset while maintaining excellent visual quality."
+                }
+              ].map((item, i) => (
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
           <section>
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Related Image Tools</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Image Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/image-resizer",   title: "Image Resizer",   desc: "Resize photos to exact dimensions for any platform." },
-                { to: "/tools/image-cropper",   title: "Image Cropper",   desc: "Crop images with custom ratios for social media." },
-                { to: "/tools/image-converter", title: "Image Converter", desc: "Convert JPG, PNG and WebP between formats instantly." },
+                { to: "/tools/image-resizer", title: "Image Resizer", desc: "Resize photos to exact dimensions for any platform." },
+                { to: "/tools/image-cropper", title: "Image Cropper", desc: "Crop images with custom aspect ratios for social media." },
+                { to: "/tools/image-converter", title: "Image Converter", desc: "Convert between JPG, PNG and WebP formats instantly." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all"
-                >
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all">
                   <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">{tool.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>

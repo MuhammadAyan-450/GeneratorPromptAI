@@ -1,134 +1,175 @@
-import React, { useState, useEffect } from "react";
+// pages/RemoveDuplicateLines.jsx
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, RefreshCw, List, Trash2, ArrowUp, ArrowDown, Minus } from "lucide-react";
+import {
+  Copy, RefreshCw, Download, List, Home, ChevronDown,
+  Hash, Type, Layers, Trash2, ArrowUp, ArrowDown, FileText
+} from "lucide-react";
 
+// ─── Component ────────────────────────────────────────────────────────────────
 const RemoveDuplicateLines = () => {
-  const [text, setText] = useState("");
+  const [inputText, setInputText] = useState("");
+  const [outputText, setOutputText] = useState("");
+  const [activeAction, setActiveAction] = useState("");
   const [copied, setCopied] = useState(false);
-  
-  // Stats
-  const [totalLines, setTotalLines] = useState(0);
-  const [uniqueLines, setUniqueLines] = useState(0);
+  const [openFaq, setOpenFaq] = useState(null);
 
-  useEffect(() => {
-    const lines = text.split("\n");
-    setTotalLines(lines.length);
-    const unique = new Set(lines);
-    setUniqueLines(unique.size);
-  }, [text]);
-
-  // --- Actions ---
-
+  // ── Actions ─────────────────────────────────────────────────────────────────
   const removeDuplicates = () => {
-    // Split by new line, filter out empty ones if desired, or keep them, then Set to unique
-    const lines = text.split("\n");
+    const lines = inputText.split("\n");
     const unique = [...new Set(lines)];
-    setText(unique.join("\n"));
+    setOutputText(unique.join("\n"));
+    setActiveAction("duplicates");
   };
 
   const removeDuplicatesAndEmpty = () => {
-    const lines = text.split("\n").filter(line => line.trim() !== "");
+    const lines = inputText.split("\n").filter((line) => line.trim() !== "");
     const unique = [...new Set(lines)];
-    setText(unique.join("\n"));
+    setOutputText(unique.join("\n"));
+    setActiveAction("duplicates-empty");
   };
 
   const removeEmptyLines = () => {
-    const lines = text.split("\n").filter(line => line.trim() !== "");
-    setText(lines.join("\n"));
+    const lines = inputText.split("\n").filter((line) => line.trim() !== "");
+    setOutputText(lines.join("\n"));
+    setActiveAction("empty");
   };
 
   const sortLinesAsc = () => {
-    const lines = text.split("\n");
+    const lines = inputText.split("\n");
     lines.sort((a, b) => a.localeCompare(b));
-    setText(lines.join("\n"));
+    setOutputText(lines.join("\n"));
+    setActiveAction("sort-asc");
   };
 
   const sortLinesDesc = () => {
-    const lines = text.split("\n");
+    const lines = inputText.split("\n");
     lines.sort((a, b) => b.localeCompare(a));
-    setText(lines.join("\n"));
+    setOutputText(lines.join("\n"));
+    setActiveAction("sort-desc");
   };
 
-  const handleCopy = () => {
-    if (!text) return;
-    navigator.clipboard.writeText(text);
+  const copyText = () => {
+    if (!outputText) return;
+    navigator.clipboard.writeText(outputText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleClear = () => {
-    setText("");
+  const downloadText = () => {
+    if (!outputText) return;
+    const blob = new Blob([outputText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `cleaned-list-${Date.now()}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const reset = () => {
+    setInputText("");
+    setOutputText("");
+    setActiveAction("");
     setCopied(false);
   };
 
-  const handleDownload = () => {
-    if (!text) return;
-    const element = document.createElement("a");
-    const file = new Blob([text], { type: "text/plain" });
-    element.href = URL.createObjectURL(file);
-    element.download = "cleaned-list.txt";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+  // ── Stats ───────────────────────────────────────────────────────────────────
+  const inputLines = inputText ? inputText.split("\n") : [];
+  const outputLines = outputText ? outputText.split("\n") : [];
+  const totalInput = inputLines.length;
+  const totalOutput = outputLines.length;
+  const duplicatesRemoved = totalInput - new Set(inputLines).size;
+  const emptyRemoved = inputLines.filter((l) => l.trim() === "").length - outputLines.filter((l) => l.trim() === "").length;
+
+  const hasResult = outputText.length > 0;
+
+  const stats = hasResult
+    ? [
+        { icon: List, value: totalInput, label: "Input Lines" },
+        { icon: Layers, value: totalOutput, label: "Output Lines", color: "text-green-600" },
+        { icon: Trash2, value: Math.max(0, duplicatesRemoved), label: "Duplicates Removed", color: "text-orange-500" },
+        { icon: Hash, value: Math.max(0, emptyRemoved), label: "Empty Lines Removed", color: "text-sky-600" },
+      ]
+    : [];
+
+  const actionLabels = {
+    "duplicates": "Remove Duplicates Only",
+    "duplicates-empty": "Remove Duplicates & Empty Lines",
+    "empty": "Remove Empty Lines Only",
+    "sort-asc": "Sort A-Z (Ascending)",
+    "sort-desc": "Sort Z-A (Descending)",
   };
 
-  // --- Schema Data ---
-  const schemaData = {
+  const inputCls = "w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800";
+  const labelCls = "block text-sm font-semibold text-gray-700 mb-2";
+
+  // ── SCHEMAS ──
+  const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Remove Duplicate Lines",
-    url: "https://www.generatorpromptai.com/tools/remove-duplicate-lines",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript",
-    creator: {
-      "@type": "Organization",
-      name: "GeneratorPromptAI",
-      url: "https://www.generatorpromptai.com"
-    },
-    description: "Free online tool to remove duplicate lines from text lists. Sort lines alphabetically and remove empty entries instantly.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD"
-    }
+    "name": "Remove Duplicate Lines from Text List Online Free – Sort and Clean Data Instantly",
+    "url": "https://www.generatorpromptai.com/tools/remove-duplicate-lines",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online tool to remove duplicate lines from text lists. Sort alphabetically, remove empty lines, and clean up data instantly. Download result as .txt. No signup required.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const faqSchema = {
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Remove Duplicate Lines", "item": "https://www.generatorpromptai.com/tools/remove-duplicate-lines" }
+    ]
+  };
+
+  const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "How do I remove duplicate lines?",
-        acceptedAnswer: {
+        "name": "How to remove duplicate lines from a text list online free?",
+        "acceptedAnswer": {
           "@type": "Answer",
-          text: "Paste your list into the text area and click 'Remove Duplicates'. Our tool will instantly scan and delete any repeated lines."
+          "text": "Paste your list into the text area and click 'Remove Duplicates Only'. The tool instantly scans every line, keeps the first occurrence, and deletes all repeated lines. Copy or download the cleaned result."
         }
       },
       {
         "@type": "Question",
-        name: "Does this tool remove empty lines?",
-        acceptedAnswer: {
+        "name": "Can I remove duplicate lines and empty lines at the same time?",
+        "acceptedAnswer": {
           "@type": "Answer",
-          text: "Yes, we have a specific option to 'Remove Duplicates & Empty Lines' to clean up your list completely."
+          "text": "Yes. Click 'Remove Duplicates & Empty Lines' to perform both actions in one step. This removes all repeated entries and all blank lines, giving you a completely clean list."
         }
       },
       {
         "@type": "Question",
-        name: "Can I sort my list?",
-        acceptedAnswer: {
+        "name:": "How to sort lines alphabetically after removing duplicates?",
+        "acceptedAnswer": {
           "@type": "Answer",
-          text: "Absolutely. You can sort lines in Ascending (A-Z) or Descending (Z-A) order with one click."
+          "text": "First click 'Remove Duplicates' to clean the list, then click 'Sort A-Z' to alphabetize. The result in the output block will be both deduplicated and sorted."
         }
       },
       {
         "@type": "Question",
-        name: "Is my data safe?",
-        acceptedAnswer: {
+        "name": "Is my text data safe when using this tool?",
+        "acceptedAnswer": {
           "@type": "Answer",
-          text: "Yes. All processing happens in your browser. No data is sent to our servers."
+          "text": "Yes. All processing happens entirely in your browser using JavaScript. No text is ever sent to any server. Your data remains 100% private."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I remove duplicates from a large list with thousands of lines?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The tool handles large lists efficiently. For extremely large files (multiple megabytes), there is no strict limit, though very large inputs may cause a slight delay depending on your device."
         }
       }
     ]
@@ -137,214 +178,289 @@ const RemoveDuplicateLines = () => {
   return (
     <>
       <Helmet>
-        {/* Primary SEO */}
-        <title>Remove Duplicate Lines Online - Clean Up Text Lists</title>
+        <title>Remove Duplicate Lines from Text List Online Free – Sort and Clean Data Instantly</title>
+
         <meta
           name="description"
-          content="Free online tool to remove duplicate lines from a list. Also supports sorting A-Z, removing empty lines, and formatting text. Instant and secure."
+          content="Free online tool to remove duplicate lines from text lists. Sort alphabetically, remove empty lines, and clean up data instantly. Download result as .txt. No signup required."
         />
+
         <meta
           name="keywords"
-          content="remove duplicate lines, delete duplicate lines, sort lines online, remove blank lines, list cleaner, text deduplication tool"
+          content="how to remove duplicate lines from text list online free, delete repeated lines from large list instantly, remove blank empty lines from text file online, sort lines alphabetically after removing duplicates free, clean up email list remove duplicates online tool, text deduplication tool no signup free download, remove duplicate entries from csv data free online, free online list cleaner remove duplicates sort download, deduplicate text lines keep first occurrence free tool, best free duplicate line remover with sort and download 2026"
         />
         <link rel="canonical" href="https://www.generatorpromptai.com/tools/remove-duplicate-lines" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
-        {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="GeneratorPromptAI" />
-        <meta property="og:title" content="Remove Duplicate Lines - Free Text Tool" />
-        <meta property="og:description" content="Clean up your lists instantly. Remove duplicates, sort lines, and delete blank entries." />
+        <meta property="og:title" content="Remove Duplicate Lines Free – Sort & Clean Text Lists Instantly" />
+        <meta property="og:description" content="Remove duplicate lines, sort alphabetically, delete blank lines. Download cleaned list as .txt. Free, private, no signup." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/remove-duplicate-lines" />
-        <meta property="og:image" content="https://www.generatorpromptai.com/og-remove-duplicate-lines.png" />
 
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Remove Duplicate Lines - List Cleaner" />
-        <meta name="twitter:description" content="Instantly remove duplicate lines and clean up your text lists for free." />
-        <meta name="twitter:image" content="https://www.generatorpromptai.com/og-remove-duplicate-lines.png" />
+        <meta name="twitter:title" content="Free Duplicate Line Remover – Sort & Clean Text Lists" />
+        <meta name="twitter:description" content="Instantly remove duplicate lines and clean up text lists. Free online tool, no signup." />
 
-        {/* Schema: WebApplication */}
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
-
-        {/* Schema: FAQ */}
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
 
-        {/* Back Nav */}
-        <div className="max-w-4xl mx-auto w-full px-4 py-5">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 transition-colors text-sm"
-          >
-            <ArrowLeft size={16} />
-            Back to Home
-          </Link>
+        {/* ── Breadcrumb ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Remove Duplicate Lines</span></li>
+            </ol>
+          </nav>
         </div>
 
         <div className="flex-grow max-w-4xl mx-auto w-full px-4 pb-20">
 
-          {/* Hero */}
-          <div className="text-center mb-10">
+          {/* ── Hero ── */}
+          <div className="text-center mb-10 mt-4">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
               <List className="text-sky-600" size={28} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Remove Duplicate Lines
+              Remove Duplicate Lines from Text List Online Free –{" "}
+              <span className="text-sky-600">Sort and Clean Data Instantly</span>
             </h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Clean up your text lists instantly. Remove repeated entries, sort alphabetically, and delete blank lines.
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Clean up text lists by removing repeated entries, blank lines, and sorting alphabetically. Download the result as .txt.
             </p>
           </div>
 
-          {/* Tool Card */}
+          {/* ── Tool Card ── */}
           <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-8">
 
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Paste Your List
-            </label>
-
-            <div className="mb-4">
+            {/* Text Input */}
+            <div className="mb-6">
+              <label className={labelCls}>Paste Your List</label>
               <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                className="w-full h-64 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800 resize-none font-mono text-sm"
-                placeholder="Paste your list here... (one item per line)"
-              ></textarea>
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                className="w-full h-52 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800 resize-none font-mono text-sm"
+                placeholder={"apple\nbanana\napple\norange\nbanana\ngrape\n\norange"}
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                {inputLines.length} line{inputLines.length !== 1 ? "s" : ""} in input
+              </p>
             </div>
 
-            {/* Stats Bar */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-sky-50 border border-sky-100 rounded-xl p-4 flex items-center gap-3">
-                <List className="text-sky-600" size={20} />
-                <div>
-                  <p className="text-xs text-sky-500 uppercase font-bold tracking-wider">Total Lines</p>
-                  <p className="text-2xl font-bold text-sky-700">{totalLines}</p>
+            {/* Action Buttons */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+              <button
+                onClick={removeDuplicates}
+                disabled={!inputText.trim()}
+                className="bg-sky-600 hover:bg-sky-700 active:scale-95 disabled:opacity-40 transition-all text-white font-semibold px-4 py-3 rounded-xl flex items-center justify-center gap-2 text-sm"
+              >
+                <Trash2 size={16} /> Remove Duplicates
+              </button>
+              <button
+                onClick={removeDuplicatesAndEmpty}
+                disabled={!inputText.trim()}
+                className="bg-sky-600 hover:bg-sky-700 active:scale-95 disabled:opacity-40 transition-all text-white font-semibold px-4 py-3 rounded-xl flex items-center justify-center gap-2 text-sm"
+              >
+                <Trash2 size={16} /> Duplicates + Empty
+              </button>
+              <button
+                onClick={removeEmptyLines}
+                disabled={!inputText.trim()}
+                className="bg-white border-2 border-sky-100 hover:bg-sky-50 disabled:opacity-40 text-sky-700 font-semibold px-4 py-3 rounded-xl flex items-center justify-center gap-2 text-sm transition-all"
+              >
+                <FileText size={16} /> Remove Empty
+              </button>
+              <button
+                onClick={sortLinesAsc}
+                disabled={!inputText.trim()}
+                className="bg-white border-2 border-sky-100 hover:bg-sky-50 disabled:opacity-40 text-sky-700 font-semibold px-4 py-3 rounded-xl flex items-center justify-center gap-2 text-sm transition-all"
+              >
+                <ArrowUp size={16} /> Sort A-Z
+              </button>
+              <button
+                onClick={sortLinesDesc}
+                disabled={!inputText.trim()}
+                className="bg-white border-2 border-sky-100 hover:bg-sky-50 disabled:opacity-40 text-sky-700 font-semibold px-4 py-3 rounded-xl flex items-center justify-center gap-2 text-sm transition-all"
+              >
+                <ArrowDown size={16} /> Sort Z-A
+              </button>
+              <button
+                onClick={reset}
+                className="bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors flex items-center justify-center gap-2 px-4 py-3"
+              >
+                <RefreshCw size={15} /> Reset
+              </button>
+            </div>
+
+            {/* ── Result Section ── */}
+            {hasResult && (
+              <div className="mt-8">
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                  {stats.map((stat, i) => (
+                    <div key={i} className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                      <div className="flex justify-center text-sky-500 mb-1">
+                        <stat.icon size={20} />
+                      </div>
+                      <p className={`text-lg font-bold ${stat.color || "text-gray-800"}`}>{stat.value}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Dark Output Block */}
+                <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
+                  <p className="text-xs text-gray-500 uppercase tracking-widest mb-3 font-semibold">
+                    {actionLabels[activeAction] || "Result"}
+                  </p>
+                  <pre className="text-sm font-mono leading-relaxed text-gray-200 max-h-72 overflow-y-auto whitespace-pre-wrap">
+                    {outputText}
+                  </pre>
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-center gap-3">
+                  <button
+                    onClick={copyText}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                  >
+                    <Copy size={15} />
+                    {copied ? "Copied!" : "Copy Result"}
+                  </button>
+                  <button
+                    onClick={downloadText}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-medium transition-colors"
+                  >
+                    <Download size={15} /> Download .txt
+                  </button>
                 </div>
               </div>
-              <div className="bg-green-50 border border-green-100 rounded-xl p-4 flex items-center gap-3">
-                <Minus className="text-green-600" size={20} />
-                <div>
-                  <p className="text-xs text-green-600 uppercase font-bold tracking-wider">Unique Lines</p>
-                  <p className="text-2xl font-bold text-green-700">{uniqueLines}</p>
-                </div>
+            )}
+
+            {/* Empty State */}
+            {!hasResult && (
+              <div className="text-center py-16 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl mt-4">
+                <List size={32} className="mx-auto mb-3 text-gray-300" />
+                <p>Paste a list and click <strong className="text-gray-500">Remove Duplicates</strong> to clean it up</p>
               </div>
-            </div>
-
-            {/* Action Buttons Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-              <button onClick={removeDuplicates} className="bg-white border-2 border-sky-100 text-sky-700 hover:bg-sky-50 font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                <Trash2 size={18} /> Remove Duplicates Only
-              </button>
-              <button onClick={removeDuplicatesAndEmpty} className="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2">
-                <Trash2 size={18} /> Remove Duplicates & Empty
-              </button>
-              <button onClick={sortLinesAsc} className="bg-white border-2 border-sky-100 text-sky-700 hover:bg-sky-50 font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                <ArrowUp size={18} /> Sort A-Z
-              </button>
-              <button onClick={sortLinesDesc} className="bg-white border-2 border-sky-100 text-sky-700 hover:bg-sky-50 font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                <ArrowDown size={18} /> Sort Z-A
-              </button>
-            </div>
-
-            {/* Utility Actions */}
-            <div className="flex flex-wrap justify-center gap-3 border-t border-gray-100 pt-6">
-              <button
-                onClick={handleCopy}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-semibold transition-all shadow-sm hover:shadow-md"
-              >
-                <Copy size={16} />
-                {copied ? "Copied!" : "Copy Text"}
-              </button>
-              <button
-                onClick={handleDownload}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-semibold transition-all"
-              >
-                Download .txt
-              </button>
-              <button
-                onClick={handleClear}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-red-600 rounded-xl text-sm font-semibold transition-all"
-              >
-                <RefreshCw size={16} />
-                Clear
-              </button>
-            </div>
+            )}
           </div>
 
-          {/* SEO Content Section */}
-          <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Online Duplicate Line Remover
+              Free Online Duplicate Line Remover — Clean Text Lists Instantly
             </h2>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              If you have a messy list with repeated entries, our <strong>Remove Duplicate Lines</strong> tool is the perfect solution. Whether you are cleaning up email lists, keywords for SEO, or data for Excel, this tool makes the process instant.
+              If you have a messy list with repeated entries, our <strong>Remove Duplicate Lines</strong> tool is the fastest way to clean it up. Whether you're deduplicating email lists, cleaning SEO keywords, removing repeated entries from CSV data, or organizing a list of names — this tool handles it all <strong>instantly in your browser</strong>.
             </p>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Simply paste your text into the box and click the appropriate button. You can choose to keep the duplicates but remove blank lines, or scrub the list entirely. It works 100% in your browser, ensuring your data remains private.
+              Unlike spreadsheet software that requires formulas and manual steps, our tool works with a single click. Paste your list, choose an action, and get a clean result. The built-in sort feature lets you alphabetize your list in A-Z or Z-A order after cleaning. No data is ever sent to any server — your text remains 100% private.
             </p>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Features:</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li><strong>Remove Duplicates:</strong> Keeps the first occurrence of every line and deletes the rest.</li>
-              <li><strong>Remove Empty Lines:</strong> Cleans up lists that have gaps between items.</li>
-              <li><strong>Sort Lines:</strong> Automatically alphabetizes your list A-Z or Z-A.</li>
-              <li><strong>Download Result:</strong> Save your cleaned list directly to your computer as a text file.</li>
-            </ul>
-          </section>
+          </div>
 
-          {/* FAQ Section */}
-          <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+          {/* ── How to Use ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Frequently Asked Questions
+              How to Remove Duplicate Lines from Text List Online Free
             </h2>
-            <div className="space-y-6">
+            <ol className="list-decimal list-inside text-gray-600 space-y-3 text-base">
+              <li><strong>Paste your list</strong> into the text area — one item per line.</li>
+              <li>Click <strong>"Remove Duplicates"</strong> to delete repeated lines while keeping the first occurrence of each.</li>
+              <li>For a complete cleanup, click <strong>"Duplicates + Empty"</strong> to remove both duplicates and blank lines in one step.</li>
+              <li>Optionally click <strong>"Sort A-Z"</strong> or <strong>"Sort Z-A"</strong> to alphabetize the cleaned list.</li>
+              <li><strong>Copy</strong> the result to your clipboard or <strong>download as .txt</strong> for offline use.</li>
+            </ol>
+          </div>
+
+          {/* ── Features Grid ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Text Deduplication Tool with Sort – Key Features
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                {
-                  q: "How do I remove duplicate lines from a text file?",
-                  a: "Open your text file, copy the content, paste it into our tool, and click 'Remove Duplicates'. Then copy the result back to your file."
-                },
-                {
-                  q: "Does it matter if there are spaces at the end of lines?",
-                  a: "Currently, lines with trailing spaces are treated as distinct. For best results, use 'Remove Empty Lines' first, or ensure your data is clean."
-                },
-                {
-                  q: "Can I sort a list of numbers?",
-                  a: "Yes, the Sort A-Z feature works for numbers as well (sorting them numerically or as text strings)."
-                },
-                {
-                  q: "Is there a limit to the text size?",
-                  a: "There is no strict limit, but for extremely large files (megabytes of text), your browser might slow down slightly."
-                }
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "5 Cleaning Actions in One Tool", desc: "Remove duplicates only, remove duplicates plus empty lines, remove empty lines only, sort A-Z, or sort Z-A — every list cleanup operation you need in a single page." },
+                { title: "Real-time Stats Comparison", desc: "See exactly how many lines were in your input, how many remain in output, how many duplicates were removed, and how many empty lines were cleaned — all in a 4-stat dashboard." },
+                { title: "100% Browser-Based Processing", desc: "All text processing happens locally in your browser using JavaScript. No data is ever uploaded to any server, making it completely safe for sensitive lists like emails or contacts." },
+                { title: "Copy & Download Cleaned List", desc: "One-click copy to clipboard for pasting back into your document, or download the cleaned list as a .txt file for offline use in spreadsheets, databases, or other tools." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
 
-          {/* Related Tools */}
-          <section>
+          {/* ── FAQ Accordion ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              Related Free Online Tools
+              Remove Duplicate Lines – Frequently Asked Questions
             </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to remove duplicate lines from a text list online free?",
+                  a: "Paste your list into the text area and click 'Remove Duplicates Only'. The tool instantly scans every line, keeps the first occurrence, and deletes all repeated lines. Copy or download the cleaned result."
+                },
+                {
+                  q: "Can I remove duplicate lines and empty lines at the same time?",
+                  a: "Yes. Click 'Remove Duplicates & Empty Lines' to perform both actions in one step. This removes all repeated entries and all blank lines, giving you a completely clean list."
+                },
+                {
+                  q: "How to sort lines alphabetically after removing duplicates?",
+                  a: "First click 'Remove Duplicates' to clean the list, then click 'Sort A-Z' to alphabetize. The result in the output block will be both deduplicated and sorted in ascending order."
+                },
+                {
+                  q: "Is my text data safe when using this tool?",
+                  a: "Yes. All processing happens entirely in your browser using JavaScript. No text is ever sent to any server. Your data remains 100% private at all times."
+                },
+                {
+                  q: "Can I remove duplicates from a large list with thousands of lines?",
+                  a: "Yes. The tool handles large lists efficiently using JavaScript Set operations. For extremely large files (multiple megabytes), there is no strict limit, though very large inputs may cause a slight delay depending on your device."
+                }
+              ].map((item, i) => (
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Text &amp; Data Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/case-converter", title: "Case Converter", desc: "Convert text to Uppercase, Lowercase, Title Case and more." },
-                { to: "/tools/word-counter", title: "Word Counter", desc: "Count words, characters, and lines in your text." },
-                { to: "/tools/text-to-slug", title: "Text to Slug", desc: "Convert titles into URL-friendly slugs." },
+                { to: "/tools/case-converter", title: "Case Converter", desc: "Convert text to Uppercase, Lowercase, Title Case and more formats." },
+                { to: "/tools/word-counter", title: "Word Counter", desc: "Count words, characters, sentences and lines in your text instantly." },
+                { to: "/tools/json-formatter", title: "JSON Formatter", desc: "Beautify, minify and validate JSON data with syntax highlighting." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all"
-                >
-                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">
-                    {tool.title}
-                  </h3>
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all">
+                  <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">{tool.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>
               ))}

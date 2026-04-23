@@ -1,8 +1,7 @@
-// pages/LoremIpsumGenerator.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Copy, Eraser, FileText, Download, AlignLeft } from "lucide-react";
+import { Copy, RefreshCw, FileText, Download, AlignLeft, Home, ChevronDown, Hash, Type, Layers, Code } from "lucide-react";
 
 const LoremIpsumGenerator = () => {
   const [paragraphs, setParagraphs] = useState(4);
@@ -11,6 +10,7 @@ const LoremIpsumGenerator = () => {
   const [includeHtml, setIncludeHtml] = useState(false);
   const [generatedText, setGeneratedText] = useState("");
   const [copied, setCopied] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
 
   const baseWords = [
     "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
@@ -69,7 +69,7 @@ const LoremIpsumGenerator = () => {
     if (!generatedText) return;
     navigator.clipboard.writeText(generatedText);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const downloadText = () => {
@@ -88,59 +88,76 @@ const LoremIpsumGenerator = () => {
     setCopied(false);
   };
 
+  const totalWords = generatedText.trim() ? generatedText.trim().split(/\s+/).length : 0;
+  const totalChars = generatedText.length;
+  const totalSentences = generatedText.trim() ? generatedText.split(/[.!?]+/).filter(Boolean).length : 0;
+
   // ── SCHEMAS ──
   const schemaWebApp = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Lorem Ipsum Generator",
-    url: "https://www.generatorpromptai.com/tools/lorem-ipsum-generator",
-    description: "Free online tool to generate customizable placeholder (Lorem Ipsum) text for design & development.",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    creator: { "@type": "Organization", name: "GeneratorPromptAI" }
+    "name": "Generate Placeholder Text for Website Design Free – Lorem Ipsum with HTML Tags",
+    "url": "https://www.generatorpromptai.com/tools/lorem-ipsum-generator",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online Lorem Ipsum generator with customizable paragraphs, word count, and HTML tag wrapping. Create placeholder text for wireframes, mockups, and prototypes instantly.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Organization", "name": "GeneratorPromptAI" }
   };
 
-  const schemaBreadCrumb = {
+  const schemaBreadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.generatorpromptai.com/" },
-      { "@type": "ListItem", position: 2, name: "Text & Code Tools", item: "https://www.generatorpromptai.com/pages/all-tools" },
-      { "@type": "ListItem", position: 3, name: "Lorem Ipsum Generator", item: "https://www.generatorpromptai.com/tools/lorem-ipsum-generator" }
-    ]
-  };
-
-  const schemaHowTo = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "How to Generate Lorem Ipsum Text",
-    description: "Steps to create custom placeholder text for your designs.",
-    step: [
-      { "@type": "HowToStep", name: "Set Parameters", text: "Choose the number of paragraphs and words per paragraph." },
-      { "@type": "HowToStep", name: "Choose Options", text: "Select if you want to start with classic Lorem Ipsum and whether to wrap the text in HTML tags." },
-      { "@type": "HowToStep", name: "Generate", text: "Click the generate button and copy or download the resulting text." }
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.generatorpromptai.com/" },
+      { "@type": "ListItem", "position": 2, "name": "All Free Tools", "item": "https://www.generatorpromptai.com/pages/all-tools" },
+      { "@type": "ListItem", "position": 3, "name": "Lorem Ipsum Generator", "item": "https://www.generatorpromptai.com/tools/lorem-ipsum-generator" }
     ]
   };
 
   const schemaFaq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
+    "mainEntity": [
       {
         "@type": "Question",
-        name: "What is Lorem Ipsum?",
-        acceptedAnswer: { "@type": "Answer", text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s." }
+        "name": "How to generate placeholder text for website design free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Set the number of paragraphs and words per paragraph in our Lorem Ipsum generator, then click Generate Text. Copy or download the result and paste it directly into your design mockup or prototype."
+        }
       },
       {
         "@type": "Question",
-        name: "Can I generate Lorem Ipsum with HTML tags?",
-        acceptedAnswer: { "@type": "Answer", text: "Yes. Our tool has an 'Include HTML tags' option that wraps your paragraphs in <p> tags and adds random <h2>, <h3>, or <h4> headings." }
+        "name": "Can I generate Lorem Ipsum with HTML tags?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Check the 'Wrap in HTML tags' option and the tool will output your paragraphs wrapped in <p> tags with randomly generated <h2>, <h3>, or <h4> headings between sections."
+        }
       },
       {
         "@type": "Question",
-        name: "Is there a limit to how much text I can generate?",
-        acceptedAnswer: { "@type": "Answer", text: "No. You can generate up to 20 paragraphs at a time, with up to 300 words per paragraph, completely free." }
+        "name": "What is Lorem Ipsum and why do designers use it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lorem Ipsum is dummy text used in the printing and web design industries since the 1500s. Designers use it to fill layouts with realistic-looking text so clients and stakeholders focus on the visual design rather than reading the content."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many paragraphs of Lorem Ipsum should I use for a wireframe?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For a typical website wireframe, 3-5 paragraphs per section works well. For a full-page mockup, 10-20 paragraphs total gives a realistic feel. Use shorter paragraphs (40-60 words) for tighter layouts."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I generate dummy text with a specific word count?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Set the 'Words per Paragraph' slider to your desired count (20-300 words) and the tool will generate paragraphs that match that target as closely as possible."
+        }
       }
     ]
   };
@@ -148,235 +165,320 @@ const LoremIpsumGenerator = () => {
   return (
     <>
       <Helmet>
-        <title>Lorem Ipsum Generator - Free Placeholder Text Online</title>
-        <meta name="description" content="Generate unlimited Lorem Ipsum placeholder text instantly. Customize paragraphs, word count, and HTML tags. Perfect for UI/UX mockups and web design." />
-        <meta name="keywords" content="lorem ipsum generator, placeholder text generator, dummy text online, free lorem ipsum, html placeholder text, design mockup text" />
-        <link rel="canonical" href="https://www.generatorpromptai.com/tools/lorem-ipsum-generator" />
+        <title>Generate Placeholder Text for Website Design Free – Lorem Ipsum with HTML Tags</title>
 
-        <meta property="og:title" content="Lorem Ipsum Generator – Free Placeholder Text" />
-        <meta property="og:description" content="Create custom dummy text for websites, designs & mockups – HTML support included." />
+        <meta
+          name="description"
+          content="Free Lorem Ipsum generator with customizable paragraphs, word count, and HTML tag wrapping. Create placeholder text for wireframes, mockups, and prototypes instantly. No signup required."
+        />
+
+        <meta
+          name="keywords"
+          content="how to generate placeholder text for website design free, lorem ipsum generator with html tags free online, generate dummy text for wireframe mockup free, placeholder text generator for ui ux design, free lorem ipsum paragraphs with specific word count, create filler text for website prototype online, random placeholder text generator no signup, generate lorem ipsum with heading tags html, dummy text generator for print layout free, best free placeholder text tool for designers"
+        />
+        <link rel="canonical" href="https://www.generatorpromptai.com/tools/lorem-ipsum-generator" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="GeneratorPromptAI" />
+        <meta property="og:title" content="Generate Placeholder Text for Website Design Free – Lorem Ipsum" />
+        <meta property="og:description" content="Custom Lorem Ipsum with paragraphs, word count, and HTML tags. Free placeholder text for wireframes and mockups." />
         <meta property="og:url" content="https://www.generatorpromptai.com/tools/lorem-ipsum-generator" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Lorem Ipsum Generator" />
-        <meta name="twitter:description" content="Custom placeholder text for UI, web & print designs – instant & free." />
+        <meta name="twitter:title" content="Free Lorem Ipsum Generator – Placeholder Text with HTML Tags" />
+        <meta name="twitter:description" content="Generate customizable placeholder text for wireframes and mockups. HTML support included." />
 
         <script type="application/ld+json">{JSON.stringify(schemaWebApp)}</script>
-        <script type="application/ld+json">{JSON.stringify(schemaBreadCrumb)}</script>
-        <script type="application/ld+json">{JSON.stringify(schemaHowTo)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(schemaFaq)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-5xl mx-auto w-full px-4 py-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-sky-600 transition-colors">
-            <ArrowLeft size={20} /> Back to Home
-          </Link>
+
+        {/* ── Breadcrumb ── */}
+        <div className="max-w-4xl mx-auto w-full px-4 pt-6">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li>
+                <Link to="/" className="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors">
+                  <Home size={14} /> Home
+                </Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li>
+                <Link to="/pages/all-tools" className="hover:text-sky-600 transition-colors">All Tools</Link>
+              </li>
+              <li><span className="text-gray-300">/</span></li>
+              <li><span className="text-gray-900 font-semibold">Lorem Ipsum Generator</span></li>
+            </ol>
+          </nav>
         </div>
 
-        <div className="flex-grow max-w-5xl mx-auto w-full px-4 pb-20">
-          {/* Header */}
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-100 mb-4">
-              <AlignLeft className="text-indigo-600" size={28} />
+        <div className="flex-grow max-w-4xl mx-auto w-full px-4 pb-20">
+
+          {/* ── Hero ── */}
+          <div className="text-center mb-10 mt-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-100 mb-4">
+              <AlignLeft className="text-sky-600" size={28} />
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-              Lorem Ipsum Generator
+              Generate Placeholder Text for Website Design Free –{" "}
+              <span className="text-sky-600">Lorem Ipsum with HTML Tags</span>
             </h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
-              Custom placeholder text • Paragraphs • Words • HTML tags • Free & instant
+            <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+              Create customizable dummy text for wireframes, mockups and prototypes. Set paragraph count, word density, and HTML output.
             </p>
           </div>
 
-          {/* Main Tool Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden mb-12">
-            <div className="p-6 md:p-8">
-              {/* Settings Grid */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Paragraphs
-                  </label>
-                  <input
-                    type="number"
-                    value={paragraphs}
-                    onChange={(e) => setParagraphs(Math.max(1, Math.min(20, parseInt(e.target.value) || 4)))}
-                    min="1"
-                    max="20"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-800"
-                  />
-                </div>
+          {/* ── Tool Card ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 mb-8">
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Words per Paragraph
-                  </label>
-                  <input
-                    type="number"
-                    value={wordsPerPara}
-                    onChange={(e) => setWordsPerPara(Math.max(20, Math.min(300, parseInt(e.target.value) || 80)))}
-                    min="20"
-                    max="300"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-800"
-                  />
-                </div>
-
-                <div className="flex flex-col justify-end gap-3 pt-5 sm:pt-0 lg:pt-5">
-                  <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
-                    <input
-                      type="checkbox"
-                      checked={startWithLorem}
-                      onChange={(e) => setStartWithLorem(e.target.checked)}
-                      className="h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
-                    />
-                    Start with "Lorem ipsum..."
-                  </label>
-
-                  <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
-                    <input
-                      type="checkbox"
-                      checked={includeHtml}
-                      onChange={(e) => setIncludeHtml(e.target.checked)}
-                      className="h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
-                    />
-                    Wrap in HTML tags
-                  </label>
-                </div>
+            {/* Settings Grid */}
+            <div className="grid sm:grid-cols-2 gap-5 mb-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Paragraphs</label>
+                <input
+                  type="number"
+                  value={paragraphs}
+                  onChange={(e) => setParagraphs(Math.max(1, Math.min(20, parseInt(e.target.value) || 4)))}
+                  min="1" max="20"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800"
+                />
+                <p className="text-xs text-gray-400 mt-1">1 to 20 paragraphs</p>
               </div>
 
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-3 mb-8">
-                <button
-                  onClick={generateLorem}
-                  className="flex-1 bg-gray-900 hover:bg-gray-800 text-white font-medium py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm"
-                >
-                  <FileText size={20} />
-                  Generate Text
-                </button>
-
-                <button
-                  onClick={reset}
-                  disabled={!generatedText}
-                  className="px-6 py-3.5 bg-gray-100 hover:bg-gray-200 rounded-xl transition font-medium flex items-center justify-center gap-2 text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  <Eraser size={18} />
-                  Clear
-                </button>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Words per Paragraph</label>
+                <input
+                  type="number"
+                  value={wordsPerPara}
+                  onChange={(e) => setWordsPerPara(Math.max(20, Math.min(300, parseInt(e.target.value) || 80)))}
+                  min="20" max="300"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-gray-800"
+                />
+                <p className="text-xs text-gray-400 mt-1">20 to 300 words</p>
               </div>
-
-              {/* Generated Text */}
-              {generatedText ? (
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-4 bg-gray-50 border-b border-gray-200">
-                    <h3 className="font-semibold text-gray-900 text-sm">
-                      {includeHtml ? "Generated HTML" : "Generated Placeholder Text"}
-                    </h3>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={copyText}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-gray-100 border border-gray-300 rounded-lg transition text-sm font-medium text-gray-700"
-                      >
-                        <Copy size={14} />
-                        {copied ? "Copied!" : "Copy"}
-                      </button>
-                      <button
-                        onClick={downloadText}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-gray-100 border border-gray-300 rounded-lg transition text-sm font-medium text-gray-700"
-                      >
-                        <Download size={14} />
-                        .txt
-                      </button>
-                    </div>
-                  </div>
-                  <div className="p-5 bg-white max-h-[450px] overflow-auto">
-                    <pre className="font-sans text-sm leading-relaxed whitespace-pre-wrap text-gray-800 m-0">
-                      {generatedText}
-                    </pre>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-300 text-gray-500">
-                  <FileText size={40} className="mx-auto mb-3 opacity-30" />
-                  <p className="text-sm">Click "Generate Text" to create placeholder text</p>
-                </div>
-              )}
             </div>
+
+            {/* Checkboxes */}
+            <div className="flex flex-wrap gap-6 mb-6">
+              <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={startWithLorem}
+                  onChange={(e) => setStartWithLorem(e.target.checked)}
+                  className="h-4 w-4 text-sky-600 rounded border-gray-300 focus:ring-sky-500"
+                />
+                Start with "Lorem ipsum..."
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={includeHtml}
+                  onChange={(e) => setIncludeHtml(e.target.checked)}
+                  className="h-4 w-4 text-sky-600 rounded border-gray-300 focus:ring-sky-500"
+                />
+                Wrap in HTML tags
+              </label>
+            </div>
+
+            {/* Generate Button */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-2">
+              <button
+                onClick={generateLorem}
+                className="bg-sky-600 hover:bg-sky-700 active:scale-95 transition-all text-white font-semibold px-8 py-3 rounded-xl flex items-center justify-center gap-2"
+              >
+                <FileText size={18} /> Generate Text
+              </button>
+              <button
+                onClick={reset}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+              >
+                <RefreshCw size={15} /> Reset
+              </button>
+            </div>
+
+            {/* ── Result ── */}
+            {generatedText && (
+              <div className="mt-8">
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><Layers size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{paragraphs}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Paragraphs</p>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><Type size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{totalWords}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Words</p>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><Hash size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{totalChars}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Characters</p>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+                    <div className="flex justify-center text-sky-500 mb-1"><Code size={20} /></div>
+                    <p className="text-lg font-bold text-gray-800">{totalSentences}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Sentences</p>
+                  </div>
+                </div>
+
+                {/* Output */}
+                <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
+                  <p className="text-xs text-gray-500 uppercase tracking-widest mb-3 font-semibold">
+                    {includeHtml ? "Generated HTML Output" : "Generated Placeholder Text"}
+                  </p>
+                  {includeHtml ? (
+                    <pre className="text-sm font-mono leading-relaxed">
+                      {generatedText.split(/(<[^>]+>)/).map((part, i) => {
+                        if (i % 2 === 1) return <span key={i} className="text-sky-400">{part}</span>;
+                        return <span key={i} className="text-gray-300">{part}</span>;
+                      })}
+                    </pre>
+                  ) : (
+                    <pre className="text-sm font-mono leading-relaxed text-gray-200">{generatedText}</pre>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-center gap-3">
+                  <button
+                    onClick={copyText}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                  >
+                    <Copy size={15} />
+                    {copied ? "Copied!" : "Copy Result"}
+                  </button>
+                  <button
+                    onClick={downloadText}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-medium transition-colors"
+                  >
+                    <Download size={15} /> Download .txt
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {!generatedText && (
+              <div className="text-center py-16 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl mt-4">
+                <FileText size={32} className="mx-auto mb-3 text-gray-300" />
+                <p>Click <strong className="text-gray-500">Generate Text</strong> to create placeholder text</p>
+              </div>
+            )}
           </div>
 
-          {/* SEO Content */}
-          <section className="mb-12 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
+          {/* ── SEO Content 1 ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Free Lorem Ipsum Generator – Placeholder Text for Designs
+              Free Lorem Ipsum Generator with HTML Tags – Placeholder Text for UI Design
             </h2>
-            <div className="text-gray-600 space-y-4 leading-relaxed">
-              <p>
-                Instantly generate customizable Lorem Ipsum placeholder text for your projects. Adjust the exact number of paragraphs, control the word density, and optionally wrap the output in clean HTML tags with random headings.
-              </p>
-              <p>
-                Perfect for web designers, UI/UX developers, and print layout artists who need realistic filler text for wireframes, mockups, and prototypes. 100% free, no sign-up required, and runs entirely in your browser.
-              </p>
-            </div>
-          </section>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Lorem Ipsum has been the standard dummy text for the printing and typesetting industry since the 1500s. Our free generator goes beyond the basics — you control the <strong>exact number of paragraphs</strong>, set a <strong>specific word count per paragraph</strong>, and optionally wrap the output in <strong>clean HTML tags</strong> with randomly generated headings.
+            </p>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              This makes it ideal for UI/UX designers building wireframes in Figma, web developers prototyping layouts, and print designers creating mockups. The HTML output mode generates properly structured <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;p&gt;</code> and <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;h2&gt;-&lt;h4&gt;</code> tags that you can paste directly into your code editor.
+            </p>
+          </div>
 
-          {/* How to Use */}
-          <section className="mb-12 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">How to Use the Lorem Ipsum Generator</h2>
-            <ol className="list-decimal list-inside space-y-3 text-gray-700 text-base">
-              <li>Set the number of paragraphs you need (up to 20).</li>
-              <li>Adjust the words per paragraph to control text density.</li>
+          {/* ── How to Use ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              How to Generate Dummy Text for Wireframe Mockup Free
+            </h2>
+            <ol className="list-decimal list-inside text-gray-600 space-y-3 text-base">
+              <li>Set the number of <strong>paragraphs</strong> you need (1 to 20).</li>
+              <li>Adjust <strong>words per paragraph</strong> to control text density (20 to 300).</li>
               <li>Check <strong>"Start with Lorem ipsum..."</strong> for the classic opening phrase.</li>
-              <li>Check <strong>"Wrap in HTML tags"</strong> if you need raw HTML output for your code.</li>
-              <li>Click <strong>Generate Text</strong> and copy or download the result.</li>
+              <li>Check <strong>"Wrap in HTML tags"</strong> to get output with paragraph and heading tags.</li>
+              <li>Click <strong>"Generate Text"</strong>, then <strong>copy</strong> or <strong>download</strong> the result.</li>
             </ol>
-          </section>
+          </div>
 
-          {/* FAQ Section for SEO */}
-          <section className="mb-12 bg-white border border-gray-200 rounded-2xl p-6 md:p-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+          {/* ── Features Grid ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Create Filler Text for Website Prototype Online – Key Features
+            </h2>
+            <div className="grid md:grid-cols-2 gap-5">
               {[
-                {
-                  q: "What is Lorem Ipsum?",
-                  a: "Lorem Ipsum is standard dummy text used in the printing, typesetting, and web development industries since the 1500s. It allows designers to focus on layout without being distracted by readable content."
-                },
-                {
-                  q: "Can I generate Lorem Ipsum with HTML tags?",
-                  a: "Yes. By checking the 'Wrap in HTML tags' option, the tool will output your text wrapped in paragraph tags and include randomly generated heading tags (h2, h3, h4)."
-                },
-                {
-                  q: "Is there a limit to how much text I can generate?",
-                  a: "You can generate up to 20 paragraphs at once, with up to 300 words per paragraph, completely free with no limits on how many times you can use the tool."
-                }
-              ].map((item, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-                  <h3 className="font-semibold text-gray-800 mb-2">{item.q}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                { title: "Custom Paragraph and Word Count", desc: "Set exactly how many paragraphs you need and how many words each paragraph should contain. The tool generates text that matches your targets as closely as possible." },
+                { title: "HTML Tag Wrapping", desc: "Toggle HTML mode to get paragraphs wrapped in <p> tags with random <h2>, <h3>, or <h4> headings between sections. Ready to paste into any code editor." },
+                { title: "Classic Lorem Ipsum Opening", desc: "Optionally start the first paragraph with the traditional 'Lorem ipsum dolor sit amet...' phrase that designers and clients recognize instantly." },
+                { title: "Copy or Download as .txt", desc: "Copy the generated text to your clipboard with one click or download it as a plain text file for offline use in your design tools." }
+              ].map((feature, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
 
-          {/* Related Tools */}
+          {/* ── FAQ Accordion ── */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Lorem Ipsum Generator – Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {[
+                {
+                  q: "How to generate placeholder text for website design free?",
+                  a: "Set the number of paragraphs and words per paragraph in our Lorem Ipsum generator, then click Generate Text. Copy or download the result and paste it directly into your design mockup or prototype."
+                },
+                {
+                  q: "Can I generate Lorem Ipsum with HTML tags?",
+                  a: "Yes. Check the 'Wrap in HTML tags' option and the tool will output your paragraphs wrapped in <p> tags with randomly generated <h2>, <h3>, or <h4> headings between sections."
+                },
+                {
+                  q: "What is Lorem Ipsum and why do designers use it?",
+                  a: "Lorem Ipsum is dummy text used in the printing and web design industries since the 1500s. Designers use it to fill layouts with realistic-looking text so clients and stakeholders focus on the visual design rather than reading the content."
+                },
+                {
+                  q: "How many paragraphs of Lorem Ipsum should I use for a wireframe?",
+                  a: "For a typical website wireframe, 3-5 paragraphs per section works well. For a full-page mockup, 10-20 paragraphs total gives a realistic feel. Use shorter paragraphs (40-60 words) for tighter layouts."
+                },
+                {
+                  q: "Can I generate dummy text with a specific word count?",
+                  a: "Yes. Set the 'Words per Paragraph' input to your desired count (20-300 words) and the tool will generate paragraphs that match that target as closely as possible."
+                }
+              ].map((item, i) => (
+                <div key={i} className="border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-300">
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left" aria-expanded={openFaq === i}>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 pr-4">{item.q}</h3>
+                    <ChevronDown size={22} className={`text-sky-500 flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <p className="px-5 pb-5 text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Related Tools ── */}
           <section>
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">Related Text & Design Tools</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Text & Design Tools</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { to: "/tools/word-counter", title: "Word Counter", desc: "Count words, characters & reading time instantly." },
-                { to: "/tools/fake-data-generator", title: "Fake Data Generator", desc: "Create realistic dummy data (including text fields)." },
-                { to: "/tools/json-formatter", title: "JSON Formatter", desc: "Beautify, minify & validate JSON code." },
+                { to: "/tools/word-counter", title: "Word Counter", desc: "Count words, characters and reading time instantly." },
+                { to: "/tools/fake-data-generator", title: "Fake Data Generator", desc: "Generate realistic dummy data including text fields." },
+                { to: "/tools/json-formatter", title: "JSON Formatter", desc: "Beautify, minify and validate JSON code." }
               ].map((tool) => (
-                <Link
-                  key={tool.to}
-                  to={tool.to}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-300 transition-all"
-                >
+                <Link key={tool.to} to={tool.to} className="group bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-sky-400 transition-all">
                   <h3 className="font-semibold text-gray-800 mb-1.5 group-hover:text-sky-600 transition-colors">{tool.title}</h3>
-                  <p className="text-gray-500 text-sm">{tool.desc}</p>
+                  <p className="text-gray-500 text-sm leading-relaxed">{tool.desc}</p>
                 </Link>
               ))}
             </div>
           </section>
+
         </div>
       </div>
     </>

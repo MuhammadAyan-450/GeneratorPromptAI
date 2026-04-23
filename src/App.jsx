@@ -30,6 +30,14 @@ const BlogPostJpegVsPng = lazy(() =>
   import("./blogs/BlogPostJpegVsPng")
 );
 
+const BlogPostPdfToWord = lazy(() =>
+  import("./blogs/BlogPostPdfToWord")
+);
+
+const BlogPostLoremIpsum = lazy(() =>
+  import("./blogs/BlogPostLoremIpsum")
+);
+
 
 // Tools (lazy)
 const AIAgent = lazy(() => import("./tools/AIAgent"));
@@ -65,6 +73,7 @@ const UnixTimestamp = lazy(() => import("./tools/UnixTimestamp"));
 const Base64Encoder = lazy(() => import("./tools/Base64Encoder"));
 const URLEncoder = lazy(() => import("./tools/URLEncoder"));
 const UUIDGenerator = lazy(() => import("./tools/UUIDGenerator"));
+const ExcelFormulaBeautifier = lazy(() => import("./tools/ExcelFormulaBeautifier"));
 
 export default function App() {
   return (
@@ -89,6 +98,8 @@ export default function App() {
           />
           <Route path="/blog/jpeg-vs-png-complete-comparison-guide" element={<BlogPostJpegVsPng />} />
           <Route path="/blog/compress-image-to-100kb-online-free" element={<BlogPostCompressImage />} />
+          <Route path="/blog/how-to-convert-pdf-to-word-without-formatting-loss" element={<BlogPostPdfToWord />} />
+          <Route path="/blog/how-to-generate-lorem-ipsum-text-custom-length" element={<BlogPostLoremIpsum />} />
 
           {/* Tools */}
           <Route path="/tools/ai-agent" element={<AIAgent />} />
@@ -123,6 +134,7 @@ export default function App() {
           <Route path="/tools/unix-timestamp" element={<UnixTimestamp />} />
           <Route path="/tools/base64-encode" element={<Base64Encoder />} />
           <Route path="/tools/url-encoder" element={<URLEncoder />} />
+          <Route path="/tools/excel-formula-beautifier" element={<ExcelFormulaBeautifier />} />
           <Route path="/tools/uuid-generator" element={<UUIDGenerator />} />
 
           {/* 404 */}

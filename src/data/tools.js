@@ -193,7 +193,13 @@ export const tools = [
     "path": "/tools/uuid-generator",
     "description": "Generate Version 4 UUIDs instantly. Supports bulk generation, uppercase, and no-hyphen formats.",
     "category": "Developers & Testing"
-  }
+  },
+  {
+    name: "Excel Formula Beautifier",
+    path: "/tools/excel-formula-beautifier",
+    description: "Format messy Excel and Google Sheets formulas with clean indents, line breaks, and syntax highlighting.",
+    category: "Formatters"
+  },
   // ← Add new tools here in the same format when you build them
 ];
 
