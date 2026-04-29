@@ -25,7 +25,6 @@ import {
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-// ─── POST DATA ────────────────────────────────────────────────────────────────
 const post = {
     id: 1,
     slug: "claude-vs-chatgpt-which-is-better",
@@ -43,7 +42,6 @@ const post = {
     views: "9.8K",
 };
 
-// ─── SEO SCHEMAS ──────────────────────────────────────────────────────────────
 const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -143,7 +141,6 @@ const breadcrumbSchema = {
     ],
 };
 
-// ─── TOC DATA ─────────────────────────────────────────────────────────────────
 const TOC_ITEMS = [
     { id: "why-this-comparison", label: "Why This Comparison" },
     { id: "quick-verdict", label: "Quick Verdict" },
@@ -161,7 +158,6 @@ const TOC_ITEMS = [
     { id: "faq", label: "FAQs" },
 ];
 
-// ─── SCORE COMPONENT ──────────────────────────────────────────────────────────
 const ScoreBar = ({ label, claude, chatgpt }) => {
     const maxW = "w-full";
     return (
@@ -195,7 +191,6 @@ const ScoreBar = ({ label, claude, chatgpt }) => {
     );
 };
 
-// ─── WINNER BADGE ─────────────────────────────────────────────────────────────
 const WinnerBadge = ({ winner }) => {
     const isClaude = winner === "claude";
     return (
@@ -210,7 +205,6 @@ const WinnerBadge = ({ winner }) => {
     );
 };
 
-// ─── PROMPT BOX ───────────────────────────────────────────────────────────────
 const PromptBox = ({ label, labelType, children, model }) => {
     const [copied, setCopied] = useState(false);
 
@@ -269,7 +263,6 @@ const PromptBox = ({ label, labelType, children, model }) => {
     );
 };
 
-// ─── FAQ ITEM ─────────────────────────────────────────────────────────────────
 const FAQItem = ({ question, answer }) => {
     const [open, setOpen] = useState(false);
     return (
@@ -293,7 +286,6 @@ const FAQItem = ({ question, answer }) => {
     );
 };
 
-// ─── USE CASE CARD ────────────────────────────────────────────────────────────
 const UseCaseCard = ({ icon: Icon, title, claudeScore, gptScore, winner, reason }) => {
     const isClaude = winner === "claude";
     return (
@@ -328,7 +320,6 @@ const UseCaseCard = ({ icon: Icon, title, claudeScore, gptScore, winner, reason 
     );
 };
 
-// ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 const BlogPostClaudeVsChatGPT = () => {
     const [activeTOC, setActiveTOC] = useState("");
 

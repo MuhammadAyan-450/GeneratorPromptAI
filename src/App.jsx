@@ -74,6 +74,12 @@ const Base64Encoder = lazy(() => import("./tools/Base64Encoder"));
 const URLEncoder = lazy(() => import("./tools/URLEncoder"));
 const UUIDGenerator = lazy(() => import("./tools/UUIDGenerator"));
 const ExcelFormulaBeautifier = lazy(() => import("./tools/ExcelFormulaBeautifier"));
+const EbayFeeCalculator = lazy(() => import("./tools/EbayFeeCalculator"));
+const AdRevenueCalculator = lazy(() => import("./tools/AdRevenueCalculator"));
+const AdSenseRevenueCalculator = lazy(() => import("./tools/AdSenseRevenueCalculator"));
+const YoutubeAdRevenueCalculator = lazy(() => import("./tools/YoutubeAdRevenueCalculator"));
+
+
 
 export default function App() {
   return (
@@ -136,6 +142,11 @@ export default function App() {
           <Route path="/tools/url-encoder" element={<URLEncoder />} />
           <Route path="/tools/excel-formula-beautifier" element={<ExcelFormulaBeautifier />} />
           <Route path="/tools/uuid-generator" element={<UUIDGenerator />} />
+          <Route path="/tools/ebay-charges-calculator" element={<EbayFeeCalculator />} />
+          <Route path="/tools/ad-revenue-calculator" element={<AdRevenueCalculator />} />
+          <Route path="/tools/adsense-revenue-calculator" element={<AdSenseRevenueCalculator />} />
+          <Route path="/tools/youtube-ad-revenue-calculator" element={<YoutubeAdRevenueCalculator />} />
+          
 
           {/* 404 */}
           <Route

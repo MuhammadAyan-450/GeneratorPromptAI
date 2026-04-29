@@ -1,6 +1,5 @@
 // pages/About.jsx
 import React from "react";
-
 import { Link } from "react-router-dom";
 import { ArrowLeft, Search } from "lucide-react";
 import Navbar from "../components/Navbar";

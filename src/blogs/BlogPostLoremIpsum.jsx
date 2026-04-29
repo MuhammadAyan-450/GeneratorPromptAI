@@ -23,6 +23,9 @@ import {
   Type,
 } from "lucide-react";
 
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 // ─── POST DATA ────────────────────────────────────────────────────────────────
 const post = {
   id: 8,
@@ -201,15 +204,7 @@ const BlogPostLoremIpsum = () => {
 
       <div className="min-h-screen bg-gray-50">
         {/* ── Navbar ── */}
-        <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-            <Link to="/" className="font-bold text-lg text-gray-900">Generator<span className="text-indigo-600">PromptAI</span></Link>
-            <div className="flex items-center gap-4">
-              <Link to="/blog" className="text-sm text-gray-500 hover:text-indigo-600 transition-colors hidden sm:inline">Blog</Link>
-              <Link to="/pages/all-tools" className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">Free Tools</Link>
-            </div>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* ── Breadcrumb ── */}
         <div className="max-w-6xl mx-auto px-4 pt-6">
@@ -670,16 +665,7 @@ const BlogPostLoremIpsum = () => {
         </div>
 
         {/* ── Footer ── */}
-        <footer className="bg-white border-t border-gray-200 mt-16">
-          <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-            <p>© 2026 GeneratorPromptAI. All rights reserved.</p>
-            <div className="flex gap-6">
-              <Link to="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
-              <Link to="/pages/all-tools" className="hover:text-indigo-600 transition-colors">Tools</Link>
-              <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );
