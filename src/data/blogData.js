@@ -50,7 +50,8 @@ export const BLOG_POSTS = [
   {
     id: 4,
     slug: "jpeg-vs-png-complete-comparison-guide",
-    title: "JPEG vs PNG — Complete Comparison Guide (When to Use Which in 2026)",
+    title:
+      "JPEG vs PNG — Complete Comparison Guide (When to Use Which in 2026)",
     excerpt:
       "JPEG vs PNG: which format should you use? Complete comparison of file size, quality, transparency, and use cases.",
     category: "Web Tips",
@@ -77,7 +78,23 @@ export const BLOG_POSTS = [
     image: null,
     color: "from-violet-500 to-purple-600",
     emoji: "📝",
-  }
+  },
+{
+  id: 6,
+  slug: "how-to-calculate-cpm",
+  title: "How to Calculate CPM: Step-by-Step Formula, Examples & Benchmarks",
+  excerpt:
+    "Learn the exact CPM formula, follow a step-by-step calculation tutorial, see real-world ad campaign examples, and check 2025 CPM benchmarks by platform.",
+  category: "Digital Marketing",
+  tag: "Ad Calculators",
+  readTime: 8,
+  date: "January 15, 2025",
+  dateISO: "2025-01-15",
+  featured: false,
+  image: null,
+  color: "from-sky-500 to-blue-600",
+  emoji: "📊",
+}
 ];
 
 export const CATEGORIES = [

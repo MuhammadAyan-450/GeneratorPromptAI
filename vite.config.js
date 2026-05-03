@@ -3,68 +3,81 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
 
   build: {
-    // ✅ Raise chunk warning limit
-    chunkSizeWarningLimit: 800,
+    chunkSizeWarningLimit: 1000,
 
     rollupOptions: {
       output: {
-        manualChunks: {
-          // ✅ All Lucide icons in ONE file (was 15 separate files!)
-          'vendor-icons':   ['lucide-react'],
+        // ✅ Better file naming for caching
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
 
-          // ✅ React core together
-          'vendor-react':   ['react', 'react-dom'],
+        manualChunks(id) {
+          // React core
+          if (id.includes('react') || id.includes('react-dom')) {
+            return 'vendor-react'
+          }
 
-          // ✅ Router separate
-          'vendor-router':  ['react-router-dom'],
+          // Router
+          if (id.includes('react-router-dom')) {
+            return 'vendor-router'
+          }
 
-          // ✅ Helmet separate
-          'vendor-helmet':  ['react-helmet-async'],
+          // Helmet
+          if (id.includes('react-helmet-async')) {
+            return 'vendor-helmet'
+          }
 
-          // ✅ PDF tools (heavy — only loads on PDF pages)
-          'vendor-pdf':     ['pdf-lib', 'pdfjs-dist'],
+          // Icons (only one chunk)
+          if (id.includes('lucide-react')) {
+            return 'vendor-icons'
+          }
 
-          // ✅ Image tools (only loads on image pages)
-          'vendor-image':   ['browser-image-compression'],
+          // PDF tools
+          if (id.includes('pdf-lib') || id.includes('pdfjs-dist')) {
+            return 'vendor-pdf'
+          }
 
-          // ✅ QR code (only loads on QR page)
-          'vendor-qr':      ['qrcode.react'],
+          // Image tools
+          if (id.includes('browser-image-compression')) {
+            return 'vendor-image'
+          }
 
-          // ✅ Tesseract OCR (very heavy — only on OCR page)
-          'vendor-ocr':     ['tesseract.js'],
+          // OCR
+          if (id.includes('tesseract.js')) {
+            return 'vendor-ocr'
+          }
 
-          // ✅ DOCX tools (only on PDF to Word page)
-          'vendor-docx':    ['docx', 'file-saver'],
+          // DOCX tools
+          if (id.includes('docx') || id.includes('file-saver')) {
+            return 'vendor-docx'
+          }
 
-          // ✅ Crop tool (only on image cropper page)
-          'vendor-crop':    ['react-image-crop'],
-        },
-      },
+          // QR
+          if (id.includes('qrcode.react')) {
+            return 'vendor-qr'
+          }
+        }
+      }
     },
 
-    // ✅ Enable minification
     minify: 'esbuild',
 
-    // ✅ Remove console.log in production
     esbuildOptions: {
-      drop: ['console', 'debugger'],
-    },
+      drop: ['console', 'debugger']
+    }
   },
 
-  // ✅ Optimize dependencies pre-bundling
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'react-router-dom',
       'react-helmet-async',
-      'lucide-react',
-    ],
-  },
+      'lucide-react'
+    ]
+  }
 })

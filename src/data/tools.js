@@ -255,6 +255,20 @@ export const tools = [
       "Estimate YouTube ad earnings by video category, CPM, video length, and audience location tier.",
     category: "Calculators",
   },
+  {
+    name: "CPM Calculator",
+    path: "/tools/cpm-calculator",
+    description:
+      "Calculate the CPM online free. Find cost per 1000 impressions, campaign cost, or total impressions instantly.",
+    category: "Calculators",
+  },
+  {
+    name: "CPC Calculator",
+    path: "/tools/cpc-calculator",
+    description:
+      "Calculate the CPC online free. Find cost per click, campaign cost, or total clicks instantly with CTR and CPM metrics.",
+    category: "Calculators",
+  },
 ];
 
 export const toolCategories = [
